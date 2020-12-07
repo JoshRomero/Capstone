@@ -1,9 +1,10 @@
-# Capstone\
+# Capstone
 
-#Group name\ Wii Excel\
+# Group name
 
-#Team members\
-\
+Wii Excel
+
+# Team members
 Clark Foster\
 William Francis\
 Branson Hanzo\
