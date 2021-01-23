@@ -3,7 +3,6 @@
 
 
 import socket
-import tqdm
 import os
 
 # this device's IP
