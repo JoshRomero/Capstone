@@ -3,7 +3,6 @@
 
 
 import socket
-import tqdm
 import os
 
 # this device's IP
@@ -41,9 +40,8 @@ while True:
         filesize = int(filesize)
 
         # Now start receiving file from socket and writing to file stream
-        progress = tqdm.tqdm(range(filesize), "Receiving {filename}", unit="B", unit_scale=True, unit_divisor=1024)
         with open(filename, "wb") as f:
-            for _ in progress:
+            while True:
                 # read 1024 bytes from socket (receive)
                 bytes_read = client_socket.recv(BUFFER_SIZE)
                 if not bytes_read:
@@ -51,8 +49,6 @@ while True:
                     break
                 # write to the file the bytes we just received
                 f.write(bytes_read)
-                # update progress bar
-                progress.update(len(bytes_read))
 
         #close the client socket
         client_socket.close()
