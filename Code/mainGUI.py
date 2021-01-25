@@ -7,26 +7,26 @@ main = Tk()
 main.title("Object Finder Application")
 main.geometry('500x300')
 
-# creates label
-select = Label(main, text = "What would you like to search for?")
-select.pack()
+# creates mainText1
+mainText1 = Label(main, text = "What would you like to search for?")
+mainText1.pack()
 
-# creates text
-txt = Entry(main, width=10)
-txt.pack() 
+# creates text entry bot
+textInput1 = Entry(main, width=10)
+textInput1.pack() 
 
 
 
 def textFunctionCall():
     temporary = "Text Function Called"
-    select.configure(text = temporary)
+    mainText1.configure(text = temporary)
 
     # calls text function
-    text.textFunction(txt.get())
+    text.textFunction(textInput1.get())
 
 def microphoneFunctionCall():
     temporary = "Microphone Function Called"
-    select.configure(text = temporary)
+    mainText1.configure(text = temporary)
  
     # calls microphone function
     microphone.microphoneFunction()
