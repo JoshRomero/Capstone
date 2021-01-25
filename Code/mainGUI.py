@@ -18,13 +18,16 @@ textInput1.pack()
 
 
 def textFunctionCall():
+    # updates mainText1
     temporary = "Text Function Called"
     mainText1.configure(text = temporary)
 
     # calls text function
     text.textFunction(textInput1.get())
 
+
 def microphoneFunctionCall():
+    # updates mainText1
     temporary = "Microphone Function Called"
     mainText1.configure(text = temporary)
  
@@ -43,5 +46,5 @@ microphoneButton.pack()
 
 
 
-
+# executes main window
 main.mainloop()
