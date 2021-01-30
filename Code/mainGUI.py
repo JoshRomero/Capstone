@@ -32,12 +32,9 @@ def textFunctionCall():
     mainText1.configure(text = temporary)
 
 def microphoneFunctionCall():
-    
-    # calls microphone function
-    microphone.microphoneFunction()
 
     # updates mainText1
-    temporary = "Audio Sent to Server"
+    temporary = microphone.microphoneFunction()
     mainText1.configure(text = temporary)
 
 
