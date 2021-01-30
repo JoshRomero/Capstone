@@ -28,13 +28,13 @@ mainText1.grid(column=2, row=7)
 
 def textFunctionCall():
     # calls text function
-    temporary = ("Sent Request for: " + text.textFunction(textInput1.get()))
+    temporary = ("Searching for: " + text.textFunction(textInput1.get()))
     mainText1.configure(text = temporary)
 
 def microphoneFunctionCall():
     print("Microphone Listening...")
     # updates mainText1
-    temporary = ("Sent Request for: " + microphone.microphoneFunction())
+    temporary = ("Searching for: " + microphone.microphoneFunction())
     mainText1.configure(text = temporary)
 
 
