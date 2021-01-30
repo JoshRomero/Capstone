@@ -25,7 +25,6 @@ def microphoneFunction():
             
             # use the microphone as source for input. 
             with sr.Microphone() as source2: 
-                print("Here")
                 
                 # wait for a second to let the recognizer 
                 # adjust the energy threshold based on 
@@ -39,7 +38,7 @@ def microphoneFunction():
                 MyText = r.recognize_google(audio2) 
                 MyText = MyText.lower() 
 
-                print("Did you say "+MyText)
+                print("You said "+MyText)
                 # Splits text input into a list of each word 
                 TextList = MyText.split()
 
