@@ -9,6 +9,10 @@ import os
 SERVER_HOST = "192.168.1.252"
 SERVER_PORT = 1337
 
+# mongoDB container ip and port
+DATABASE_DOMAIN = '172.17.0.2'
+DATABASE_PORT = 27017
+
 # receive 4096 bytes each step
 BUFFER_SIZE = 4096
 SEPARATOR = "<SEPARATOR>"

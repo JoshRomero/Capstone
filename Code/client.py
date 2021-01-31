@@ -13,6 +13,10 @@ BUFFER_SIZE = 4096 # each step we will send 4096 bytes
 host = "192.168.1.252"
 port = 1337
 
+# mongoDB container ip and port
+DATABASE_DOMAIN = '172.17.0.2'
+DATABASE_PORT = 27017
+
 #camera setup
 camera = PiCamera()
 #only for my set up, camera was upside down
