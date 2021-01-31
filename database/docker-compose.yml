@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  database:
+    image: mongo
+    command: --auth
+    container_name: 'objectFinderSystem-database'
+    volumes:
+      - ./objectFinderSystem-data:/data/db
+    ports:
+      - '27017-27019:27017-27019'
