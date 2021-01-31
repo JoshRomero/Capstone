@@ -48,9 +48,11 @@ def textFunctionCall():
 
 def microphoneFunctionCall():
     # updates mainText1
-    temporary = ("Searching for: " + microphone.microphoneFunction())
-    mainText1.configure(text = temporary)
-
+    temporary = (microphone.microphoneFunction())
+    if temporary == "Invalid input. Try again":
+        mainText1.configure(text = temporary)
+    else:
+        mainText1.configure(text = ("Searching for: " + temporary))
 
 # creates text button
 textButton = Button(main, text = "Search with Text", fg = "blue", bg = "white", command=textFunctionCall, padx = 5, pady = 5, font = ("Sans Serif", 10))

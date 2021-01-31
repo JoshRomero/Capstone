@@ -16,7 +16,6 @@ def textFunction(user_input):
 
         # if the object is found then store it in a variable and negate the boolean
         if ("thermos" in user_input):
-            print("IT WORKED")
             user_object = "Thermos"
             invalid_input = False
             return user_object
