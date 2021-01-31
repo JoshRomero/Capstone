@@ -38,7 +38,7 @@ def microphoneFunction():
                 MyText = r.recognize_google(audio2) 
                 MyText = MyText.lower() 
 
-                print("You said "+MyText)
+                print("You said: "+MyText)
                 # Splits text input into a list of each word 
                 TextList = MyText.split()
 
