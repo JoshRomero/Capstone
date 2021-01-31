@@ -37,7 +37,7 @@ mainText1.configure(background='lightgrey')
 def textFunctionCall():
     # calls text function
     if textInput1.get() == "":
-        temporary = "Error: Text Input is Empty"
+        temporary = "Text Input is Empty"
         mainText1.configure(text = temporary)
     else: 
         temporary = (text.textFunction(textInput1.get()))
