@@ -1,16 +1,11 @@
 ## Clark Foster
 # This file sends a file over python socket using TCP
 
-import socket
-import os
 from time import sleep
 from picamera import PiCamera
 from pymongo import MongoClient
 from base64 import b64encode
 from datetime import datetime
-
-SEPARATOR = "<SEPARATOR>"
-BUFFER_SIZE = 4096 # each step we will send 4096 bytes
 
 # host machine ip and mongodb port
 DATABASE_DOMAIN = '192.168.1.54'
@@ -65,8 +60,10 @@ while True:
     camera.capture('../imgs/{}.jpeg'.format(saveDate))
     print("[+] Picture captured with the name: {}.jpeg".format(saveDate))
     
+    # save captured image data to be converted into b64
     with open('../imgs/{}.jpeg'.format(saveDate), mode='rb') as image:
         imageContent = image.read()
+        image.close()
     
     # create database entry
     dbEntry = {"dateTime": datetime.now(),
@@ -78,11 +75,11 @@ while True:
                "image": b64encode(imageContent)
     }
     
-    print("[+] Entry made for picture: {}.jpeg".format(saveDate))
-    
     # insert created database entry
     camNodeResultsCollection.insert_one(dbEntry)
+    print("[+] Entry made for picture: {}.jpeg".format(saveDate))
     
-    
+    # sleep a minute to give the database time to receive the last entry
+    sleep(60)
 
 
