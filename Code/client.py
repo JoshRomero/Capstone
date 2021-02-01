@@ -63,8 +63,9 @@ while True:
     # take the picture
     saveDate = datetime.now()
     camera.capture('../imgs/{}.jpeg'.format(saveDate))
+    print("[+] Picture captured with the name: {}.jpeg".format(saveDate))
     
-    with open('../imgs/{}.jpeg'.format(saveDate), mode='rb') as image: # b is important -> binary
+    with open('../imgs/{}.jpeg'.format(saveDate), mode='rb') as image:
         imageContent = image.read()
     
     # create database entry
@@ -76,6 +77,8 @@ while True:
                "walletProb": WALLET_PROB,
                "image": b64encode(imageContent)
     }
+    
+    print("[+] Entry made for picture: {}.jpeg".format(saveDate))
     
     # insert created database entry
     camNodeResultsCollection.insert_one(dbEntry)
