@@ -5,17 +5,22 @@ import socket
 import os
 from time import sleep
 from picamera import PiCamera
+from pymongo import MongoClient
+from base64 import b64encode
+from datetime import datetime
 
 SEPARATOR = "<SEPARATOR>"
 BUFFER_SIZE = 4096 # each step we will send 4096 bytes
 
-# specify the ip and port of server/receiver
-host = "192.168.1.252"
-port = 1337
-
-# mongoDB container ip and port
-DATABASE_DOMAIN = '172.17.0.2'
+# host machine ip and mongodb port
+DATABASE_DOMAIN = '192.168.1.54'
 DATABASE_PORT = 27017
+
+ROOM_ID = 1
+KEYS_PROB = 0.0
+PHONE_PROB = 0.0
+THERMOS_PROB = 0.0
+WALLET_PROB = 0.0
 
 #camera setup
 camera = PiCamera()
@@ -24,36 +29,54 @@ camera.rotation = 180
 # i found the less resolution made it easier to send
 camera.resolution = (1024, 768)
 
-# file we want to send and its size
-filename = "boy.jpeg"
-filesize = os.path.getsize(filename)
-i=1
+# connect to the server
+try:
+    print("[+] Connecting to mongoDB server @ {DATABASE_DOMAIN}:{DATABASE_PORT}")
+    mongo_client = MongoClient("mongodb://{DATABASE_DOMAIN}:{DATABASE_PORT}")
+    print("[+] Connected")
+except:
+    print("[-] Connection failed")
+    exit(0)
+
+# authenticate to database
+try:
+    rPiDatabase = mongo_client.rPiData
+    print("[+] Authenticating to rPiData database...")
+    rPiDatabase.authenticate(name='rPiCamNode', password='G7q1D^3Bh3Ql')
+    print("[+] Sucessfully Authenticated")
+except:
+    print("[-] Authentication failed")
+    exit(0)
+
+# switch to correct collection
+try:
+    print("[+] Switching to camNodeResults collection...")
+    camNodeResultsCollection = rPiDatabase.camNodeResults
+    print("[+] Successfully switched")
+else:
+    print("[-] Switch failed")
+
 while True:
     # camera needs to get ready
     sleep(.5)
+    
     # take the picture
-    camera.capture('/home/pi/Desktop/boy.jpeg')
-    # client socket and connect to server
-    s = socket.socket()
-    print("[+] Connecting to {host}:{port}") 
-    s.connect((host, port))
-    print("[+] Connected.")
+    saveDate = datetime.now()
+    camera.capture('./imgs/{}.jpeg'.format(saveDate))
+    
+    # create database entry
+    dbEntry = {"dateTime": datetime.now(),
+               "roomID": ROOM_ID,
+               "keysProb": KEYS_PROB,
+               "phoneProb": PHONE_PROB,
+               "thermosProb": THERMOS_PROB,
+               "walletProb": WALLET_PROB,
+               "image": b64encode('./imgs/{}.jpeg'.format(saveDate))
+    }
+    
+    # insert created database entry
+    camNodeResultsCollection.insert_one(dbEntry)
+    
+    
 
-    # send the file and its size
-    s.send(f"{filename}{SEPARATOR}{filesize}".encode())
-
-    # begin sending
-    with open(filename, "rb") as f:
-        while True:
-            # read the bytes of the file
-            bytes_read = f.read(BUFFER_SIZE)
-            if not bytes_read:
-                # transmission complete
-                break
-            # use sentall to ensure transmission over busy network
-            s.sendall(bytes_read)
-
-    # close socket
-    s.close()
-    i+=1
 
