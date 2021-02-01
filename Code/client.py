@@ -53,7 +53,7 @@ try:
     print("[+] Switching to camNodeResults collection...")
     camNodeResultsCollection = rPiDatabase.camNodeResults
     print("[+] Successfully switched")
-else:
+except:
     print("[-] Switch failed")
 
 while True:
