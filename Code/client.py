@@ -62,7 +62,10 @@ while True:
     
     # take the picture
     saveDate = datetime.now()
-    camera.capture('./imgs/{}.jpeg'.format(saveDate))
+    camera.capture('../imgs/{}.jpeg'.format(saveDate))
+    
+    with open('../imgs/{}.jpeg'.format(saveDate), mode='rb') as image: # b is important -> binary
+        imageContent = image.read()
     
     # create database entry
     dbEntry = {"dateTime": datetime.now(),
@@ -71,7 +74,7 @@ while True:
                "phoneProb": PHONE_PROB,
                "thermosProb": THERMOS_PROB,
                "walletProb": WALLET_PROB,
-               "image": b64encode('./imgs/{}.jpeg'.format(saveDate))
+               "image": b64encode(imageContent)
     }
     
     # insert created database entry
