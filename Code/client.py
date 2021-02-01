@@ -31,8 +31,8 @@ camera.resolution = (1024, 768)
 
 # connect to the server
 try:
-    print("[+] Connecting to mongoDB server @ {DATABASE_DOMAIN}:{DATABASE_PORT}")
-    mongo_client = MongoClient("mongodb://{DATABASE_DOMAIN}:{DATABASE_PORT}")
+    print("[+] Connecting to mongoDB server @ {}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
+    mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
     print("[+] Connected")
 except:
     print("[-] Connection failed")
