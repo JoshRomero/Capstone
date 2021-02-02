@@ -49,4 +49,5 @@ unencryptedImageData = b64decode(encryptedImageData)
 with open('../serverImgs/{}.jpeg'.format(dateAndTime), mode='wb') as newImage:
     unencryptedImageData = bytearray(unencryptedImageData)
     newImage.write(unencryptedImageData)
+    print("[+] Entry image saved in serverImgs folder with name: {}.jpeg".format(dateAndTime))
     newImage.close()
