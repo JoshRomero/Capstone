@@ -82,4 +82,6 @@ while True:
     # sleep a minute to give the database time to receive the last entry
     sleep(60)
 
+    # exit after the first image just for testing
+    exit(0)
 
