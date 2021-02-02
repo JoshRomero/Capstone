@@ -38,7 +38,7 @@ try:
     rPiDatabase = mongo_client.rPiData
     print("[+] Authenticating to rPiData database...")
     rPiDatabase.authenticate(name='rPiCamNode', password='G7q1D^3Bh3Ql')
-    print("[+] Sucessfully Authenticated")
+    print("[+] Successfully Authenticated")
 except:
     print("[-] Authentication failed")
     exit(0)
