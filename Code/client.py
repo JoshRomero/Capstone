@@ -57,11 +57,11 @@ while True:
     
     # take the picture
     saveDate = datetime.now()
-    camera.capture('../imgs/{}.jpeg'.format(saveDate))
+    camera.capture('../clientImgs/{}.jpeg'.format(saveDate))
     print("[+] Picture captured with the name: {}.jpeg".format(saveDate))
     
     # save captured image data to be converted into b64
-    with open('../imgs/{}.jpeg'.format(saveDate), mode='rb') as image:
+    with open('../clientImgs/{}.jpeg'.format(saveDate), mode='rb') as image:
         imageContent = image.read()
         image.close()
     
@@ -81,7 +81,4 @@ while True:
     
     # sleep a minute to give the database time to receive the last entry
     sleep(60)
-
-    # exit after the first image just for testing
-    exit(0)
 

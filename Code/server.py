@@ -35,7 +35,7 @@ try:
 except:
     print("[-] Switch failed")
 
-# retrieve the last top entry in the database and save it
+# retrieve the top document from the collection (will be changed later to include CNN results)
 retrievedDoc = camNodeResultsCollection.find_one()
 
 # retrieve the image data and date time
