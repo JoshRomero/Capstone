@@ -1,59 +1,52 @@
 # Clark Foster
 # This python program is a server to receive files using TCP
 
+from pymongo import MongoClient
+from base64 import b64decode
 
-import socket
-import os
+# host machine ip and mongodb port
+DATABASE_DOMAIN = '192.168.1.54'
+DATABASE_PORT = 27017
 
-# this device's IP
-SERVER_HOST = "192.168.1.252"
-SERVER_PORT = 1337
+# connect to the server
+try:
+    print("[+] Connecting to mongoDB server @ {}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
+    mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
+    print("[+] Connected")
+except:
+    print("[-] Connection failed")
+    exit(0)
 
-# receive 4096 bytes each step
-BUFFER_SIZE = 4096
-SEPARATOR = "<SEPARATOR>"
+# authenticate to database
+try:
+    rPiDatabase = mongo_client.rPiData
+    print("[+] Authenticating to rPiData database...")
+    rPiDatabase.authenticate(name='serverNode', password='7$dsV!G3D0Oc')
+    print("[+] Sucessfully Authenticated")
+except:
+    print("[-] Authentication failed")
+    exit(0)
 
-# create server socket (TCP) and bind to local address
-s = socket.socket()
-s.bind((SERVER_HOST, SERVER_PORT))
+# switch to correct collection
+try:
+    print("[+] Switching to camNodeResults collection...")
+    camNodeResultsCollection = rPiDatabase.camNodeResults
+    print("[+] Successfully switched")
+except:
+    print("[-] Switch failed")
 
-# enable server to accept connections with 5 as # unaccepted connections
-# that system will allow before refusing new ones
-s.listen(5)
-i = 1
-while True:
-    try:
-        print("Listening as {}:{}".format(SERVER_HOST, SERVER_PORT))
+# retrieve the last top entry in the database and save it
+retrievedDoc = camNodeResultsCollection.find_one()
 
-        # accept connections
-        client_socket, address = s.accept()
-        print("[+] {} is connected.".format(address))
+# retrieve the image data and date time
+encryptedImageData = retrievedDoc["image"]
+dateAndTime = retrievedDoc["dateTime"]
 
-        # receive the file indo using client socket not server socket
-        received = client_socket.recv(BUFFER_SIZE).decode()
-        filename, filesize = received.split(SEPARATOR)
-        #remove absolute path if exist
-        filename  = os.path.basename(filename)
-        filename = filename[:-5]
-        filename = filename + '_' + str(i) + ".jpeg"
-        # convert to integer
-        filesize = int(filesize)
+# unencrypt b64 encrypted image data
+unencryptedImageData = b64decode(encryptedImageData)
 
-        # Now start receiving file from socket and writing to file stream
-        with open(filename, "wb") as f:
-            while True:
-                # read 1024 bytes from socket (receive)
-                bytes_read = client_socket.recv(BUFFER_SIZE)
-                if not bytes_read:
-                    # then nothing is received and transmission complete
-                    break
-                # write to the file the bytes we just received
-                f.write(bytes_read)
-
-        #close the client socket
-        client_socket.close()
-        i+=1
-    except UnicodeDecodeError:
-        continue
-#close server socket
-s.close()
+# save unencrypted image to a folder known as serverImgs
+with open('../serverImgs/{}.jpeg'.format(dateAndTime), mode='wb') as newImage:
+    unencryptedImageData = bytearray(unencryptedImageData)
+    newImage.write(unencryptedImageData)
+    newImage.close()
