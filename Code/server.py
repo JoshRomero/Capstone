@@ -53,3 +53,5 @@ try:
     print("[+] Successfully switched")
 except:
     print("[-] Switch failed")
+    
+queryDatabase("phone")

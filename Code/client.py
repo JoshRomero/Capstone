@@ -3,7 +3,6 @@ from picamera import PiCamera
 from pymongo import MongoClient
 from base64 import b64encode
 from datetime import datetime
-import tempfile
 
 # host machine ip and mongodb port
 DATABASE_DOMAIN = '192.168.1.54'
@@ -64,19 +63,22 @@ while True:
     # camera needs to get ready
     sleep(.5)
     
-    # take the picture and saves as temp file to be deleted upon closing
+    # take the picture
     saveDate = datetime.now()
-    with tempfile.TemporaryFile(mode='wb') as tmp:
-        camera.capture(tmp)
+    camera.capture('../clientImgs/{}.jpeg'.format(saveDate))
+    print("[+] Picture captured with the name: {}.jpeg".format(saveDate))
+    
+    # save captured image data to be converted into b64
+    with open('../clientImgs/{}.jpeg'.format(saveDate), mode='rb') as image:
+        imageContent = image.read()
+        image.close()
         
-        # create database entry
-        entry = createEntry(imageContent)
+    # create database entry
+    entry = createEntry(imageContent)
         
-        # insert created database entry
-        camNodeResultsCollection.insert_one(entry)
-        print("[+] Entry made for picture @ {}".format(saveDate))
-
-        tmp.close()
+    # insert created database entry
+    camNodeResultsCollection.insert_one(entry)
+    print("[+] Entry made for picture @ {}".format(saveDate))
     
     # sleep a minute to give the database time to receive the last entry
     sleep(55.5)
