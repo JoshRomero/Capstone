@@ -32,8 +32,6 @@ mainText1 = Label(main, text = "", padx = 5, font = ("Nunito Sans", 9, "bold"))
 mainText1.place(x = 170, y = 200)
 mainText1.configure(background='lightgrey')
 
-
-
 def textFunctionCall():
     # calls text function
     if textInput1.get() == "":
