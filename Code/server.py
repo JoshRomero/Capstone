@@ -1,12 +1,31 @@
-# Clark Foster
-# This python program is a server to receive files using TCP
-
 from pymongo import MongoClient
 from base64 import b64decode
 
 # host machine ip and mongodb port
 DATABASE_DOMAIN = '192.168.1.54'
 DATABASE_PORT = 27017
+
+def queryDatabase(object):
+    # retrieve the newest document from the collection based on datetime (will be changed later to include CNN results)
+    for entry in camNodeResultsCollection.find().sort("dateTime", -1):
+        newestEntry = entry
+        break
+    
+    # retrieve the image data and date time
+    encryptedImageData = newestEntry["image"]
+    dateAndTime = newestEntry["dateTime"]
+
+    # unencrypt b64 encrypted image data
+    unencryptedImageData = b64decode(encryptedImageData)
+
+    # save unencrypted image to a folder known as serverImgs
+    with open('../serverImgs/{}.jpeg'.format(dateAndTime), mode='wb') as newImage:
+        unencryptedImageData = bytearray(unencryptedImageData)
+        newImage.write(unencryptedImageData)
+        print("[+] Entry image saved in serverImgs folder with name: {}.jpeg".format(dateAndTime))
+        newImage.close()
+        
+# MAIN
 
 # connect to the server
 try:
@@ -34,20 +53,5 @@ try:
     print("[+] Successfully switched")
 except:
     print("[-] Switch failed")
-
-# retrieve the top document from the collection (will be changed later to include CNN results)
-retrievedDoc = camNodeResultsCollection.find_one()
-
-# retrieve the image data and date time
-encryptedImageData = retrievedDoc["image"]
-dateAndTime = retrievedDoc["dateTime"]
-
-# unencrypt b64 encrypted image data
-unencryptedImageData = b64decode(encryptedImageData)
-
-# save unencrypted image to a folder known as serverImgs
-with open('../serverImgs/{}.jpeg'.format(dateAndTime), mode='wb') as newImage:
-    unencryptedImageData = bytearray(unencryptedImageData)
-    newImage.write(unencryptedImageData)
-    print("[+] Entry image saved in serverImgs folder with name: {}.jpeg".format(dateAndTime))
-    newImage.close()
+    
+queryDatabase("phone")

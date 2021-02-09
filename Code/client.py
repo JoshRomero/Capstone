@@ -1,6 +1,3 @@
-## Clark Foster
-# This file sends a file over python socket using TCP
-
 from time import sleep
 from picamera import PiCamera
 from pymongo import MongoClient
@@ -17,12 +14,17 @@ PHONE_PROB = 0.0
 THERMOS_PROB = 0.0
 WALLET_PROB = 0.0
 
-#camera setup
-camera = PiCamera()
-#only for my set up, camera was upside down
-camera.rotation = 180
-# i found the less resolution made it easier to send
-camera.resolution = (1024, 768)
+def createEntry(imageData):
+    dbEntry = {"dateTime": datetime.now(),
+               "roomID": ROOM_ID,
+               "keysProb": KEYS_PROB,
+               "phoneProb": PHONE_PROB,
+               "thermosProb": THERMOS_PROB,
+               "walletProb": WALLET_PROB,
+               "image": b64encode(imageData)
+    }
+    
+    return dbEntry
 
 # connect to the server
 try:
@@ -50,6 +52,12 @@ try:
     print("[+] Successfully switched")
 except:
     print("[-] Switch failed")
+    
+#camera setup
+camera = PiCamera()
+#only for my set up, camera was upside down (ribbon up)
+camera.rotation = 180
+camera.resolution = (1920, 1080)
 
 while True:
     # camera needs to get ready
@@ -64,21 +72,14 @@ while True:
     with open('../clientImgs/{}.jpeg'.format(saveDate), mode='rb') as image:
         imageContent = image.read()
         image.close()
-    
+        
     # create database entry
-    dbEntry = {"dateTime": datetime.now(),
-               "roomID": ROOM_ID,
-               "keysProb": KEYS_PROB,
-               "phoneProb": PHONE_PROB,
-               "thermosProb": THERMOS_PROB,
-               "walletProb": WALLET_PROB,
-               "image": b64encode(imageContent)
-    }
-    
+    entry = createEntry(imageContent)
+        
     # insert created database entry
-    camNodeResultsCollection.insert_one(dbEntry)
-    print("[+] Entry made for picture: {}.jpeg".format(saveDate))
+    camNodeResultsCollection.insert_one(entry)
+    print("[+] Entry made for picture @ {}".format(saveDate))
     
     # sleep a minute to give the database time to receive the last entry
-    sleep(60)
+    sleep(55.5)
 
