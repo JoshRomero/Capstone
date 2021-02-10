@@ -15,7 +15,7 @@ PHONE_PROB = 0.0
 THERMOS_PROB = 0.0
 WALLET_PROB = 0.0
 
-def createEntry(imageData):
+def createEntry(imageData, savedDateTime):
     dbEntry = {"dateTime": datetime.now(),
                "roomID": ROOM_ID,
                "keysProb": KEYS_PROB,
@@ -72,7 +72,7 @@ with PiCamera() as camera:
         print("[+] Picture captured at the dateTime: {}".format(captureTime))
             
         # create database entry
-        entry = createEntry(imageMemoryStream.getvalue())
+        entry = createEntry(imageMemoryStream.getvalue(), captureTime)
         
         # clear in-memory byte stream
         imageMemoryStream.seek(0)

@@ -1,5 +1,7 @@
 from pymongo import MongoClient
 from base64 import b64decode
+from PIL import Image
+from io import BytesIO
 
 # host machine ip and mongodb port
 DATABASE_DOMAIN = '192.168.1.54'
@@ -18,6 +20,17 @@ def queryDatabase(object):
     # unencrypt b64 encrypted image data
     unencryptedImageData = b64decode(encryptedImageData)
 
+    # TO BE USED IN THE GUI
+    # # create in-stream memory for image data
+    # imageMemoryStream = BytesIO(unencryptedImageData)
+    # # temporarily display queried image
+    # image = Image.open(BytesIO(unencryptedImageData))
+    # image.show()
+    # # clear in-memory byte stream
+    # imageMemoryStream.seek(0)
+    # imageMemoryStream.truncate(0)
+
+    # CURRENT TEMPORARY WAY TO SAVE QUERIED IMAGES
     # save unencrypted image to a folder known as serverImgs
     with open('../serverImgs/{}.jpeg'.format(dateAndTime), mode='wb') as newImage:
         unencryptedImageData = bytearray(unencryptedImageData)
@@ -54,4 +67,5 @@ try:
 except:
     print("[-] Switch failed")
     
+# for testing purposes only
 queryDatabase("phone")
