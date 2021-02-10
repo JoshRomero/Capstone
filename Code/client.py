@@ -72,7 +72,7 @@ with PiCamera() as camera:
         print("[+] Picture captured at the dateTime: {}".format(captureTime))
             
         # create database entry
-        entry = createEntry(imageMemoryStream.read())
+        entry = createEntry(imageMemoryStream.getValue())
         
         # clear in-memory byte stream
         imageMemoryStream.seek(0)
