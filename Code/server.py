@@ -20,7 +20,7 @@ def queryDatabase(object):
     # unencrypt b64 encrypted image data
     unencryptedImageData = b64decode(encryptedImageData)
 
-    # TO BE USED IN THE GUI
+    # CAN BE USED IN THE GUI
     # # create in-stream memory for image data
     # imageMemoryStream = BytesIO(unencryptedImageData)
     # # temporarily display queried image
