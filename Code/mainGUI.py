@@ -8,9 +8,15 @@ import pyttsx3
 # sets up the main window
 main = Tk()
 main.title("Object Finder Application")
-main.geometry('480x300')
+main.geometry('480x700')
 main.configure(background='lightgrey')
 
+# creates the image area for database pic (NOT WORKING: I just have two test images at the moment)
+display = Canvas(main, width = 300, height = 300)      
+display.place(x =80, y = 300)   
+defaultImage = PhotoImage(file=r"C:\Users\thewi\Desktop\TestImage2.png")  
+databaseImage = PhotoImage(file=r"C:\Users\thewi\Desktop\TestImage.png")    
+displayVar = display.create_image(20,20, anchor=NW, image=defaultImage)
 
 # creates mainText label
 mainText = Label(main, text = "Use the Text/Audio Options Below", padx = 5, font = ("Nunito Sans", 9, "bold"))
@@ -25,7 +31,6 @@ mainText0.configure(background='lightgrey')
 # creates text entry bot
 textInput1 = Entry(main, width=15)
 textInput1.place(x = 85, y = 100) 
-
 
 # creates mainText1 label
 mainText1 = Label(main, text = "", padx = 5, font = ("Nunito Sans", 9, "bold"))
@@ -44,6 +49,9 @@ def textFunctionCall():
         else:
             mainText1.configure(text = ("Searching for: " + temporary))
 
+            # image recieved by server     
+            display.itemconfig(displayVar, image=databaseImage)
+
 def microphoneFunctionCall():
     # updates mainText1
     temporary = (microphone.microphoneFunction())
@@ -52,6 +60,10 @@ def microphoneFunctionCall():
     else:
         mainText1.configure(text = ("Searching for: " + temporary))
 
+        # image recieved by server
+        display.itemconfig(displayVar, image=databaseImage)
+
+        
 # creates text button
 textButton = Button(main, text = "Search with Text", fg = "blue", bg = "white", command=textFunctionCall, padx = 5, pady = 5, font = ("Sans Serif", 10))
 textButton.place(x = 80, y = 130)
