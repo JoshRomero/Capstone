@@ -11,6 +11,8 @@ SERVER_PORT = 12001
 
 # connect to server socket
 clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
+sendRequest("PHONE")
+exit(0)
 
 # sets up the main window
 main = Tk()
@@ -48,6 +50,12 @@ mainText1.configure(background='lightgrey')
 mainText2 = Label(main, text = "", padx = 5, font = ("Nunito Sans", 9, "bold"))
 mainText2.place(x = 80, y = 615)
 mainText2.configure(background='lightgrey')
+
+def sendRequest(requestedItem):
+    clientSocket.sendall(requestedItem.encode())
+
+# def receiveResponse():
+    
 
 def textFunctionCall():
     # calls text function

@@ -94,6 +94,8 @@ while True:
     # create connection socket and receive request message from connection socket
     connectionSocket, address = serverSocket.accept()
     print("Connection from {} accepted!".format(address))
+    incomingRequest = connectionSocket.recv(1024).decode()
+    print("Item requested from client: {}".format(incomingRequest))
 
     
 # for testing purposes only
