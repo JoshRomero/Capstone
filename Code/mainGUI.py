@@ -9,11 +9,8 @@ from socket import *
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
 
-# create client socket
-clientSocket = socket(AF_INET, SOCK_STREAM)
-
 # connect to server socket
-clientSocket.create_connection((SERVER_DOMAIN, SERVER_PORT))
+clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
 
 # sets up the main window
 main = Tk()

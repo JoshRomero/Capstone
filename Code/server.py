@@ -87,7 +87,7 @@ def establishDatabaseConnection():
 # establishDatabaseConnection()
 
 # create TCP server socket and bind to PORT
-serverSocket = create_server((SERVER_DOMAIN, SERVER_PORT), AF_INET, 0)
+serverSocket = create_server((SERVER_DOMAIN, SERVER_PORT))
 print("Server is ready to receive connections!")
 
 while True:
