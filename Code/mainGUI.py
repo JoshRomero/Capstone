@@ -9,11 +9,6 @@ from socket import *
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
 
-# connect to server socket
-clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
-sendRequest("PHONE")
-exit(0)
-
 # sets up the main window
 main = Tk()
 main.title("Object Finder Application")
@@ -53,6 +48,11 @@ mainText2.configure(background='lightgrey')
 
 def sendRequest(requestedItem):
     clientSocket.sendall(requestedItem.encode())
+    
+# connect to server socket
+clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
+sendRequest("PHONE")
+exit(0)
 
 # def receiveResponse():
     
