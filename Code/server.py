@@ -2,10 +2,13 @@ from pymongo import MongoClient
 from base64 import b64decode
 from PIL import Image
 from io import BytesIO
+from socket import *
 
-# host machine ip and mongodb port
-DATABASE_DOMAIN = '192.168.1.54'
+# host machine ip, mongodb and server listening port
+DATABASE_DOMAIN = SERVER_DOMAIN = "192.168.1.54"
 DATABASE_PORT = 27017
+SERVER_PORT = 12001
+
 
 def queryDatabase(object):
     # retrieve the newest document from the collection based on datetime (will be changed later to include CNN results)
@@ -37,35 +40,61 @@ def queryDatabase(object):
         newImage.write(unencryptedImageData)
         print("[+] Entry image saved in serverImgs folder with name: {}.jpeg".format(dateAndTime))
         newImage.close()
-        
+
+def establishDatabaseConnection():
+    # connect to the database
+    try:
+        print("Connecting to mongoDB server @ {}:{}...".format(DATABASE_DOMAIN, DATABASE_PORT))
+        mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
+        print("Connected!")
+    except:
+        print("Connection failed")
+        exit(0)
+
+    # authenticate to database
+    try:
+        rPiDatabase = mongo_client.rPiData
+        print("Authenticating to rPiData database...")
+        rPiDatabase.authenticate(name='serverNode', password='7$dsV!G3D0Oc')
+        print("Sucessfully Authenticated!")
+    except:
+        print("Authentication failed")
+        exit(0)
+
+    # switch to correct collection
+    try:
+        print("Switching to camNodeResults collection...")
+        camNodeResultsCollection = rPiDatabase.camNodeResults
+        print("Successfully switched!")
+    except:
+        print("Switch failed!")
+    
+# def setupServer():
+    
+#     # create TCP server socket and bind to PORT
+#     serverSocket = socket(AF_INET, SOCK_STREAM)
+#     serverSocket.bind((SERVER_DOMAIN, SERVER_PORT))
+    
+#     # allow socket to listen for connections
+#     serverSocket.listen()
+#     print("Server is ready to receive connections!")
+    
+#     return serverSocket
+    
+    
 # MAIN
 
-# connect to the server
-try:
-    print("[+] Connecting to mongoDB server @ {}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
-    mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
-    print("[+] Connected")
-except:
-    print("[-] Connection failed")
-    exit(0)
+# establishDatabaseConnection()
 
-# authenticate to database
-try:
-    rPiDatabase = mongo_client.rPiData
-    print("[+] Authenticating to rPiData database...")
-    rPiDatabase.authenticate(name='serverNode', password='7$dsV!G3D0Oc')
-    print("[+] Sucessfully Authenticated")
-except:
-    print("[-] Authentication failed")
-    exit(0)
+# create TCP server socket and bind to PORT
+serverSocket = create_server((SERVER_DOMAIN, SERVER_PORT), AF_INET, 0)
+print("Server is ready to receive connections!")
 
-# switch to correct collection
-try:
-    print("[+] Switching to camNodeResults collection...")
-    camNodeResultsCollection = rPiDatabase.camNodeResults
-    print("[+] Successfully switched")
-except:
-    print("[-] Switch failed")
+while True:
+    # create connection socket and receive request message from connection socket
+    connectionSocket, address = serverSocket.accept()
+    print("Connection from {} accepted!".format(address))
+
     
 # for testing purposes only
-queryDatabase("phone")
+# queryDatabase("phone")
