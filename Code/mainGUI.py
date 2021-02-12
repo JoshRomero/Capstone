@@ -14,8 +14,8 @@ main.configure(background='lightgrey')
 # creates the image area for database pic (NOT WORKING: I just have two test images at the moment)
 display = Canvas(main, width = 300, height = 300)      
 display.place(x =80, y = 300)   
-defaultImage = PhotoImage(file=r"C:\Users\thewi\Desktop\TestImage2.png")  
-databaseImage = PhotoImage(file=r"C:\Users\thewi\Desktop\TestImage.png")    
+defaultImage = PhotoImage(file=r"Code\default.png")  
+databaseImage = PhotoImage(file=r"Code\wallet.png")    
 displayVar = display.create_image(20,20, anchor=NW, image=defaultImage)
 
 # creates mainText label
@@ -32,10 +32,15 @@ mainText0.configure(background='lightgrey')
 textInput1 = Entry(main, width=15)
 textInput1.place(x = 85, y = 100) 
 
-# creates mainText1 label
+# hidden text under buttons
 mainText1 = Label(main, text = "", padx = 5, font = ("Nunito Sans", 9, "bold"))
 mainText1.place(x = 170, y = 200)
 mainText1.configure(background='lightgrey')
+
+# hidden text under picture
+mainText2 = Label(main, text = "", padx = 5, font = ("Nunito Sans", 9, "bold"))
+mainText2.place(x = 80, y = 615)
+mainText2.configure(background='lightgrey')
 
 def textFunctionCall():
     # calls text function
@@ -49,8 +54,14 @@ def textFunctionCall():
         else:
             mainText1.configure(text = ("Searching for: " + temporary))
 
-            # image recieved by server     
+            # data recieved from server
+            objectF = "Wallet"
+            roomID = "Living Room"
+            timeStamp = "12:00am"
+
+            # image recieved from server     
             display.itemconfig(displayVar, image=databaseImage)
+            mainText2.configure(text = ("I have found your " + objectF + " in the " + roomID + " at " + timeStamp))
 
 def microphoneFunctionCall():
     # updates mainText1
@@ -59,9 +70,16 @@ def microphoneFunctionCall():
         mainText1.configure(text = temporary)
     else:
         mainText1.configure(text = ("Searching for: " + temporary))
+        
+        # data recieved from server
+        objectF = "Wallet"
+        roomID = "Living Room"
+        timeStamp = "12:00am"
 
-        # image recieved by server
+        # image recieved from server     
         display.itemconfig(displayVar, image=databaseImage)
+        mainText2.configure(text = ("I have found your " + objectF + " in the " + roomID + " at " + timeStamp))
+
 
         
 # creates text button
