@@ -6,6 +6,7 @@ import pyttsx3
 from socket import *
 from base64 import b64decode
 from io import BytesIO
+import tempfile
 
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
@@ -47,9 +48,11 @@ def findObject(requestedItem):
     dateTime, roomID, unencryptedImageData = receiveResponse()
     
     # display information
-    imageMemoryStream = BytesIO(unencryptedImageData)
-    display.itemconfig(displayVar, image = imageMemoryStream)
-    mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
+    with tempfile.TemporaryFile() as tmpImage:
+        tmpImage.write(unencryptedImageData)
+        display.itemconfig(displayVar, image = unencryptedImageData)
+        mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
+        tmpImage.close()
     
     # clear in-memory byte stream
     imageMemoryStream.seek(0)
