@@ -93,8 +93,8 @@ main.configure(background='lightgrey')
 # creates the image area for database pic (NOT WORKING: I just have two test images at the moment)
 display = Canvas(main, width = 300, height = 300)      
 display.place(x =80, y = 300)   
-defaultImage = PhotoImage(file=r"Code\images\default.png")  
-databaseImage = PhotoImage(file=r"Code\images\wallet.png")    
+defaultImage = PhotoImage(file=r"../images/default.png")  
+databaseImage = PhotoImage(file=r"../images/wallet.png")    
 displayVar = display.create_image(20,20, anchor=NW, image=defaultImage)
 
 # creates mainText label
