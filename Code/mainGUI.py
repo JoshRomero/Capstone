@@ -48,8 +48,13 @@ def findObject(requestedItem):
     dateTime, roomID, unencryptedImageData = receiveResponse()
     
     # display information
-    with tempfile.TemporaryFile() as tmpImage:
-        tmpImage.write(unencryptedImageData)
+    # with tempfile.TemporaryFile() as tmpImage:
+    #     tmpImage.write(unencryptedImageData)
+    #     display.itemconfig(displayVar, image = tmpImage)
+    #     mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
+    
+    with open("image.jpeg", "wb") as f:
+        f.write(unencryptedImageData)
         display.itemconfig(displayVar, image = tmpImage)
         mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
     
