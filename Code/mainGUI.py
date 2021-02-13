@@ -20,6 +20,7 @@ def receiveResponse():
     bytesReceived = bytearray()
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
+        print(dataChunk)
         bytesReceived.extend(dataChunk)
         if(len(dataChunk) < BUFFER_SIZE):
             break
