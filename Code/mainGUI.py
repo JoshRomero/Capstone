@@ -17,17 +17,10 @@ SEPARATOR = "<SEPARATOR>"
 clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
-    infoRecieved = bytearray()
+    bytesRecieved = bytearray()
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
         bytesReceived.extend(dataChunk)
-        if(len(dataChunk) < BUFFER_SIZE):
-            break
-        
-    imageRecieved = bytearray()
-    while True:
-        dataChunk = clientSocket.recv(BUFFER_SIZE)
-        imageRecieved.extend(dataChunk)
         if(len(dataChunk) < BUFFER_SIZE):
             break
     
