@@ -27,7 +27,7 @@ def receiveResponse():
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
     dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
-    unencryptedImageData = b64decode(encryptedImageData.encode())
+    unencryptedImageData = b64decode(encryptedImageData.encode("ascii"))
     
     return dateTime, roomID, unencryptedImageData
 
