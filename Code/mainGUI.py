@@ -20,25 +20,20 @@ def receiveResponse():
     bytesReceived = bytearray()
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
-        print(dataChunk)
         bytesReceived.extend(dataChunk)
         if(len(dataChunk) < 1):
             break
     
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
-    print(unencodedResponse)
     dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
     encryptedImageData =  encryptedImageData.encode("ascii")
-    print(encryptedImageData)
-    exit(0)
-    
     
     # if(len(encryptedImageData) % 4 != 0):
     #     padLength = len(encryptedImageData) % 4
     #     encryptedImageData += b'=' * padLength
     
-    # return dateTime, roomID, unencryptedImageData
+    return dateTime, roomID, unencryptedImageData
 
 # to possibly replace the last else in text/microphone functions
 def findObject(requestedItem):
