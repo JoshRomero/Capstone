@@ -15,7 +15,7 @@ def queryDatabase(object, collection):
         break
     
     # extract and format necessary information
-    necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + str(newestEntry["roomID"]) + SEPARATOR + newestEntry["image"].encode()
+    necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + str(newestEntry["roomID"]) + SEPARATOR + newestEntry["image"].decode()
     
     return necessaryInfo
 
@@ -67,4 +67,4 @@ while True:
     
     # query database and send requested information from query to sender
     requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
-    serverSocket.sendall(requestedInformation.encode())
+    connectionSocket.sendall(requestedInformation.encode())
