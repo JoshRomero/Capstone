@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from socket import *
 from datetime import datetime
+from time import sleep
 
 # host machine ip, mongodb and server listening port
 DATABASE_DOMAIN = SERVER_DOMAIN = "192.168.1.54"
@@ -18,6 +19,7 @@ def queryDatabase(object, collection):
     necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + str(newestEntry["roomID"]) + SEPARATOR + newestEntry["image"].decode('ascii')
     
     return necessaryInfo
+    
 
 # connect to the database
 try:
@@ -68,3 +70,4 @@ while True:
     # query database and send requested information from query to sender
     requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
     connectionSocket.sendall(requestedInformation.encode())
+        

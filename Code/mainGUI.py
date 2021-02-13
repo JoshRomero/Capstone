@@ -17,16 +17,16 @@ SEPARATOR = "<SEPARATOR>"
 clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
-    bytesReceived = bytes()
-    
+    bytesReceived = bytearray()
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
-        bytesReceived += dataChunk
+        bytesReceived.extend(dataChunk)
         if(len(dataChunk) < BUFFER_SIZE):
             break
     
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
+    print(unencodedResponse)
     dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
     encryptedImageData =  encryptedImageData.encode("ascii")
     
@@ -34,8 +34,6 @@ def receiveResponse():
     # if(len(encryptedImageData) % 4 != 0):
     #     padLength = len(encryptedImageData) % 4
     #     encryptedImageData += b'=' * padLength
-        
-    unencryptedImageData = b64decode(encryptedImageData)
     
     return dateTime, roomID, unencryptedImageData
 
