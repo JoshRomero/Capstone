@@ -52,7 +52,6 @@ def findObject(requestedItem):
         tmpImage.write(unencryptedImageData)
         display.itemconfig(displayVar, image = unencryptedImageData)
         mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
-        tmpImage.close()
     
     # clear in-memory byte stream
     imageMemoryStream.seek(0)
