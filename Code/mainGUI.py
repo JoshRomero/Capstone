@@ -56,16 +56,7 @@ def textFunctionCall():
         if temporary == "Invalid input. Try again":
             mainText1.configure(text = temporary)
         else:
-            mainText1.configure(text = ("Searching for: " + temporary))
-
-            # data recieved from server
-            objectF = "Wallet"
-            roomID = "Living Room"
-            timeStamp = "12:00am"
-
-            # image recieved from server     
-            display.itemconfig(displayVar, image=databaseImage)
-            mainText2.configure(text = ("I have found your " + objectF + " in the " + roomID + " at " + timeStamp))
+            findObject(temporary)
 
 def microphoneFunctionCall():
     # updates mainText1
