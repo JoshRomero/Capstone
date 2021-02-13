@@ -15,7 +15,7 @@ def queryDatabase(object, collection):
         break
     
     # extract and format necessary information
-    necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + newestEntry["roomID"] + SEPARATOR + newestEntry["image"]
+    necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + str(newestEntry["roomID"]) + SEPARATOR + newestEntry["image"].encode()
     
     return necessaryInfo
 
