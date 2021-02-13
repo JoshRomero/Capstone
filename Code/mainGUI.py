@@ -27,9 +27,10 @@ def receiveResponse():
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
     print(unencodedResponse)
+    dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
+    encryptedImageData =  encryptedImageData.encode("ascii")
+    print(encryptedImageData)
     exit(0)
-    # dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
-    # encryptedImageData =  encryptedImageData.encode("ascii")
     
     
     # if(len(encryptedImageData) % 4 != 0):
