@@ -21,6 +21,7 @@ def receiveResponse():
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
         bytesReceived += dataChunk
+        print(len(dataChunk))
         if not dataChunk:
             break
     
