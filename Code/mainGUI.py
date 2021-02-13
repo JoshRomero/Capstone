@@ -50,7 +50,7 @@ def findObject(requestedItem):
     # display information
     with tempfile.TemporaryFile() as tmpImage:
         tmpImage.write(unencryptedImageData)
-        display.itemconfig(displayVar, image = unencryptedImageData)
+        display.itemconfig(displayVar, image = tmpImage)
         mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
     
     # clear in-memory byte stream
