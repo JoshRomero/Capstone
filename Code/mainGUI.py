@@ -18,6 +18,7 @@ clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
 def receiveResponse():
     bytesReceived = bytearray()
     dataChunk = clientSocket.recv(BUFFER_SIZE)
+    print(type(dataChunk))
     while (dataChunk != None):
         bytesReceived.append(dataChunk)
         dataChunk = clientSocket.recv(BUFFER_SIZE)
