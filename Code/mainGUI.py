@@ -29,9 +29,9 @@ def receiveResponse():
     dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
     print(encryptedImageData)
     print(len(encryptedImageData))
-    unencryptedImageData = b64decode(encryptedImageData.encode("ascii"))
+    # unencryptedImageData = b64decode(encryptedImageData.encode("ascii"))
     
-    return dateTime, roomID, unencryptedImageData
+    # return dateTime, roomID, unencryptedImageData
 
 # to possibly replace the last else in text/microphone functions
 def findObject(requestedItem):
