@@ -60,9 +60,11 @@ while True:
     
     # receive request message from connection socket
     incomingRequest = connectionSocket.recv(1024).decode()
-    if(incomingRequest != ''):
-        print("Item requested from client: {} at {}".format(incomingRequest, datetime.now()))
+    while(len(incomingRequest) == 0):
+        incomingRequest = connectionSocket.recv(1024).decode()
+        
+    print("Item requested from client: {} at {}".format(incomingRequest, datetime.now()))
     
-        # query database and send requested information from query to sender
-        requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
-        serverSocket.sendall(requestedInformation.encode())
+    # query database and send requested information from query to sender
+    requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
+    serverSocket.sendall(requestedInformation.encode())

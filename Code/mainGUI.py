@@ -56,6 +56,7 @@ def textFunctionCall():
         if temporary == "Invalid input. Try again":
             mainText1.configure(text = temporary)
         else:
+            mainText1.configure(text = ("Searching for: " + temporary))
             findObject(temporary)
 
 def microphoneFunctionCall():
