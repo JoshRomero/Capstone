@@ -17,7 +17,7 @@ SEPARATOR = "<SEPARATOR>"
 clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
-    bytesRecieved = bytearray()
+    bytesReceived = bytearray()
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
         bytesReceived.extend(dataChunk)
