@@ -16,11 +16,10 @@ SEPARATOR = "<SEPARATOR>"
 clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
-    bytesReceived = bytearray()
+    bytesReceived = bytes()
     dataChunk = clientSocket.recv(BUFFER_SIZE)
-    print(type(dataChunk))
     while (dataChunk != None):
-        bytesReceived.append(dataChunk)
+        bytesReceived += dataChunk
         dataChunk = clientSocket.recv(BUFFER_SIZE)
     
     # decode and seperate the information
