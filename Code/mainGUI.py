@@ -11,6 +11,9 @@ SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
 BUFFER_SIZE = 4096
 SEPARATOR = "<SEPARATOR>"
+
+# connect to server socket
+clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
     bytesReceived = bytearray()
@@ -80,9 +83,6 @@ def microphoneFunctionCall():
         # image recieved from server     
         display.itemconfig(displayVar, image=databaseImage)
         mainText2.configure(text = ("I have found your " + objectF + " in the " + roomID + " at " + timeStamp))
-
-# connect to server socket
-clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
 
 # sets up the main window
 main = Tk()
