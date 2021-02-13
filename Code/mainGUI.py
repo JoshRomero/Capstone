@@ -17,10 +17,12 @@ clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
     bytesReceived = bytes()
-    dataChunk = clientSocket.recv(BUFFER_SIZE)
-    while (dataChunk != None):
-        bytesReceived += dataChunk
+    
+    while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
+        bytesReceived += dataChunk
+        if not dataChunk:
+            break
     
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
