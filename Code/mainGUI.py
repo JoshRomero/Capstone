@@ -28,6 +28,12 @@ def receiveResponse():
     unencodedResponse = bytesReceived.decode()
     dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
     encryptedImageData =  encryptedImageData.encode("ascii")
+    
+    
+    if(len(encryptedImageData) % 4 != 0):
+        padLength = len(encryptedImageData) % 4
+        encryptedImageData += b'=' * padLength
+        
     print(encryptedImageData)
     print(len(encryptedImageData))
     # unencryptedImageData = b64decode(encryptedImageData.encode("ascii"))
