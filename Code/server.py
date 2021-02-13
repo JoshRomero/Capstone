@@ -67,4 +67,4 @@ while True:
     
     # query database and send requested information from query to sender
     requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
-    connectionSocket.sendall(requestedInformation.encode())
+    connectionSocket.sendall(requestedInformation.encode("ascii"))
