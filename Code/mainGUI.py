@@ -17,9 +17,9 @@ SEPARATOR = "<SEPARATOR>"
 clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
-    encodedFileSize = clientSocket.recv(BUFFER_SIZE)
-    unencodedFileSize = fileSize.decode()
-    fileSize = int(unencodedFileSize)
+    encodedDataSize = clientSocket.recv(BUFFER_SIZE)
+    unencodedDataSize = encodedDataSize.decode()
+    dataSize = int(unencodedDataSize)
     
     bytesReceived = bytearray()
     amountBytesReceived = 0
@@ -28,7 +28,7 @@ def receiveResponse():
         amountBytesReceived += len(dataChunk)
         bytesReceived.extend(dataChunk)
         print(len(dataChunk))
-        if(amountBytesReceived == fileSize):
+        if(amountBytesReceived == dataSize):
             print("BROKE!")
             break
     
