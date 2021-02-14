@@ -22,7 +22,7 @@ def receiveResponse():
         dataChunk = clientSocket.recv(BUFFER_SIZE)
         bytesReceived.extend(dataChunk)
         print(len(dataChunk))
-        if(len(dataChunk) < 1):
+        if not dataChunk:
             break
     
     # decode and seperate the information
