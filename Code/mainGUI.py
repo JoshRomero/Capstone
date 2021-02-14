@@ -17,14 +17,20 @@ SEPARATOR = "<SEPARATOR>"
 clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
 def receiveResponse():
+    encodedFileSize = clientSocket.recv(BUFFER_SIZE)
+    unencodedFileSize = fileSize.decode()
+    fileSize = int(unencodedFileSize)
+    
     bytesReceived = bytearray()
+    amountBytesReceived = 0
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
-        if not dataChunk:
-            print("BROKE!")
-            break
+        amountBytesReceived += len(dataChunk)
         bytesReceived.extend(dataChunk)
         print(len(dataChunk))
+        if(amountBytesReceived == fileSize):
+            print("BROKE!")
+            break
     
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
