@@ -27,20 +27,15 @@ def receiveResponse():
         dataChunk = clientSocket.recv(BUFFER_SIZE)
         amountBytesReceived += len(dataChunk)
         bytesReceived.extend(dataChunk)
-        print(len(dataChunk))
         if(amountBytesReceived == dataSize):
             print("BROKE!")
             break
     
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
-    print(unencodedResponse)
     dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
     encryptedImageData =  encryptedImageData.encode("ascii")
-    
-    # if(len(encryptedImageData) % 4 != 0):
-    #     padLength = len(encryptedImageData) % 4
-    #     encryptedImageData += b'=' * padLength
+    unencryptedImageData = b64decode(encryptedImageData)
     
     return dateTime, roomID, unencryptedImageData
 
@@ -64,8 +59,8 @@ def findObject(requestedItem):
         mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
     
     # clear in-memory byte stream
-    imageMemoryStream.seek(0)
-    imageMemoryStream.truncate(0)
+    # imageMemoryStream.seek(0)
+    # imageMemoryStream.truncate(0)
 
 def textFunctionCall():
     # calls text function
