@@ -20,11 +20,11 @@ def receiveResponse():
     bytesReceived = bytearray()
     while True:
         dataChunk = clientSocket.recv(BUFFER_SIZE)
-        bytesReceived.extend(dataChunk)
-        print(len(dataChunk))
         if not dataChunk:
             print("BROKE!")
             break
+        bytesReceived.extend(dataChunk)
+        print(len(dataChunk))
     
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
