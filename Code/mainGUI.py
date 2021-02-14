@@ -10,7 +10,7 @@ import tempfile
 
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
-BUFFER_SIZE = 10240
+BUFFER_SIZE = 1024
 SEPARATOR = "<SEPARATOR>"
 
 # connect to server socket
