@@ -55,7 +55,8 @@ def findObject(requestedItem):
     
     with open("image.jpeg", "wb") as f:
         f.write(unencryptedImageData)
-        display.itemconfig(displayVar, image = f)
+        databaseImage = PhotoImage(file=f)
+        display.itemconfig(displayVar, databaseImage = f)
         mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
     
     # clear in-memory byte stream
