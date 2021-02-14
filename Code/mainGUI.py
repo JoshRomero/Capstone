@@ -23,10 +23,12 @@ def receiveResponse():
         bytesReceived.extend(dataChunk)
         print(len(dataChunk))
         if not dataChunk:
+            print("BROKE!")
             break
     
     # decode and seperate the information
     unencodedResponse = bytesReceived.decode()
+    print(unencodedResponse)
     dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
     encryptedImageData =  encryptedImageData.encode("ascii")
     
