@@ -7,28 +7,28 @@ from socket import *
 from base64 import b64decode
 from io import BytesIO
 import tempfile
+from PIL import ImageTk, Image
 
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
 BUFFER_SIZE = 1024
 SEPARATOR = "<SEPARATOR>"
+    
+def receiveResponse(sock):
 
-# connect to server socket
-clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
-    
-def receiveResponse():
-    encodedDataSize = clientSocket.recv(BUFFER_SIZE)
-    unencodedDataSize = encodedDataSize.decode()
-    dataSize = int(unencodedDataSize)
-    
+    # receive packet containing the size of the requested info
+    dataSize = sock.recv(BUFFER_SIZE).decode()
+    dataSize = int(dataSize)
+
+    # receive packets containing the requested info
     bytesReceived = bytearray()
     amountBytesReceived = 0
     while True:
-        dataChunk = clientSocket.recv(BUFFER_SIZE)
-        amountBytesReceived += len(dataChunk)
+        dataChunk = sock.recv(BUFFER_SIZE)
         bytesReceived.extend(dataChunk)
+
+        amountBytesReceived += len(dataChunk)
         if(amountBytesReceived == dataSize):
-            print("BROKE!")
             break
     
     # decode and seperate the information
@@ -41,27 +41,32 @@ def receiveResponse():
 
 # to possibly replace the last else in text/microphone functions
 def findObject(requestedItem):
+    
+    # connect to server socket
+    clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
+    
     # send requested object to the server
     clientSocket.sendall(requestedItem.encode())
             
     # receive response from server
-    dateTime, roomID, unencryptedImageData = receiveResponse()
+    dateTime, roomID, unencryptedImageData = receiveResponse(clientSocket)
     
-    # display information
-    # with tempfile.TemporaryFile() as tmpImage:
-    #     tmpImage.write(unencryptedImageData)
-    #     display.itemconfig(displayVar, image = tmpImage)
-    #     mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
-    
-    with open("image.jpeg", "wb") as f:
-        f.write(unencryptedImageData)
-        databaseImage = PhotoImage(file=f)
-        display.itemconfig(displayVar, image = databaseImage)
-        mainText2.configure(text = ("I have found your " + requestedItem + " in the " + roomID + " at " + dateTime))
-    
-    # clear in-memory byte stream
-    # imageMemoryStream.seek(0)
-    # imageMemoryStream.truncate(0)
+    with tempfile.NamedTemporaryFile(suffix = ".jpeg") as tmpImage:
+        tmpImage.write(unencryptedImageData)
+        databaseImage = Image.open(tmpImage.name)
+
+        # resize image for display
+        databaseImage = databaseImage.resize((480, 700), Image.ANTIALIAS)
+        resizedImage = ImageTk.PhotoImage(databaseImage)
+
+        # display image
+        imageBox.configure(image = resizedImage)
+        imageBox.image = resizedImage
+
+        tmpImage.close()
+
+    # display text information
+    mainText2.configure(text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime))
 
 def textFunctionCall():
     # calls text function
@@ -99,12 +104,10 @@ main.title("Object Finder Application")
 main.geometry('480x700')
 main.configure(background='lightgrey')
 
-# creates the image area for database pic (NOT WORKING: I just have two test images at the moment)
-display = Canvas(main, width = 300, height = 300)      
-display.place(x =80, y = 300)   
-defaultImage = PhotoImage(file=r"./images/default.png")  
-databaseImage = PhotoImage(file=r"./images/wallet.png")    
-displayVar = display.create_image(20,20, anchor=NW, image=defaultImage)
+# creates the image area for database pic
+defaultImage = ImageTk.PhotoImage(Image.open("./images/default.png")) 
+imageBox = Label(image = defaultImage)
+imageBox.place(x = 250, y = 300, anchor = "center")
 
 # creates mainText label
 mainText = Label(main, text = "Use the Text/Audio Options Below", padx = 5, font = ("Nunito Sans", 9, "bold"))
@@ -137,7 +140,6 @@ textButton.place(x = 80, y = 130)
 # creates microphone button
 microphoneButton = Button(main, text = "Search with Speech", fg = "red", bg = "white", command=microphoneFunctionCall, padx = 5, pady = 5, font = ("Sans Serif", 10))
 microphoneButton.place(x = 280, y = 130)
-
 
 # executes main window
 main.mainloop()

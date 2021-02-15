@@ -51,20 +51,18 @@ except:
 # create TCP server socket and bind to PORT
 serverSocket = create_server((SERVER_DOMAIN, SERVER_PORT))
 
-# keep socket listening for a single connection
-serverSocket.listen(1)
-print("Server is ready to receive a connection...")
-
 while True:
+    
+    # keep socket listening for a single connection
+    serverSocket.listen(1)
+    print("Server is ready to receive a connection...")
+    
     # create connection socket
     connectionSocket, address = serverSocket.accept()
     print("Connection from {} accepted!".format(address))
     
     # receive request message from connection socket
     incomingRequest = connectionSocket.recv(1024).decode()
-    while(len(incomingRequest) == 0):
-        incomingRequest = connectionSocket.recv(1024).decode()
-        
     print("Item requested from client: {} at {}".format(incomingRequest, datetime.now()))
     
     # query database and send requested information from query to sender
@@ -72,6 +70,7 @@ while True:
     encodedInformation = requestedInformation.encode()
     sizeEncodedInfo = len(encodedInformation)
     connectionSocket.send(str(sizeEncodedInfo).encode())
-    sleep(1)
+    sleep(.01)
     connectionSocket.sendall(requestedInformation.encode())
-        
+    
+    connectionSocket.close()
