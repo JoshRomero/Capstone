@@ -68,6 +68,7 @@ def findObject(requestedItem):
 
     # display text information
     mainText2.configure(text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime))
+    Text2Speech.SpeechOutput(requestedItem, roomID, dateTime)
 
 def textFunctionCall():
     # calls text function
@@ -82,6 +83,7 @@ def textFunctionCall():
             mainText1.configure(text = ("Searching for: " + temporary))
             findObject(temporary)
 
+
 def microphoneFunctionCall():
     # updates mainText1
     temporary = (microphone.microphoneFunction())
@@ -89,15 +91,8 @@ def microphoneFunctionCall():
         mainText1.configure(text = temporary)
     else:
         mainText1.configure(text = ("Searching for: " + temporary))
-        
-        # data recieved from server
-        objectF = "Wallet"
-        roomID = "Living Room"
-        timeStamp = "12:00am"
+        findObject(temporary)
 
-        # image recieved from server     
-        display.itemconfig(displayVar, image=databaseImage)
-        mainText2.configure(text = ("I have found your " + objectF + " in the " + roomID + " at " + timeStamp))
 
 # sets up the main window
 main = Tk()
