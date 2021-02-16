@@ -1,29 +1,34 @@
 import pyttsx3
 
-def SpeechOutput(requestedItem, roomID, dateTime):
-    #object creations
+def speechOutput(requestedItem, roomID, dateTime):
+    # object creations
     speech = pyttsx3.init()
 
-    #sets speaking rate
+    # sets speaking rate
     speech.setProperty('rate', 120)
 
-    #sets volume
+    # sets volume
     speech.setProperty('volume',1.0)
 
-    #sets voice to female
+    # sets voice to female
     voices = speech.getProperty('voices')
     speech.setProperty('voice', voices[1].id)
+    
+    # possible option to save voice to mp3
+    # speech.save_to_file('Audio Ouput', 'test.mp3')
 
-    #output speech
+    # output speech
     speech.say("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime)
     speech.runAndWait()
 
 
-#Test Variables
+# test Variables
 requestedItem = "wallet"
 roomID = "3"
 dateTime = "01:00, December 23, 2021"
 
 
-#Test Function Call
-SpeechOutput(requestedItem, roomID, dateTime)
+# test Function Call
+# speechOutput(requestedItem, roomID, dateTime)
+
+

@@ -1,6 +1,6 @@
 import text
 import microphone
-import Text2Speech
+import text2Speech
 from tkinter import *
 import speech_recognition as sr 
 import pyttsx3
@@ -68,7 +68,7 @@ def findObject(requestedItem):
 
     # display text information
     mainText2.configure(text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime))
-    Text2Speech.SpeechOutput(requestedItem, roomID, dateTime)
+    text2Speech.speechOutput(requestedItem, roomID, dateTime)
 
 def textFunctionCall():
     # calls text function
