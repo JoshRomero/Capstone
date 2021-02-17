@@ -6,9 +6,10 @@ import speech_recognition as sr
 import pyttsx3
 from socket import *
 from base64 import b64decode
-from io import BytesIO
 import tempfile
 from PIL import ImageTk, Image
+from time import sleep
+import threading
 
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
@@ -68,7 +69,11 @@ def findObject(requestedItem):
 
     # display text information
     mainText2.configure(text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime))
-    text2Speech.speechOutput(requestedItem, roomID, dateTime)
+    
+    # open text to speech in another thread
+    speechThread = threading.Thread(target=text2Speech.speechOutput, args=(requestedItem, roomID, dateTime))
+    speechThread.start()
+    speechThread.join()
 
 def textFunctionCall():
     # calls text function
