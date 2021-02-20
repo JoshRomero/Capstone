@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>house-keys-blank-key-fob.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\house-keys-blank-key-fob.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>560</width>
+		<height>425</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>56</xmin>
+			<ymin>69</ymin>
+			<xmax>381</xmax>
+			<ymax>263</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>depositphotos_209209108-stock-photo-house-keys-isolated-white-background.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\depositphotos_209209108-stock-photo-house-keys-isolated-white-background.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1600</width>
+		<height>1421</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>313</xmin>
+			<ymin>281</ymin>
+			<xmax>1413</xmax>
+			<ymax>1228</ymax>
+		</bndbox>
+	</object>
+</annotation>

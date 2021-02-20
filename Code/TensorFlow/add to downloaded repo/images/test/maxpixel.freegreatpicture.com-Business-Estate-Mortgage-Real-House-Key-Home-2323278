@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>maxpixel.freegreatpicture.com-Business-Estate-Mortgage-Real-House-Key-Home-2323278.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\maxpixel.freegreatpicture.com-Business-Estate-Mortgage-Real-House-Key-Home-2323278.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>426</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>262</xmin>
+			<ymin>188</ymin>
+			<xmax>390</xmax>
+			<ymax>291</ymax>
+		</bndbox>
+	</object>
+</annotation>
