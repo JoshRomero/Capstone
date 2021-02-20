@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>house-keys-with-blue-key-chain-vector-1879682.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\house-keys-with-blue-key-chain-vector-1879682.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>974</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>216</xmin>
+			<ymin>285</ymin>
+			<xmax>576</xmax>
+			<ymax>847</ymax>
+		</bndbox>
+	</object>
+</annotation>

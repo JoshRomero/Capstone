@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>depositphotos_205964846-stock-photo-keys-new-house-3drender-illustration.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\depositphotos_205964846-stock-photo-keys-new-house-3drender-illustration.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1600</width>
+		<height>1310</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>349</xmin>
+			<ymin>627</ymin>
+			<xmax>1460</xmax>
+			<ymax>1142</ymax>
+		</bndbox>
+	</object>
+</annotation>

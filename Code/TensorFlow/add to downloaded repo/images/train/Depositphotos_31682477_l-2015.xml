@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>Depositphotos_31682477_l-2015.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\Depositphotos_31682477_l-2015.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2000</width>
+		<height>1333</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1087</xmin>
+			<ymin>115</ymin>
+			<xmax>1303</xmax>
+			<ymax>608</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>10280413-large-keys-next-to-a-small-house-3d-image-Isolated-white-background-Stock-Photo.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\10280413-large-keys-next-to-a-small-house-3d-image-Isolated-white-background-Stock-Photo.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1300</width>
+		<height>688</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>102</xmin>
+			<ymin>216</ymin>
+			<xmax>836</xmax>
+			<ymax>582</ymax>
+		</bndbox>
+	</object>
+</annotation>

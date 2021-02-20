@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>2388760-two-key-rings-house-keys-and-car-keys.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\2388760-two-key-rings-house-keys-and-car-keys.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1300</width>
+		<height>866</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>124</xmin>
+			<ymin>399</ymin>
+			<xmax>869</xmax>
+			<ymax>673</ymax>
+		</bndbox>
+	</object>
+</annotation>

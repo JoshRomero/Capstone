@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>760a80b8075966b3e94aff17fd0511e9.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\760a80b8075966b3e94aff17fd0511e9.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>560</width>
+		<height>500</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>188</xmin>
+			<ymin>54</ymin>
+			<xmax>404</xmax>
+			<ymax>496</ymax>
+		</bndbox>
+	</object>
+</annotation>

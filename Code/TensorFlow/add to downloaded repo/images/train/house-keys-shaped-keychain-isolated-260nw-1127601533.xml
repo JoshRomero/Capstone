@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>house-keys-shaped-keychain-isolated-260nw-1127601533.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\house-keys-shaped-keychain-isolated-260nw-1127601533.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>390</width>
+		<height>280</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>83</xmin>
+			<ymin>56</ymin>
+			<xmax>187</xmax>
+			<ymax>202</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>salesperson-holding-house-keys-concept-house-keys-new-house-new-house-purchase_11304-1622.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\salesperson-holding-house-keys-concept-house-keys-new-house-new-house-purchase_11304-1622.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>626</width>
+		<height>417</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>65</xmin>
+			<ymin>37</ymin>
+			<xmax>176</xmax>
+			<ymax>212</ymax>
+		</bndbox>
+	</object>
+</annotation>

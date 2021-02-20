@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>spare-house-key-scaled.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\spare-house-key-scaled.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2560</width>
+		<height>1483</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>914</xmin>
+			<ymin>457</ymin>
+			<xmax>1644</xmax>
+			<ymax>1155</ymax>
+		</bndbox>
+	</object>
+</annotation>
