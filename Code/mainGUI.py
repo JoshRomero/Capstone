@@ -186,7 +186,7 @@ def textFunctionCall():
         temporary = "Text Input is Empty"
         mainText1.configure(text = temporary)
     else: 
-        temporary = (validateTextInput(textInput1.get()))
+        temporary = (validateTextInput(textInput1.get().lower()))
         if temporary == "Invalid input. Try again":
             mainText1.configure(text = temporary)
         else:
