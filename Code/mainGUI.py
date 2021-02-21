@@ -1,6 +1,3 @@
-import text
-import microphone
-import text2Speech
 from tkinter import *
 import speech_recognition as sr 
 import pyttsx3
@@ -8,14 +5,103 @@ from socket import *
 from base64 import b64decode
 import tempfile
 from PIL import ImageTk, Image
-from time import sleep
-import threading
+from gtts import gTTS
+from playsound import playsound
 
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
 BUFFER_SIZE = 1024
 SEPARATOR = "<SEPARATOR>"
     
+def validateTextInput(user_input):
+    print("text function executed")
+    print("The item you're looking for: " + user_input)
+
+    # Boolean to make sure the user provides correct input
+    invalid_input = True
+
+    while(invalid_input):
+        
+        # if the object is found then store it in a variable and negate the boolean
+        if ("thermos" in user_input):
+            user_object = "Thermos"
+            invalid_input = False
+            return user_object
+        elif ("keys" in user_input):
+            user_object = "Keys"
+            invalid_input = False
+            return user_object
+        elif ("phone" in user_input):
+            user_object = "Phone"
+            invalid_input = False
+            return user_object
+        elif ("wallet" in user_input):
+            user_object = "Wallet"
+            invalid_input = False
+            return user_object
+        # if invalid input, tell them to try again but don't negate the boolean
+        else:
+            return "Invalid input. Try again"
+
+def validateSpeechInput():
+    
+    # Initialize the recognizer  
+    r = sr.Recognizer()  
+    
+    flag = True
+    while(flag):     
+    
+    # Exception handling to handle 
+    # exceptions at the runtime 
+        try: 
+            
+            # use the microphone as source for input. 
+            with sr.Microphone() as source2: 
+                
+                # wait for a second to let the recognizer 
+                # adjust the energy threshold based on 
+                # the surrounding noise level  
+                r.adjust_for_ambient_noise(source2, duration=0.2) 
+                
+                #listens for the user's input  
+                audio2 = r.listen(source2) 
+                
+                # Using ggogle to recognize audio 
+                MyText = r.recognize_google(audio2) 
+                MyText = MyText.lower() 
+
+                print("You said: "+MyText)
+                
+                # Splits text input into a list of each word 
+                TextList = MyText.split()
+
+                # if the object is found then store it in a variable and negate the boolean
+                if ("thermos" in TextList):
+                    user_object = "Thermos"
+                    flag = False
+                    return user_object
+                elif ("keys" in TextList):
+                    user_object = "Keys"
+                    flag = False
+                    return user_object
+                elif ("phone" in TextList):
+                    user_object = "Phone"
+                    flag = False
+                    return user_object
+                elif ("wallet" in TextList):
+                    user_object = "Wallet"
+                    flag = False
+                    return user_object
+                # if invalid input, tell them to try again but don't negate the boolean
+                else:
+                    return "Invalid input. Try again"
+            
+        except sr.RequestError as e: 
+            print("Could not request results; {0}".format(e)) 
+            
+        except sr.UnknownValueError: 
+            print("unknown error occured") 
+            
 def receiveResponse(sock):
 
     # receive packet containing the size of the requested info
@@ -41,6 +127,26 @@ def receiveResponse(sock):
     
     return dateTime, roomID, unencryptedImageData
 
+def resizeImage(img):
+    
+    # resize image for display
+    img = img.resize((int(1920/4.5), int(1080/4.5)), Image.ANTIALIAS)
+    resizedImg = ImageTk.PhotoImage(img)
+    
+    return resizedImg
+    
+
+def speechOutput(requestedItem, roomID, dateTime):
+    with tempfile.NamedTemporaryFile(suffix = ".mp3") as tmpSpeech:
+        text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime)
+        language = "en"
+        speechObject = gTTS(text=text, lang=language, slow=False)
+        speechObject.save(tmpSpeech.name) 
+    
+        playsound(tmpSpeech.name)
+        
+        tmpSpeech.close()
+
 # to possibly replace the last else in text/microphone functions
 def findObject(requestedItem):
     
@@ -57,10 +163,8 @@ def findObject(requestedItem):
         tmpImage.write(unencryptedImageData)
         databaseImage = Image.open(tmpImage.name)
 
-        # resize image for display
-        databaseImage = databaseImage.resize((480, 700), Image.ANTIALIAS)
-        resizedImage = ImageTk.PhotoImage(databaseImage)
-
+        resizedImage  = resizeImage(databaseImage)
+        
         # display image
         imageBox.configure(image = resizedImage)
         imageBox.image = resizedImage
@@ -70,34 +174,33 @@ def findObject(requestedItem):
     # display text information
     mainText2.configure(text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime))
     
+    # update main window with image before speech
+    main.update()
+    
     # open text to speech in another thread
-    speechThread = threading.Thread(target=text2Speech.speechOutput, args=(requestedItem, roomID, dateTime))
-    speechThread.start()
-    speechThread.join()
-
+    speechOutput(requestedItem, roomID, dateTime)
+            
 def textFunctionCall():
     # calls text function
     if textInput1.get() == "":
         temporary = "Text Input is Empty"
         mainText1.configure(text = temporary)
     else: 
-        temporary = (text.textFunction(textInput1.get()))
+        temporary = (validateTextInput(textInput1.get()))
         if temporary == "Invalid input. Try again":
             mainText1.configure(text = temporary)
         else:
             mainText1.configure(text = ("Searching for: " + temporary))
             findObject(temporary)
 
-
 def microphoneFunctionCall():
     # updates mainText1
-    temporary = (microphone.microphoneFunction())
+    temporary = (validateSpeechInput())
     if temporary == "Invalid input. Try again":
         mainText1.configure(text = temporary)
     else:
         mainText1.configure(text = ("Searching for: " + temporary))
         findObject(temporary)
-
 
 # sets up the main window
 main = Tk()
@@ -106,9 +209,10 @@ main.geometry('480x700')
 main.configure(background='lightgrey')
 
 # creates the image area for database pic
-defaultImage = ImageTk.PhotoImage(Image.open("./images/default.png")) 
-imageBox = Label(image = defaultImage)
-imageBox.place(x = 250, y = 300, anchor = "center")
+defaultImage = Image.open("./images/default.png")
+resizedDefaultImage = resizeImage(defaultImage)
+imageBox = Label(image = resizedDefaultImage)
+imageBox.place(x = 240, y = 410, anchor = "center")
 
 # creates mainText label
 mainText = Label(main, text = "Use the Text/Audio Options Below", padx = 5, font = ("Nunito Sans", 9, "bold"))
@@ -125,7 +229,7 @@ textInput1 = Entry(main, width=15)
 textInput1.place(x = 85, y = 100) 
 
 # hidden text under buttons
-mainText1 = Label(main, text = "", padx = 5, font = ("Nunito Sans", 9, "bold"))
+mainText1 = Label(main, text = "Enter Object to Find", padx = 5, font = ("Nunito Sans", 9, "bold"))
 mainText1.place(x = 170, y = 200)
 mainText1.configure(background='lightgrey')
 
