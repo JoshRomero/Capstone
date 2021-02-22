@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>house-keys-vector-4476895.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\house-keys-vector-4476895.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1000</width>
+		<height>780</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>598</xmin>
+			<ymin>184</ymin>
+			<xmax>997</xmax>
+			<ymax>571</ymax>
+		</bndbox>
+	</object>
+</annotation>

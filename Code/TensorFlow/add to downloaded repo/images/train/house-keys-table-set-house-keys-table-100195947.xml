@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>house-keys-table-set-house-keys-table-100195947.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\house-keys-table-set-house-keys-table-100195947.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>800</width>
+		<height>533</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>161</xmin>
+			<ymin>142</ymin>
+			<xmax>562</xmax>
+			<ymax>432</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>house-keys-03-wessex-locksmiths.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\house-keys-03-wessex-locksmiths.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>800</width>
+		<height>560</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>184</xmin>
+			<ymin>143</ymin>
+			<xmax>650</xmax>
+			<ymax>455</ymax>
+		</bndbox>
+	</object>
+</annotation>

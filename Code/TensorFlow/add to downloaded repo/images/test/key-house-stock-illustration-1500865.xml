@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>key-house-stock-illustration-1500865.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\key-house-stock-illustration-1500865.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1300</width>
+		<height>1067</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>52</xmin>
+			<ymin>260</ymin>
+			<xmax>703</xmax>
+			<ymax>919</ymax>
+		</bndbox>
+	</object>
+</annotation>

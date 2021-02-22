@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>il_570xN.1880180603_9fh9.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\il_570xN.1880180603_9fh9.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>570</width>
+		<height>456</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>22</xmin>
+			<ymin>127</ymin>
+			<xmax>289</xmax>
+			<ymax>345</ymax>
+		</bndbox>
+	</object>
+</annotation>
