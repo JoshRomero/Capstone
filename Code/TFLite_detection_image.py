@@ -16,7 +16,7 @@ from datetime import datetime
 
 
 # host machine ip and mongodb port
-DATABASE_DOMAIN = '192.168.1.110'
+DATABASE_DOMAIN = '192.168.1.54'
 DATABASE_PORT = 27017
 
 # these values will be updated at bottom of image recognition system
@@ -27,9 +27,9 @@ laptop_prob = 0.0
 cellphone_prob = 0.0
 umbrella_prob = 0.0
 
-# function to add database entry
+# creat db entry
 def createEntry(imageData):
-    dbEntry = {"dataTime": datetime.now(), "roomID": ROOM_ID, "backpackProb": backpack_prob, "suitcaseProb":suitcase_prob, "laptopProb":laptop_prob, "cellphoneProb":cellphone_prob, "umbrellaProb":umbrella_prob, "image":b64encode(imageData)}
+    dbEntry = {"dateTime": datetime.now(), "roomID": ROOM_ID, "backpackProb": backpack_prob, "suitcaseProb":suitcase_prob, "laptopProb":laptop_prob, "cellphoneProb":cellphone_prob, "umbrellaProb":umbrella_prob, "image":b64encode(imageData)}
     return dbEntry
 
 # connect to server
@@ -45,7 +45,7 @@ except:
 try:
     rPiDatabase = mongo_client.rPiData
     print("[+] Authenticating to rPiData database...")
-    rPiDatabase.authenticate(name='rPiCamNode', password='G7q1D^3Bh3Q1')
+    rPiDatabase.authenticate(name='rPiCamNode', password='G7q1D^3Bh3Ql')
     print("[+] Successfully Authenticated")
 except:
     print("[-] Authentication failed")
@@ -71,7 +71,7 @@ parser.add_argument('--graph', help='Name of the .tflite file, if different than
 parser.add_argument('--labels', help='Name of the labelmap file, if different than labelmap.txt',
                     default='labelmap.txt')
 parser.add_argument('--threshold', help='Minimum confidence threshold for displaying detected objects',
-                    default=0.4)
+                    default=0.45)
 parser.add_argument('--image', help='Name of the single image to perform detection on. To run detection on multiple images, use --imagedir',
                     default=None)
 parser.add_argument('--imagedir', help='Name of the folder containing images to perform detection on. Folder must contain only images.',
@@ -89,7 +89,21 @@ use_TPU = args.edgetpu
 
 # Parse input image name and directory. 
 IM_NAME = args.image
-#IM_DIR = args.imagedir
+IM_DIR = args.imagedir
+
+'''
+# If both an image AND a folder are specified, throw an error
+if (IM_NAME and IM_DIR):
+    print('Error! Please only use the --image argument or the --imagedir argument, not both. Issue "python TFLite_detection_image.py -h" for help.')
+    sys.exit()
+'''
+
+
+
+
+# If neither an image or a folder are specified, default to using 'curImg.jpg' for image name
+if (not IM_NAME and not IM_DIR):
+    IM_NAME = 'curImg.jpg'
 
 # Import TensorFlow libraries
 # If tflite_runtime is installed, import interpreter from tflite_runtime, else import from regular tensorflow
@@ -103,10 +117,26 @@ else:
     from tensorflow.lite.python.interpreter import Interpreter
     if use_TPU:
         from tensorflow.lite.python.interpreter import load_delegate
+'''
+# If using Edge TPU, assign filename for Edge TPU model
+if use_TPU:
+    # If user has specified the name of the .tflite file, use that name, otherwise use default 'edgetpu.tflite'
+    if (GRAPH_NAME == 'detect.tflite'):
+        GRAPH_NAME = 'edgetpu.tflite'
+'''
 
 # Get path to current working directory
 CWD_PATH = os.getcwd()
+'''
+# Define path to images and grab all image filenames
+if IM_DIR:
+    PATH_TO_IMAGES = os.path.join(CWD_PATH,IM_DIR)
+    images = glob.glob(PATH_TO_IMAGES + '/*')
 
+if IM_NAME:
+    PATH_TO_IMAGES = os.path.join(CWD_PATH,IM_NAME)
+    images = glob.glob(PATH_TO_IMAGES)
+'''
 # Path to .tflite file, which contains the model that is used for object detection
 PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,GRAPH_NAME)
 
@@ -146,7 +176,9 @@ floating_model = (input_details[0]['dtype'] == np.float32)
 input_mean = 127.5
 input_std = 127.5
 
-# Perform detection
+# Loop over every image and perform detection
+'''for image_path in images:'''
+
 ####################### CLARK ADDITION 1 ###############
 while True:
 
@@ -155,7 +187,8 @@ while True:
 ####################### CLARK ADDITION 1 END ###########
 
     # Load image and resize to expected shape [1xHxWx3]
-    image = cv2.imread(image) 
+    '''image = cv2.imread(image_path)'''
+    image = cv2.imread(image) # replaced line above
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     imH, imW, _ = image.shape 
     image_resized = cv2.resize(image_rgb, (width, height))
@@ -225,28 +258,37 @@ while True:
     laptop_prob = 1.0 if "laptop" in objectList else 0.0
     cellphone_prob = 1.0 if "cell phone" in objectList else 0.0
     umbrella_prob = 1.0 if "umbrella" in objectList else 0.0
-
-    # convert image to b64
-    imageContent = resized.read()
-    resized.close()
-
+    
+    # save and convert image to b64
+    saveDate = datetime.now()
+    cv2.imwrite('images/{}.jpg'.format(saveDate), resized)
+    with open('images/{}.jpg'.format(saveDate), mode='rb') as ourImage: 
+        imageContent = ourImage.read()
+        ourImage.close()
+    
     # add to db
     entry = createEntry(imageContent)
-    camNodResultsCollection.insert_one(entry)
+    camNodeResultsCollection.insert_one(entry)
     print("[+] Entry made for picutre @ {}".format(datetime))
-
+    
     ########## CLARK CHANGE ###############
 
 
     # All the results have been drawn on the image, now display the image
     cv2.imshow('Object detector', resized)
 
-
     # Clean up
-    cv2.waitKey(1000)
+    cv2.waitKey(3000)
     cv2.destroyAllWindows()
-    
-    # sleep 10 sec to give db time to receive last entry
-    sleep(10)
+
+    # now that we have used the image, delete it to save storage space
+    os.remove('images/{}.jpg'.format(saveDate))
+    '''
+    # Press any key to continue to next image, or press 'q' to quit
+    if cv2.waitKey(0) == ord('q'):
+        break
+    '''
+    # sleep 2 sec to give db time to receive last entry
+    sleep(2)
 
 
