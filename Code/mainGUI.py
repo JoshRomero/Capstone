@@ -12,10 +12,12 @@ SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
 BUFFER_SIZE = 1024
 SEPARATOR = "<SEPARATOR>"
+DEBUG = False
     
 def validateTextInput(user_input):
-    print("text function executed")
-    print("The item you're looking for: " + user_input)
+    if(DEBUG):
+        print("text function executed")
+        print("The item you're looking for: " + user_input)
 
     # Boolean to make sure the user provides correct input
     invalid_input = True
@@ -68,9 +70,11 @@ def validateSpeechInput():
                 
                 # Using ggogle to recognize audio 
                 MyText = r.recognize_google(audio2) 
-                MyText = MyText.lower() 
-
-                print("You said: "+MyText)
+                MyText = MyText.lower()
+                
+                 
+                if(DEBUG):
+                    print("You said: "+MyText)
                 
                 # Splits text input into a list of each word 
                 TextList = MyText.split()
@@ -216,7 +220,7 @@ imageBox.place(x = 240, y = 410, anchor = "center")
 
 # creates mainText label
 mainText = Label(main, text = "Use the Text/Audio Options Below", padx = 5, font = ("Nunito Sans", 9, "bold"))
-mainText.place(x = 135, y = 20)
+mainText.place(x = 145, y = 20)
 mainText.configure(background='lightgrey')
 
 # creates mainText0 label
@@ -226,10 +230,10 @@ mainText0.configure(background='lightgrey')
 
 # creates text entry bot
 textInput1 = Entry(main, width=15)
-textInput1.place(x = 85, y = 100) 
+textInput1.place(x = 70, y = 100) 
 
 # hidden text under buttons
-mainText1 = Label(main, text = "Enter Object to Find", padx = 5, font = ("Nunito Sans", 9, "bold"))
+mainText1 = Label(main, text = "", padx = 5, font = ("Nunito Sans", 9, "bold"))
 mainText1.place(x = 170, y = 200)
 mainText1.configure(background='lightgrey')
 

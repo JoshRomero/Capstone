@@ -16,7 +16,7 @@ THERMOS_PROB = 0.0
 WALLET_PROB = 0.0
 
 def createEntry(imageData, savedDateTime):
-    dbEntry = {"dateTime": datetime.now(),
+    dbEntry = {"dateTime": savedDateTime,
                "roomID": ROOM_ID,
                "keysProb": KEYS_PROB,
                "phoneProb": PHONE_PROB,
