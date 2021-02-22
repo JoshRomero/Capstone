@@ -163,6 +163,9 @@ def findObject(requestedItem):
     # receive response from server
     dateTime, roomID, unencryptedImageData = receiveResponse(clientSocket)
     
+    # close client socket after receiving all data from server
+    clientSocket.close()
+    
     with tempfile.NamedTemporaryFile(suffix = ".jpeg") as tmpImage:
         tmpImage.write(unencryptedImageData)
         databaseImage = Image.open(tmpImage.name)
