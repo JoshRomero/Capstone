@@ -3,6 +3,7 @@ from picamera import PiCamera
 from pymongo import MongoClient
 from base64 import b64encode
 from datetime import datetime
+from io import BytesIO
 
 # host machine ip and mongodb port
 DATABASE_DOMAIN = '192.168.1.54'
@@ -14,8 +15,8 @@ PHONE_PROB = 0.0
 THERMOS_PROB = 0.0
 WALLET_PROB = 0.0
 
-def createEntry(imageData):
-    dbEntry = {"dateTime": datetime.now(),
+def createEntry(imageData, savedDateTime):
+    dbEntry = {"dateTime": savedDateTime,
                "roomID": ROOM_ID,
                "keysProb": KEYS_PROB,
                "phoneProb": PHONE_PROB,
@@ -52,34 +53,35 @@ try:
     print("[+] Successfully switched")
 except:
     print("[-] Switch failed")
-    
-#camera setup
-camera = PiCamera()
-#only for my set up, camera was upside down (ribbon up)
-camera.rotation = 180
-camera.resolution = (1920, 1080)
 
-while True:
-    # camera needs to get ready
-    sleep(.5)
-    
-    # take the picture
-    saveDate = datetime.now()
-    camera.capture('../clientImgs/{}.jpeg'.format(saveDate))
-    print("[+] Picture captured with the name: {}.jpeg".format(saveDate))
-    
-    # save captured image data to be converted into b64
-    with open('../clientImgs/{}.jpeg'.format(saveDate), mode='rb') as image:
-        imageContent = image.read()
-        image.close()
+with PiCamera() as camera:
+    #for upside down cameras (ribbon up)
+    camera.rotation = 180
+    camera.resolution = (1920, 1080)
+
+    # create in-stream memory for image data
+    imageMemoryStream = BytesIO()
+
+    while True:
+        # camera warm-up time
+        sleep(.5)
         
-    # create database entry
-    entry = createEntry(imageContent)
+        # capture image and append to in-memory byte stream
+        captureTime = datetime.now()
+        camera.capture(imageMemoryStream, 'jpeg')
+        print("[+] Picture captured at the dateTime: {}".format(captureTime))
+            
+        # create database entry
+        entry = createEntry(imageMemoryStream.getvalue(), captureTime)
         
-    # insert created database entry
-    camNodeResultsCollection.insert_one(entry)
-    print("[+] Entry made for picture @ {}".format(saveDate))
-    
-    # sleep a minute to give the database time to receive the last entry
-    sleep(55.5)
+        # clear in-memory byte stream
+        imageMemoryStream.seek(0)
+        imageMemoryStream.truncate(0)
+            
+        # insert created database entry
+        camNodeResultsCollection.insert_one(entry)
+        print("[+] Entry made for picture @ {}".format(captureTime))
+        
+        # sleep a minute to give the database time to receive the last entry
+        sleep(55.5)
 

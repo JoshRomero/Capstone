@@ -1,57 +1,76 @@
 from pymongo import MongoClient
-from base64 import b64decode
+from socket import *
+from datetime import datetime
+from time import sleep
 
-# host machine ip and mongodb port
-DATABASE_DOMAIN = '192.168.1.54'
+# host machine ip, mongodb and server listening port
+DATABASE_DOMAIN = SERVER_DOMAIN = "192.168.1.54"
 DATABASE_PORT = 27017
+SERVER_PORT = 12001
+SEPARATOR = "<SEPARATOR>"
 
-def queryDatabase(object):
+def queryDatabase(object, collection):
     # retrieve the newest document from the collection based on datetime (will be changed later to include CNN results)
-    for entry in camNodeResultsCollection.find().sort("dateTime", -1):
+    for entry in collection.find().sort("dateTime", -1):
         newestEntry = entry
         break
     
-    # retrieve the image data and date time
-    encryptedImageData = newestEntry["image"]
-    dateAndTime = newestEntry["dateTime"]
+    # extract and format necessary information
+    necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + str(newestEntry["roomID"]) + SEPARATOR + newestEntry["image"].decode('ascii')
+    
+    return necessaryInfo
+    
 
-    # unencrypt b64 encrypted image data
-    unencryptedImageData = b64decode(encryptedImageData)
-
-    # save unencrypted image to a folder known as serverImgs
-    with open('../serverImgs/{}.jpeg'.format(dateAndTime), mode='wb') as newImage:
-        unencryptedImageData = bytearray(unencryptedImageData)
-        newImage.write(unencryptedImageData)
-        print("[+] Entry image saved in serverImgs folder with name: {}.jpeg".format(dateAndTime))
-        newImage.close()
-        
-# MAIN
-
-# connect to the server
+# connect to the database
 try:
-    print("[+] Connecting to mongoDB server @ {}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
+    print("Connecting to mongoDB server @ {}:{}...".format(DATABASE_DOMAIN, DATABASE_PORT))
     mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
-    print("[+] Connected")
+    print("Connected!")
 except:
-    print("[-] Connection failed")
+    print("Connection failed")
     exit(0)
 
 # authenticate to database
 try:
     rPiDatabase = mongo_client.rPiData
-    print("[+] Authenticating to rPiData database...")
+    print("Authenticating to rPiData database...")
     rPiDatabase.authenticate(name='serverNode', password='7$dsV!G3D0Oc')
-    print("[+] Sucessfully Authenticated")
+    print("Sucessfully Authenticated!")
 except:
-    print("[-] Authentication failed")
+    print("Authentication failed")
     exit(0)
 
 # switch to correct collection
 try:
-    print("[+] Switching to camNodeResults collection...")
+    print("Switching to camNodeResults collection...")
     camNodeResultsCollection = rPiDatabase.camNodeResults
-    print("[+] Successfully switched")
+    print("Successfully switched!")
 except:
-    print("[-] Switch failed")
+    print("Switch failed!")
+
+# create TCP server socket and bind to PORT
+serverSocket = create_server((SERVER_DOMAIN, SERVER_PORT))
+
+while True:
     
-queryDatabase("phone")
+    # keep socket listening for a single connection
+    serverSocket.listen(1)
+    print("Server is ready to receive a connection...")
+    
+    # create connection socket
+    connectionSocket, address = serverSocket.accept()
+    print("Connection from {} accepted!".format(address))
+    
+    # receive request message from connection socket
+    incomingRequest = connectionSocket.recv(1024).decode()
+    print("Item requested from client: {} at {}".format(incomingRequest, datetime.now()))
+    
+    # query database and send requested information from query to sender
+    requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
+    encodedInformation = requestedInformation.encode()
+    sizeEncodedInfo = len(encodedInformation)
+    connectionSocket.send(str(sizeEncodedInfo).encode())
+    sleep(.01)
+    connectionSocket.sendall(requestedInformation.encode())
+    
+    connectionSocket.close()
