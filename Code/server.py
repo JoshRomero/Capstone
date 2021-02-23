@@ -70,7 +70,7 @@ while True:
     requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
     encodedInformation = requestedInformation.encode()
     sizeEncodedInfo = len(encodedInformation)
-    connectionSocket.send(str(sizeEncodedInfo).encode())
+    connectionSocket.sendall(str(sizeEncodedInfo).encode())
     sleep(.01)
     connectionSocket.sendall(requestedInformation.encode())
     
