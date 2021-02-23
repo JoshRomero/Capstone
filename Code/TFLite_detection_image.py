@@ -29,9 +29,9 @@ umbrella_prob = 0.0
 
 # creat db entry
 def createEntry(imageData, captureTime):
-    dbEntry = {"dateTime": captureTime, 
+    dbEntry = {"dateTime": captureTime.strftime('%m-%d-%Y %I:%M:%S %p'), 
                "roomID": ROOM_ID, 
-               "backpackProb": backpack_prob,
+               "backpackProb":backpack_prob,
                "suitcaseProb":suitcase_prob, 
                "laptopProb":laptop_prob, 
                "cellphoneProb":cellphone_prob, 
@@ -274,8 +274,8 @@ while True:
         ourImage.close()
     
     # add to db
-    entry = createEntry(imageContent)
-    camNodeResultsCollection.insert_one(entry, saveDate)
+    entry = createEntry(imageContent, saveDate)
+    camNodeResultsCollection.insert_one(entry)
     print("[+] Entry made for picutre @ {}".format(saveDate))
     
     ########## CLARK CHANGE ###############

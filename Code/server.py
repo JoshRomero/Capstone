@@ -11,9 +11,11 @@ SEPARATOR = "<SEPARATOR>"
 
 def queryDatabase(object, collection):
     # retrieve the newest document from the collection based on datetime (will be changed later to include CNN results)
-    for entry in collection.find().sort([("dateTime", -1), ("{}Prob".format(object) == 1.0)]):
+    objectProb = "{}Prob".format(object)
+    for entry in collection.find({}, {objectProb:1, "dateTime":1, "image":1, "roomID":1}).sort("dateTime", -1):
         newestEntry = entry
-        break
+        if(newestEntry[objectProb] == 1.0):
+            break
     
     # extract and format necessary information
     necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + str(newestEntry["roomID"]) + SEPARATOR + newestEntry["image"].decode('ascii')

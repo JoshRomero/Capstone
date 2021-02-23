@@ -7,7 +7,6 @@ import tempfile
 from PIL import ImageTk, Image
 from gtts import gTTS
 from playsound import playsound
-from datetime import datetime
 
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
@@ -89,8 +88,8 @@ def validateSpeechInput():
                     user_object = "Keys"
                     flag = False
                     return user_object
-                elif ("phone" in TextList):
-                    user_object = "Phone"
+                elif ("cellphone" in TextList):
+                    user_object = "Cellphone"
                     flag = False
                     return user_object
                 elif ("wallet" in TextList):
@@ -178,9 +177,6 @@ def findObject(requestedItem):
         imageBox.image = resizedImage
 
         tmpImage.close()
-        
-    # format datetime
-    dateTime = datetime.strptime(dateTime, '%m-%d-%Y %I:%M:%S %p')
 
     # display text information
     mainText2.configure(text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime))
