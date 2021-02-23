@@ -11,7 +11,7 @@ SEPARATOR = "<SEPARATOR>"
 
 def queryDatabase(object, collection):
     # retrieve the newest document from the collection based on datetime (will be changed later to include CNN results)
-    for entry in collection.find().sort("dateTime", -1):
+    for entry in collection.find().sort([("dateTime", -1), ("{}Prob".format(object) == 1.0)]):
         newestEntry = entry
         break
     

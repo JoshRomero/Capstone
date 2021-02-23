@@ -7,6 +7,7 @@ import tempfile
 from PIL import ImageTk, Image
 from gtts import gTTS
 from playsound import playsound
+from datetime import datetime
 
 SERVER_DOMAIN = "192.168.1.54"
 SERVER_PORT = 12001
@@ -33,8 +34,8 @@ def validateTextInput(user_input):
             user_object = "Keys"
             invalid_input = False
             return user_object
-        elif ("phone" in user_input):
-            user_object = "Phone"
+        elif ("cellphone" in user_input):
+            user_object = "Cellphone"
             invalid_input = False
             return user_object
         elif ("wallet" in user_input):
@@ -166,7 +167,7 @@ def findObject(requestedItem):
     # close client socket after receiving all data from server
     clientSocket.close()
     
-    with tempfile.NamedTemporaryFile(suffix = ".jpeg") as tmpImage:
+    with tempfile.NamedTemporaryFile(suffix = ".jpg") as tmpImage:
         tmpImage.write(unencryptedImageData)
         databaseImage = Image.open(tmpImage.name)
 
@@ -177,6 +178,9 @@ def findObject(requestedItem):
         imageBox.image = resizedImage
 
         tmpImage.close()
+        
+    # format datetime
+    dateTime = datetime.strptime(dateTime, '%m-%d-%Y %I:%M:%S %p')
 
     # display text information
     mainText2.configure(text = ("I have found your " + requestedItem + " in room " + roomID + " at " + dateTime))
@@ -198,7 +202,7 @@ def textFunctionCall():
             mainText1.configure(text = temporary)
         else:
             mainText1.configure(text = ("Searching for: " + temporary))
-            findObject(temporary)
+            findObject(temporary.lower())
 
 def microphoneFunctionCall():
     # updates mainText1
@@ -207,7 +211,7 @@ def microphoneFunctionCall():
         mainText1.configure(text = temporary)
     else:
         mainText1.configure(text = ("Searching for: " + temporary))
-        findObject(temporary)
+        findObject(temporary.lower())
 
 # sets up the main window
 main = Tk()
