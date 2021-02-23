@@ -21,6 +21,7 @@ def validateTextInput(user_input):
 
     # Boolean to make sure the user provides correct input
     invalid_input = True
+    user_input = user_input.lower()
 
     while(invalid_input):
         
@@ -216,10 +217,10 @@ main.geometry('480x700')
 main.configure(background='lightgrey')
 
 # creates the image area for database pic
-defaultImage = Image.open("./images/default.png")
-resizedDefaultImage = resizeImage(defaultImage)
-imageBox = Label(image = resizedDefaultImage)
-imageBox.place(x = 240, y = 410, anchor = "center")
+#defaultImage = Image.open("./images/default.png")
+#resizedDefaultImage = resizeImage(defaultImage)
+#imageBox = Label(image = resizedDefaultImage)
+#imageBox.place(x = 240, y = 410, anchor = "center")
 
 # creates mainText label
 mainText = Label(main, text = "Use the Text/Audio Options Below", padx = 5, font = ("Nunito Sans", 9, "bold"))
