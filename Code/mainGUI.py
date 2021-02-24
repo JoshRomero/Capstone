@@ -33,8 +33,8 @@ def validateTextInput(user_input):
             user_object = "Keys"
             invalid_input = False
             return user_object
-        elif ("phone" in user_input):
-            user_object = "Phone"
+        elif ("cellphone" in user_input):
+            user_object = "Cellphone"
             invalid_input = False
             return user_object
         elif ("wallet" in user_input):
@@ -88,8 +88,8 @@ def validateSpeechInput():
                     user_object = "Keys"
                     flag = False
                     return user_object
-                elif ("phone" in TextList):
-                    user_object = "Phone"
+                elif ("cellphone" in TextList):
+                    user_object = "Cellphone"
                     flag = False
                     return user_object
                 elif ("wallet" in TextList):
@@ -166,7 +166,7 @@ def findObject(requestedItem):
     # close client socket after receiving all data from server
     clientSocket.close()
     
-    with tempfile.NamedTemporaryFile(suffix = ".jpeg") as tmpImage:
+    with tempfile.NamedTemporaryFile(suffix = ".jpg") as tmpImage:
         tmpImage.write(unencryptedImageData)
         databaseImage = Image.open(tmpImage.name)
 
@@ -198,7 +198,7 @@ def textFunctionCall():
             mainText1.configure(text = temporary)
         else:
             mainText1.configure(text = ("Searching for: " + temporary))
-            findObject(temporary)
+            findObject(temporary.lower())
 
 def microphoneFunctionCall():
     # updates mainText1
@@ -207,7 +207,7 @@ def microphoneFunctionCall():
         mainText1.configure(text = temporary)
     else:
         mainText1.configure(text = ("Searching for: " + temporary))
-        findObject(temporary)
+        findObject(temporary.lower())
 
 # sets up the main window
 main = Tk()

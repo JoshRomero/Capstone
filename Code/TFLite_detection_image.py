@@ -28,8 +28,15 @@ cellphone_prob = 0.0
 umbrella_prob = 0.0
 
 # creat db entry
-def createEntry(imageData):
-    dbEntry = {"dateTime": datetime.now(), "roomID": ROOM_ID, "backpackProb": backpack_prob, "suitcaseProb":suitcase_prob, "laptopProb":laptop_prob, "cellphoneProb":cellphone_prob, "umbrellaProb":umbrella_prob, "image":b64encode(imageData)}
+def createEntry(imageData, captureTime):
+    dbEntry = {"dateTime": captureTime.strftime('%m-%d-%Y %I:%M:%S %p'), 
+               "roomID": ROOM_ID, 
+               "backpackProb":backpack_prob,
+               "suitcaseProb":suitcase_prob, 
+               "laptopProb":laptop_prob, 
+               "cellphoneProb":cellphone_prob, 
+               "umbrellaProb":umbrella_prob, 
+               "image":b64encode(imageData)}
     return dbEntry
 
 # connect to server
@@ -267,9 +274,9 @@ while True:
         ourImage.close()
     
     # add to db
-    entry = createEntry(imageContent)
+    entry = createEntry(imageContent, saveDate)
     camNodeResultsCollection.insert_one(entry)
-    print("[+] Entry made for picutre @ {}".format(datetime))
+    print("[+] Entry made for picutre @ {}".format(saveDate))
     
     ########## CLARK CHANGE ###############
 

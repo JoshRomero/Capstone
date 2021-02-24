@@ -11,7 +11,8 @@ SEPARATOR = "<SEPARATOR>"
 
 def queryDatabase(object, collection):
     # retrieve the newest document from the collection based on datetime (will be changed later to include CNN results)
-    for entry in collection.find().sort("dateTime", -1):
+    objectProb = "{}Prob".format(object)
+    for entry in collection.find({objectProb:1.0}, {objectProb:1, "dateTime":1, "image":1, "roomID":1}).sort("dateTime", -1):
         newestEntry = entry
         break
     
@@ -69,7 +70,7 @@ while True:
     requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
     encodedInformation = requestedInformation.encode()
     sizeEncodedInfo = len(encodedInformation)
-    connectionSocket.send(str(sizeEncodedInfo).encode())
+    connectionSocket.sendall(str(sizeEncodedInfo).encode())
     sleep(.01)
     connectionSocket.sendall(requestedInformation.encode())
     
