@@ -8,7 +8,7 @@ from PIL import ImageTk, Image
 from gtts import gTTS
 from playsound import playsound
 
-SERVER_DOMAIN = "192.168.1.54"
+SERVER_DOMAIN = "18.191.21.213"
 SERVER_PORT = 12001
 BUFFER_SIZE = 1024
 SEPARATOR = "<SEPARATOR>"
