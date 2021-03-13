@@ -1,5 +1,5 @@
 from piServer import PiServer
-from iOSRequestServer import iOSRequestServer
+from iOSRequestServer import RequestServer
 
 if __name__ == "__main__":
     piServer = PiServer()

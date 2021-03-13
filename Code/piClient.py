@@ -7,7 +7,7 @@ import json
 from socket import *
 
 # pi server ip and port
-SERVER_DOMAIN = "18.191.21.213"
+SERVER_DOMAIN = "18.188.84.183"
 SERVER_PORT = 24002
 
 ROOM_ID = 1

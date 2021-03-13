@@ -16,11 +16,11 @@ class PiServer(Server):
     #     pass
     
     def saveImage(self, imgBytes, uid, entryDateTime, entryRoomID):
-        userPath = f"./userImgs/{uid}"
+        userPath = "./userImgs/{}".format(uid)
         if os.path.isdir(userPath) == False:
             os.mkdir(userPath)
             
-        imgPath = f"./userImgs/{uid}/{entryDateTime}_{entryRoomID}.jpg"
+        imgPath = "./userImgs/{}/{}_{}.jpg".format(uid, entryDateTime, entryRoomID)
         
         with open(imgPath, "wb+") as capturedImage:
             capturedImage.write(imgBytes)
@@ -55,5 +55,5 @@ class PiServer(Server):
         while True:
             clientConnectionSocket, clientAddress = self.sock.accept()
             clientConnectionSocket.settimeout(60)
-            print(f"[+] Pi connected from {clientAddress}")
+            print("[+] Pi connected from {}".format(clientAddress))
             Thread(target = self.run, args = (clientConnectionSocket, clientAddress)).start()
