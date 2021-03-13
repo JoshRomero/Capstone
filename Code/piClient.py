@@ -1,6 +1,5 @@
 from time import sleep
 from picamera import PiCamera
-from pymongo import MongoClient
 from datetime import datetime
 from io import BytesIO
 import struct
@@ -12,19 +11,21 @@ SERVER_DOMAIN = "18.191.21.213"
 SERVER_PORT = 24002
 
 ROOM_ID = 1
-KEYS_PROB = 0.0
-PHONE_PROB = 0.0
-THERMOS_PROB = 0.0
-WALLET_PROB = 0.0
+backpack_prob = 0.0
+suitcase_prob = 0.0
+laptop_prob = 0.0
+cellphone_prob = 1.0
+umbrella_prob = 0.0
 
-def createEntry(uid, savedDateTime):
+def createEntry(uid, captureTime):
     dbEntry = {"userID": uid,
-               "dateTime": savedDateTime,
-               "roomID": ROOM_ID,
-               "keysProb": KEYS_PROB,
-               "phoneProb": PHONE_PROB,
-               "thermosProb": THERMOS_PROB,
-               "walletProb": WALLET_PROB,
+               "dateTime": captureTime.strftime('%m-%d-%Y %I:%M:%S %p'),
+               "roomID": ROOM_ID, 
+               "backpackProb":backpack_prob,
+               "suitcaseProb":suitcase_prob, 
+               "laptopProb":laptop_prob, 
+               "cellphoneProb":cellphone_prob, 
+               "umbrellaProb":umbrella_prob,
                "image": ""
     }
     
@@ -56,7 +57,7 @@ if __name__ == "__main__":
             # capture image and append to in-memory byte stream
             captureTime = datetime.now()
             camera.capture(imageMemoryStream, 'jpg')
-            print("[+] Picture captured at the dateTime: {}".format(captureTime))
+            print(f"[+] Picture captured at the dateTime: {captureTime}")
             
             imageBytes = bytearray()
             for byte in imageMemoryStream:
@@ -67,7 +68,8 @@ if __name__ == "__main__":
             imageMemoryStream.truncate(0)
                 
             # create database entry
-            entry = createEntry(imageMemoryStream.getvalue(), captureTime)
+            uid = "testID"
+            entry = createEntry(uid, captureTime)
             
             # using encode() + dumps() to convert to bytes 
             entryBytes = json.dumps(entry).encode('utf-8')

@@ -1,9 +1,7 @@
 import socket
 from threading import Thread
 from serverTemplate import Server
-from time import sleep
 from datetime import datetime
-import sys
 
 SEPARATOR = "<SEPARATOR>"
 
@@ -18,7 +16,7 @@ class RequestServer(Server):
     
     # retrieve the newest entry containing the item the user requested
     def queryDatabase(self, object, collection, uid):
-        objectProb = "{}Prob".format(object)
+        objectProb = f"{object}Prob"
         for entry in collection.find({"userID": uid, objectProb:1.0}, {objectProb:1, "dateTime":1, "image":1, "roomID":1}).sort("dateTime", -1):
             newestEntry = entry
             break
@@ -42,7 +40,7 @@ class RequestServer(Server):
             
             # receive request from connection socket
             incomingRequest = self.recvMessage(connectionSocket)
-            print("Item requested from {}: {} at {}".format(ipAddress, incomingRequest, datetime.now()))
+            print(f"Item requested from {ipAddress}: {incomingRequest} at {datetime.now()}")
             
             # query database for entry
             collection = self.database.self.collection
@@ -74,7 +72,4 @@ class RequestServer(Server):
             clientConnectionSocket, clientAddress = self.sock.accept()
             clientConnectionSocket.settimeout(60)
             Thread(target = self.run, args = (clientConnectionSocket, clientAddress)).start()
-
-if __name__ == "__main__":
-    RequestServer().listenForUsers()
     
