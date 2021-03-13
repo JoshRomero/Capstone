@@ -21,31 +21,28 @@ class PiServer(Server):
             clientConnectionSocket.settimeout(60)
             Thread(target = self.run, args = (clientConnectionSocket, clientAddress)).start()
     
-    # def verifyMessage(self, msg):
-    #     pass
+    def verifyMessage(self, msg):
+        pass
     
     def saveImage(self, imgBytes, uid, entryDateTime):
         userPath = f"./userImgs/{uid}"
         if os.path.isdir(userPath) == False:
             os.mkdir(userPath)
             
-        path = f"./userImgs/{uid}/{entryDateTime}.jpg"
+        imgPath = f"./userImgs/{uid}/{entryDateTime}.jpg"
         
-        with open(path, "wb+") as capturedImage:
+        with open(imgPath, "wb+") as capturedImage:
             capturedImage.write(imgBytes)
         
-        entry[image] = path
-        
-        return 1
+        entry["image"] = imgPath
     
     def run(self, connectionSocket, ipAddress):
         while True:
-            # verify token
-            # verify message
+            # receive token
             
-            # switch collections
-            # collection = self.goToCollection(uid)
-            collection = "camNodeResults"
+            # verify token
+            
+            # verify message
             
             # receive entry and decode use decode() + loads() to convert to dictionary
             entryBytes = self.recvMessage(connectionSocket)
@@ -53,10 +50,11 @@ class PiServer(Server):
             
             # receive image and save to file system under user's folder
             imageBytes = self.recvMessage(connectionSocket)
-            self.saveImage(imageBytes, uid, entry[dateTime])
+            self.saveImage(imageBytes, uid, entry["dateTime"])
             
             # send entry to database
-            self.database.collection.insert_one(entry)
+            collection = self.database.self.collection
+            collection.insert_one(entry)
             
     
 if __name__ == "__main__":

@@ -17,15 +17,15 @@ class RequestServer(Server):
     
     
     # retrieve the newest entry containing the item the user requested
-    def queryDatabase(self, object, collection):
+    def queryDatabase(self, object, collection, uid):
         objectProb = "{}Prob".format(object)
-        for entry in collection.find({objectProb:1.0}, {objectProb:1, "dateTime":1, "image":1, "roomID":1}).sort("dateTime", -1):
+        for entry in collection.find({"userID": uid, objectProb:1.0}, {objectProb:1, "dateTime":1, "image":1, "roomID":1}).sort("dateTime", -1):
             newestEntry = entry
             break
         
         return newestEntry
     
-    def retrieveImage(self, uid, entryPath):
+    def retrieveImage(self, entryPath):
         imageBytes = bytearray()
         with open(entryPath, "rb") as capturedImage:
             imageBytes = capturedImage.read()
@@ -36,24 +36,23 @@ class RequestServer(Server):
     def run(self, connectionSocket, ipAddress):
         threadStop = False
         while True:
-            # recieve token + request from connection socket
-            incomingRequest = self.recvMessage(connectionSocket)
-            print("Item requested from {}: {} at {}".format(ipAddress, incomingRequest, datetime.now()))
+            # receive token
             
             # verify token
             
-            # switch collections
-            # collection = PiServer.goToCollection(uid)
-            collection = "camNodeResults"
+            # receive request from connection socket
+            incomingRequest = self.recvMessage(connectionSocket)
+            print("Item requested from {}: {} at {}".format(ipAddress, incomingRequest, datetime.now()))
             
             # query database for entry
-            entry = self.queryDatabase(incomingRequest, self.database.collection)
+            collection = self.database.self.collection
+            entry = self.queryDatabase(incomingRequest, collection, uid)
             
             # extract and format necessary information
             requestedInformation = str(entry["dateTime"]) + SEPARATOR + str(entry["roomID"])
             
             # retrieve image from file system
-            requestedImage = self.retrieveImage(uid, entry["image"])
+            requestedImage = self.retrieveImage(entry["image"])
             
             # encode and send necessary info
             encodedInformation = requestedInformation.encode()

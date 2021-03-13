@@ -17,8 +17,9 @@ PHONE_PROB = 0.0
 THERMOS_PROB = 0.0
 WALLET_PROB = 0.0
 
-def createEntry(imageData, savedDateTime):
-    dbEntry = {"dateTime": savedDateTime,
+def createEntry(uid, savedDateTime):
+    dbEntry = {"userID": uid,
+               "dateTime": savedDateTime,
                "roomID": ROOM_ID,
                "keysProb": KEYS_PROB,
                "phoneProb": PHONE_PROB,
@@ -35,6 +36,7 @@ def sendMessage(sock, msg):
     sock.sendall(msg)
 
 if __name__ == "__main__":
+    # retrieve token for user
     
     # connect to server socket
     clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))    

@@ -2,11 +2,12 @@ import socket
 from pymongo import MongoClient
 import struct
 
-class Server:
+class Server(object):
     def __init__(self, host, port):
         self.host = host
         self.serverPort = port
         self.databasePort = 27017
+        self.collection = "camNodeResults"
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.host, self.serverPort))
@@ -57,7 +58,3 @@ class Server:
     #         sys.exit(0)
             
     #     return uid
-    
-    # take the token uid and switch to the user's collection
-    # def goToCollection(self, tokenUID):
-    #     pass
