@@ -4,6 +4,9 @@ from serverTemplate import Server
 import json
 import os
 
+# NEED TO ADD TOKENS,
+# INPUT VALIDATION
+
 class PiServer(Server):
     serverPort = 24002
     serverIP = socket.gethostbyname(socket.gethostname())
@@ -15,19 +18,19 @@ class PiServer(Server):
     # def verifyMessage(self, msg):
     #     pass
     
-    def saveImage(self, imgBytes, uid, entryDateTime, entryRoomID):
+    def saveImage(self, imgBytes, uid, entry):
         userPath = "./userImgs/{}".format(uid)
         if os.path.isdir(userPath) == False:
             os.mkdir(userPath)
             
-        imgPath = "./userImgs/{}/{}_{}.jpg".format(uid, entryDateTime, entryRoomID)
+        imgPath = "./userImgs/{}/{}_{}.jpg".format(uid, entry["roomID"], entry["dateTime"])
         
         with open(imgPath, "wb+") as capturedImage:
             capturedImage.write(imgBytes)
         
         entry["image"] = imgPath
     
-    def run(self, connectionSocket, ipAddress):
+    def run(self, connectionSocket):
         while True:
             # receive token
             # verify token
@@ -39,16 +42,11 @@ class PiServer(Server):
             
             # receive image and save to file system under user's folder
             imageBytes = self.recvMessage(connectionSocket)
-            uid = "testID"
-            self.saveImage(imageBytes, uid, entry["dateTime"], entry["roomID"])
+            uid = "testID" # temporary, needs to be replaced by token
+            self.saveImage(imageBytes, uid, entry)
             
             # send entry to database
-            collection = self.database.self.collection
-            collection.insert_one(entry)
-            
-            break
-        
-        connectionSocket.close()
+            self.database.camNodeResults.insert_one(entry)
     
     def listenForPis(self):
         self.sock.listen(100)
@@ -56,4 +54,8 @@ class PiServer(Server):
             clientConnectionSocket, clientAddress = self.sock.accept()
             clientConnectionSocket.settimeout(60)
             print("[+] Pi connected from {}".format(clientAddress))
-            Thread(target = self.run, args = (clientConnectionSocket, clientAddress)).start()
+            Thread(target = self.run, args = (clientConnectionSocket)).start()
+
+if __name__ == "__main__":
+    piServer = PiServer()
+    piServer.listenForPis()

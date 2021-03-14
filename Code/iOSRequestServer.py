@@ -3,7 +3,12 @@ from threading import Thread
 from serverTemplate import Server
 from datetime import datetime
 
+# NEED TO ADD TOKENS,
+# WAY TO SEND THE USER INFO IF THEIR QUIERED OBJECT ISNT FOUND,
+# ADD NEW FEATURES FOR IOS APP LIKE ENDING THREAD WHEN APP IS CLOSED
+
 SEPARATOR = "<SEPARATOR>"
+DEBUG = False
 
 class RequestServer(Server):
     serverPort = 12001
@@ -16,8 +21,8 @@ class RequestServer(Server):
     
     # retrieve the newest entry containing the item the user requested
     def queryDatabase(self, object, collection, uid):
-        objectProb = f"{object}Prob"
-        for entry in collection.find({"userID": uid, objectProb:1.0}, {objectProb:1, "dateTime":1, "image":1, "roomID":1}).sort("dateTime", -1):
+        objectProb = "{}Prob".format(object)
+        for entry in collection.find({"$and": [{"userID": uid}, {objectProb:1.0}]}).sort("dateTime", -1):
             newestEntry = entry
             break
         
@@ -40,10 +45,12 @@ class RequestServer(Server):
             
             # receive request from connection socket
             incomingRequest = self.recvMessage(connectionSocket)
-            print(f"Item requested from {ipAddress}: {incomingRequest} at {datetime.now()}")
+            if DEBUG:
+                print("Item requested from {}: {} at {}".format(ipAddress, incomingRequest, datetime.now()))
             
             # query database for entry
-            collection = self.database.self.collection
+            collection = self.database.camNodeResults
+            uid = "testID"
             entry = self.queryDatabase(incomingRequest, collection, uid)
             
             # extract and format necessary information
@@ -72,4 +79,7 @@ class RequestServer(Server):
             clientConnectionSocket, clientAddress = self.sock.accept()
             clientConnectionSocket.settimeout(60)
             Thread(target = self.run, args = (clientConnectionSocket, clientAddress)).start()
+
+if __name__ == "__main__":
+    RequestServer.listenForUsers()
     

@@ -7,13 +7,44 @@ import tempfile
 from PIL import ImageTk, Image
 from gtts import gTTS
 from playsound import playsound
+import struct
 
-SERVER_DOMAIN = "18.191.21.213"
+# NEED TO ADD:
+# LOGINS/TOKEN ACQURING
+# TOKEN SENDING
+# DONT HARDCODE THE LIST OF ITEMS TO REQUEST
+
+SERVER_DOMAIN = "18.188.84.183"
 SERVER_PORT = 12001
 BUFFER_SIZE = 1024
 SEPARATOR = "<SEPARATOR>"
 DEBUG = False
+
+def recvMessage(sock):
+        # Read message length and unpack it into an integer
+        raw_msglen = recvAll(sock, 4)
+        if not raw_msglen:
+            return None
+        msglen = struct.unpack('>I', raw_msglen)[0]
+        
+        # Read the message data
+        return recvAll(sock, msglen)
+
+def recvAll(sock, n):
+    # Helper function to recv n bytes or return None if EOF is hit
+    data = bytearray()
+    while len(data) < n:
+        packet = sock.recv(n - len(data))
+        if not packet:
+            return None
+        data.extend(packet)
+    return data
     
+def sendMessage(sock, msg):
+    # Prefix each message with a 4-byte length (network byte order)
+    msg = struct.pack('>I', len(msg)) + msg
+    sock.sendall(msg)
+        
 def validateTextInput(user_input):
     if(DEBUG):
         print("text function executed")
@@ -105,31 +136,6 @@ def validateSpeechInput():
             
         except sr.UnknownValueError: 
             print("unknown error occured") 
-            
-def receiveResponse(sock):
-
-    # receive packet containing the size of the requested info
-    dataSize = sock.recv(BUFFER_SIZE).decode()
-    dataSize = int(dataSize)
-
-    # receive packets containing the requested info
-    bytesReceived = bytearray()
-    amountBytesReceived = 0
-    while True:
-        dataChunk = sock.recv(BUFFER_SIZE)
-        bytesReceived.extend(dataChunk)
-
-        amountBytesReceived += len(dataChunk)
-        if(amountBytesReceived == dataSize):
-            break
-    
-    # decode and seperate the information
-    unencodedResponse = bytesReceived.decode()
-    dateTime, roomID, encryptedImageData = unencodedResponse.split(SEPARATOR)
-    encryptedImageData =  encryptedImageData.encode("ascii")
-    unencryptedImageData = b64decode(encryptedImageData)
-    
-    return dateTime, roomID, unencryptedImageData
 
 def resizeImage(img):
     
@@ -158,19 +164,24 @@ def findObject(requestedItem):
     clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))
     
     # send requested object to the server
-    clientSocket.sendall(requestedItem.encode())
+    sendMessage(clientSocket, requestedItem.encode())
             
     # receive response from server
-    dateTime, roomID, unencryptedImageData = receiveResponse(clientSocket)
+    encodedResponse = recvMessage(clientSocket)
+    unencodedResponse = encodedResponse.decode()
+    dateTime, roomID = unencodedResponse.split(SEPARATOR)
+    
+    # recv image data
+    imageBytes = recvMessage(clientSocket)
     
     # close client socket after receiving all data from server
     clientSocket.close()
     
-    with tempfile.NamedTemporaryFile(suffix = ".jpg") as tmpImage:
-        tmpImage.write(unencryptedImageData)
-        databaseImage = Image.open(tmpImage.name)
+    with tempfile.NamedTemporaryFile(suffix = ".jpeg") as tmpImage:
+        tmpImage.write(imageBytes)
+        requestedImage = Image.open(tmpImage.name)
 
-        resizedImage  = resizeImage(databaseImage)
+        resizedImage  = resizeImage(requestedImage)
         
         # display image
         imageBox.configure(image = resizedImage)

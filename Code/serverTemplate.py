@@ -7,7 +7,6 @@ class Server(object):
         self.host = host
         self.serverPort = port
         self.databasePort = 27017
-        self.collection = "camNodeResults"
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.host, self.serverPort))
@@ -25,13 +24,13 @@ class Server(object):
     
     def recvMessage(self, sock):
         # Read message length and unpack it into an integer
-        raw_msglen = recvAll(sock, 4)
+        raw_msglen = self.recvAll(sock, 4)
         if not raw_msglen:
             return None
         msglen = struct.unpack('>I', raw_msglen)[0]
         
         # Read the message data
-        return recvAll(sock, msglen)
+        return self.recvAll(sock, msglen)
 
     def recvAll(self, sock, n):
         # Helper function to recv n bytes or return None if EOF is hit

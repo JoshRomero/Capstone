@@ -6,6 +6,9 @@ import struct
 import json
 from socket import *
 
+# NEED TO ADD:
+# TOKENS
+
 # pi server ip and port
 SERVER_DOMAIN = "18.188.84.183"
 SERVER_PORT = 24002
@@ -56,19 +59,11 @@ if __name__ == "__main__":
             
             # capture image and append to in-memory byte stream
             captureTime = datetime.now()
-            camera.capture(imageMemoryStream, 'jpg')
-            print(f"[+] Picture captured at the dateTime: {captureTime}")
-            
-            imageBytes = bytearray()
-            for byte in imageMemoryStream:
-                imageBytes.append(byte)
-            
-            # clear in-memory byte stream
-            imageMemoryStream.seek(0)
-            imageMemoryStream.truncate(0)
+            camera.capture(imageMemoryStream, 'jpeg')
+            print("[+] Picture captured at the dateTime: {}".format(captureTime))
                 
             # create database entry
-            uid = "testID"
+            uid = "testID" # temporary, needs to be replaced by token
             entry = createEntry(uid, captureTime)
             
             # using encode() + dumps() to convert to bytes 
@@ -76,8 +71,12 @@ if __name__ == "__main__":
                 
             # send entry and image to server
             sendMessage(clientSocket, entryBytes)
-            sendMessage(clientSocket, imageBytes)
+            sendMessage(clientSocket, imageMemoryStream.getvalue())
+            
+            # clear in-memory byte stream
+            imageMemoryStream.seek(0)
+            imageMemoryStream.truncate(0)
             
             # sleep a minute to give the database time to receive the last entry
-            sleep(55.5)
+            sleep(10)
 
