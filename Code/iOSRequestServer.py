@@ -78,8 +78,9 @@ class RequestServer(Server):
         while True:
             clientConnectionSocket, clientAddress = self.sock.accept()
             clientConnectionSocket.settimeout(60)
+            print("[+] User connected from {}".format(clientAddress))
             Thread(target = self.run, args = (clientConnectionSocket, clientAddress)).start()
 
 if __name__ == "__main__":
-    RequestServer.listenForUsers()
-    
+    requestServer = RequestServer()
+    requestServer.listenForUsers()
