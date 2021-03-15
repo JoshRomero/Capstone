@@ -26,6 +26,9 @@ class RequestServer(Server):
             newestEntry = entry
             break
         
+        # insert query information into collection for dashboard
+        collection.insert_one({"objectQueried": object})
+        
         return newestEntry
     
     def retrieveImage(self, entryPath):
