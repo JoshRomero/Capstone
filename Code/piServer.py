@@ -60,7 +60,7 @@ class PiServer(Server):
             sslConnection = self.sslContext.wrap_socket(clientConnectionSocket, server_side=True)
             print("SSL established. Peer: {}".format(sslConnection.getpeercert()))
             
-            Thread(target = self.run, args = (sslConnection)).start()
+            Thread(target = self.run, args = (sslConnection,)).start()
 
 if __name__ == "__main__":
     piServer = PiServer()
