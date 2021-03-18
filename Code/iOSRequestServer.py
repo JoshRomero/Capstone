@@ -2,6 +2,7 @@ import socket
 from threading import Thread
 from serverTemplate import Server
 from datetime import datetime
+import ssl
 
 # NEED TO ADD TOKENS,
 # WAY TO SEND THE USER INFO IF THEIR QUIERED OBJECT ISNT FOUND,
@@ -73,7 +74,11 @@ class RequestServer(Server):
             
             if threadStop:
                 break
-            
+        
+        # ssl connection closing
+        # sslConnection.shutdown(socket.SHUT_RDWR)
+        # sslConnection.close()
+        
         connectionSocket.close()
     
     def listenForUsers(self):

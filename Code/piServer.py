@@ -47,6 +47,8 @@ class PiServer(Server):
             
             # send entry to database
             self.database.camNodeResults.insert_one(entry)
+            
+            print("Entry inserted into database!")
     
     def listenForPis(self):
         self.sock.listen(100)
@@ -54,7 +56,11 @@ class PiServer(Server):
             clientConnectionSocket, clientAddress = self.sock.accept()
             clientConnectionSocket.settimeout(60)
             print("[+] Pi connected from {}".format(clientAddress))
-            Thread(target = self.run, args = (clientConnectionSocket)).start()
+            
+            sslConnection = self.sslContext.wrap_socket(clientConnectionSocket, server_side=True)
+            print("SSL established. Peer: {}".format(sslConnection.getpeercert()))
+            
+            Thread(target = self.run, args = (sslConnection)).start()
 
 if __name__ == "__main__":
     piServer = PiServer()

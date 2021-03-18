@@ -5,6 +5,7 @@ from io import BytesIO
 import struct
 import json
 from socket import *
+import ssl
 
 # NEED TO ADD:
 # TOKENS
@@ -42,8 +43,19 @@ def sendMessage(sock, msg):
 if __name__ == "__main__":
     # retrieve token for user
     
-    # connect to server socket
-    clientSocket = create_connection((SERVER_DOMAIN, SERVER_PORT))    
+    # ssl handshake
+    sslContext = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH, cafile='../ssl/server.pem')
+    sslContext.verify_mode = ssl.CERT_REQUIRED
+    sslContext.load_cert_chain(certfile='../ssl/client.pem', keyfile='../ssl/client.key')
+    sslContext.check_hostname = False
+    
+    # connect to server socket - CHANGE TO REGULAR UNCONNECTED PYTHON SOCKET
+    clientSocket = socket(AF_INET, SOCK_STREAM)
+    
+    secureSocket = sslContext.wrap_socket(clientSocket, server_side=False)
+    secureSocket.connect((SERVER_DOMAIN, SERVER_PORT))
+    
+    print("SSL established. Peer: {}".format(secureSocket.getpeercert()))
 
     with PiCamera() as camera:
         #for upside down cameras (ribbon up)
@@ -70,8 +82,8 @@ if __name__ == "__main__":
             entryBytes = json.dumps(entry).encode('utf-8')
                 
             # send entry and image to server
-            sendMessage(clientSocket, entryBytes)
-            sendMessage(clientSocket, imageMemoryStream.getvalue())
+            sendMessage(secureSocket, entryBytes)
+            sendMessage(secureSocket, imageMemoryStream.getvalue())
             
             # clear in-memory byte stream
             imageMemoryStream.seek(0)

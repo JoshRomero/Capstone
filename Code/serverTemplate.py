@@ -1,6 +1,7 @@
 import socket
 from pymongo import MongoClient
 import struct
+import ssl
 
 class Server(object):
     def __init__(self, host, port):
@@ -10,6 +11,10 @@ class Server(object):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.host, self.serverPort))
+        self.sslContext = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH, cafile='../ssl/client.pem')
+        self.sslContext.verify_mode = ssl.CERT_REQUIRED
+        self.sslContext.load_cert_chain(certfile='../ssl/server.pem', keyfile='../ssl/server.key')
+        self.sslContext.check_hostname = False
     
     def authenticateToDatabase(self, user, password):
         mongo_client = MongoClient("mongodb://{}:{}".format(self.host, self.databasePort))
@@ -46,6 +51,9 @@ class Server(object):
         # Prefix each message with a 4-byte length (network byte order)
         msg = struct.pack('>I', len(msg)) + msg
         sock.sendall(msg)
+    
+    def onSSLConnect(self):
+        pass
     
     # need to install firebase sdk to make work
     # using token uids will allow a table per user
