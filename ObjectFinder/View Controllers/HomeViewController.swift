@@ -6,7 +6,9 @@
 //
 
 import UIKit
+import FirebaseAuth
 // import SideMenu
+import SocketIO
 
 class HomeViewController:
     UIViewController {
@@ -19,13 +21,24 @@ class HomeViewController:
     
     @IBOutlet weak var objectLabel: UILabel!
     
-    // var menu: SideMenuNavigationController?
+//    static let manager = SocketManager(socketURL: URL(string: "http://18.188.84.183:12001")!, config: [.log(true), .compress])
+//    static let socket = manager.defaultSocket
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setUpElements()
+        
+//        HomeViewController.socket.connect()
+//
+//        HomeViewController.socket.on(clientEvent: .connect) {data, ack in
+//            print("socket connected")
+//        }
+//
+//        HomeViewController.socket.on(clientEvent: .error) {data, ack in
+//            print("socket error")
+//        }
     }
     
     func setUpElements() {
@@ -42,7 +55,7 @@ class HomeViewController:
     func validateFields() -> String? {
         
         // Check that all fields are filled in
-        if (objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "keys" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "phone" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "wallet" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "remote")
+        if (objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "keys" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "cup" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "glasses" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "remote")
         {
             return nil
         }
@@ -68,6 +81,9 @@ class HomeViewController:
                     
             // Show object message
             self.showObject("You're looking for: \(object)")
+//            HomeViewController.socket.emit("object", object)
+//            SocketIOManager.sharedInstance.emit(message: "message": "This is a test message")
+//            SocketIOManager.sharedInstance.emit(object: "object": "testing")
         }
     }
     
@@ -84,6 +100,27 @@ class HomeViewController:
             objectLabel.alpha = 1
             errorLabel.alpha = 0
         }
+    
+    @IBAction func signOutTapped(_ sender: Any) {
+        
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+            self.transitionToRoot()
+        } catch let signOutError as NSError {
+          print ("Error signing out: %@", signOutError)
+        }
+    }
+    
+    func transitionToRoot() {
+        
+        let viewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.viewController) as? ViewController
+        
+        view.window?.rootViewController = viewController
+        view.window?.makeKeyAndVisible()
+            
+    }
+    
 }
 
 // extension to capitalize the first letter of the object
