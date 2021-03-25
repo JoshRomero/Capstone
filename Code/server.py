@@ -2,9 +2,10 @@ from pymongo import MongoClient
 from socket import *
 from datetime import datetime
 from time import sleep
+from threading import *
 
 # host machine ip, mongodb and server listening port
-DATABASE_DOMAIN = SERVER_DOMAIN = "192.168.1.54"
+DATABASE_DOMAIN = SERVER_DOMAIN = "172.31.28.81"
 DATABASE_PORT = 27017
 SERVER_PORT = 12001
 SEPARATOR = "<SEPARATOR>"
@@ -50,7 +51,7 @@ except:
     print("Switch failed!")
 
 # create TCP server socket and bind to PORT
-serverSocket = create_server((SERVER_DOMAIN, SERVER_PORT))
+serverSocket = create_server(('', SERVER_PORT))
 
 while True:
     
