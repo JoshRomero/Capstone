@@ -48,7 +48,9 @@ class RequestServer(Server):
             # verify token
             
             # receive request from connection socket
-            incomingRequest = self.recvMessage(connectionSocket)
+            # incomingRequest = self.recvMessage(connectionSocket)
+            incomingRequest = connectionSocket.recv(1024).decode()
+            
             if DEBUG:
                 print("Item requested from {}: {} at {}".format(ipAddress, incomingRequest, datetime.now()))
             
@@ -58,17 +60,17 @@ class RequestServer(Server):
             entry = self.queryDatabase(incomingRequest, collection, uid)
             
             # extract and format necessary information
-            requestedInformation = str(entry["dateTime"]) + SEPARATOR + str(entry["roomID"])
+            requestedInformation = "Your {} was found in room {} at {}".format(incomingRequest, str(entry["roomID"]), str(entry["dateTime"]))
             
             # retrieve image from file system
-            requestedImage = self.retrieveImage(entry["image"])
+            # requestedImage = self.retrieveImage(entry["image"])
             
             # encode and send necessary info
             encodedInformation = requestedInformation.encode()
             self.sendMessage(connectionSocket, encodedInformation)
             
             # send image
-            self.sendMessage(connectionSocket, requestedImage)
+            # self.sendMessage(connectionSocket, requestedImage)
             
             threadStop = True
             
