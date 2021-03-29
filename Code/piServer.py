@@ -18,6 +18,7 @@ class PiServer(Server):
     # def verifyMessage(self, msg):
     #     pass
     
+    # saves image to file system and adds image path to entry
     def saveImage(self, imgBytes, uid, entry):
         userPath = "./userImgs/{}".format(uid)
         if os.path.isdir(userPath) == False:
@@ -33,7 +34,10 @@ class PiServer(Server):
     def run(self, connectionSocket):
         while True:
             # receive token
+            
             # verify token
+            uid = "testID" # temporary, needs to be replaced by token
+            
             # verify message
             
             # receive entry and decode use decode() + loads() to convert to dictionary
@@ -42,7 +46,6 @@ class PiServer(Server):
             
             # receive image and save to file system under user's folder
             imageBytes = self.recvMessage(connectionSocket)
-            uid = "testID" # temporary, needs to be replaced by token
             self.saveImage(imageBytes, uid, entry)
             
             # send entry to database

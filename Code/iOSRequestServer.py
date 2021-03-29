@@ -11,26 +11,13 @@ import ssl
 SEPARATOR = "<SEPARATOR>"
 DEBUG = False
 
-class RequestServer(Server):
+class iOSRequestServer(Server):
     serverPort = 12001
     serverIP = socket.gethostbyname(socket.gethostname())
     
     def __init__(self):
-        super().__init__(RequestServer.serverIP, RequestServer.serverPort)
+        super().__init__(iOSRequestServer.serverIP, iOSRequestServer.serverPort)
         self.database = self.authenticateToDatabase('serverNode', '7$dsV!G3D0Oc')
-    
-    
-    # retrieve the newest entry containing the item the user requested
-    def queryDatabase(self, object, collection, uid):
-        objectProb = "{}Prob".format(object)
-        for entry in collection.find({"$and": [{"userID": uid}, {objectProb:1.0}]}).sort("dateTime", -1):
-            newestEntry = entry
-            break
-        
-        # insert query information into collection for dashboard
-        collection.insert_one({"objectQueried": object})
-        
-        return newestEntry
     
     def retrieveImage(self, entryPath):
         imageBytes = bytearray()
@@ -46,9 +33,9 @@ class RequestServer(Server):
             # receive token
             
             # verify token
+            uid = "testID" # temp to be replaced 
             
             # receive request from connection socket
-            # incomingRequest = self.recvMessage(connectionSocket)
             incomingRequest = connectionSocket.recv(1024).decode()
             
             if DEBUG:
@@ -56,30 +43,28 @@ class RequestServer(Server):
             
             # query database for entry
             collection = self.database.camNodeResults
-            uid = "testID"
             entry = self.queryDatabase(incomingRequest, collection, uid)
             
             # extract and format necessary information
-            requestedInformation = "Your {} was found in room {} at {}".format(incomingRequest, str(entry["roomID"]), str(entry["dateTime"]))
+            if entry != None:
+                requestedInformation = "Your {} was found in room {} at {}".format(incomingRequest, str(entry["roomID"]), str(entry["dateTime"]))
+            else:
+                requestedInformation = "Sorry, your object could not be found"
             
             # retrieve image from file system
-            # requestedImage = self.retrieveImage(entry["image"])
+            requestedImage = self.retrieveImage(entry["image"])
             
             # encode and send necessary info
             encodedInformation = requestedInformation.encode()
             self.sendMessage(connectionSocket, encodedInformation)
             
             # send image
-            # self.sendMessage(connectionSocket, requestedImage)
+            self.sendMessage(connectionSocket, requestedImage)
             
             threadStop = True
             
             if threadStop:
                 break
-        
-        # ssl connection closing
-        # sslConnection.shutdown(socket.SHUT_RDWR)
-        # sslConnection.close()
         
         connectionSocket.close()
     
@@ -92,5 +77,5 @@ class RequestServer(Server):
             Thread(target = self.run, args = (clientConnectionSocket, clientAddress)).start()
 
 if __name__ == "__main__":
-    requestServer = RequestServer()
-    requestServer.listenForUsers()
+    iOSRequestServer = iOSRequestServer()
+    iOSRequestServer.listenForUsers()

@@ -27,6 +27,21 @@ class Server(object):
         
         return rPiDatabase
     
+    # retrieve the newest entry containing the item the user requested
+    def queryDatabase(self, object, collection, uid):
+        objectProb = "{}Prob".format(object)
+        newestEntry = None
+        for entry in collection.find({"$and": [{"userID": uid}, {objectProb:1.0}]}).sort("dateTime", -1):
+            newestEntry = entry
+            break
+        
+        if newestEntry != None:
+            
+            # insert query information into collection for dashboard
+            collection.insert_one({"objectQueried": object})
+
+        return newestEntry
+    
     def recvMessage(self, sock):
         # Read message length and unpack it into an integer
         raw_msglen = self.recvAll(sock, 4)
