@@ -1,4 +1,4 @@
-from flask import Flask, request, Response
+from flask import Flask, request, Response, render_template
 from flask_restful import abort, Api, Resource
 from werkzeug.utils import secure_filename
 from marshmallow import fields, Schema
@@ -10,39 +10,51 @@ import base64
 import matplotlib.pyplot as plt
 from dashboard import dashboard
 import json
+import pyrebase
 
 DATABASE_IP = socket.gethostbyname(socket.gethostname())
 DATABASE_PORT = 27017
 UPLOAD_FOLDER = './userImgs'
 ALLOWED_EXTENSIONS = set(['jpeg'])
 
+fireBaseConfig = {
+  "apiKey": "AIzaSyDkYMP_ilWmPr5n0Kt_N7odVehYEw6qh64",
+  "authDomain": "objectfinder-3d3f3.firebaseapp.com",
+  "databaseURL": "https://databaseName.firebaseio.com",
+  "storageBucket": "projectId.appspot.com"
+}
+
 class PiDataPostSchema(Schema):
-    userID = fields.Str()
     dateTime = fields.Str()
     roomID = fields.Int()
     keysProb = fields.Decimal()
     glassesProb = fields.Decimal()
-    thermosProb = fields.Decimal()
+    remoteProb = fields.Decimal()
 
 class PiDataGetSchema(Schema):
-    userID = fields.Str(required = True)
     objectQueried = fields.Str(required = True)
 
 class UserDashboardSchema(Schema):
     userID = fields.Str(required = True)
 
 class ReturnedQuerySchema(Schema):
-    userID = fields.Str()
     dateTime = fields.Str()
     roomID = fields.Str()
     itemFound = fields.Str()
 
+class UserCredentialSchema(Schema):
+    email = fields.Str(required = True)
+    password = fields.Str(required = True)
+
 app = Flask(__name__)
 api = Api(app)
+firebaseAuth = pyrebase.initialize_app(fireBaseConfig).auth()
+
 piDataPostScheme = PiDataPostSchema()
 piDataGetScheme = PiDataGetSchema()
 userDashboardScheme = UserDashboardSchema()
 returnedQueryScheme = ReturnedQuerySchema()
+userCredentialScheme = UserCredentialSchema()
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -59,18 +71,7 @@ def authenticateToDatabase():
         return rPiDatabaseCollection
 
 def formatEntries(dbEntry, args):
-    if dbEntry == None:
-        formattedEntry = {
-            "userID": args["userID"],
-            "dateTime": "None",
-            "roomID": "None",
-            "itemFound": "None"
-            }
-
-        return formattedEntry
-
     formattedEntry = {
-            "userID": dbEntry["userID"],
             "dateTime": dbEntry["dateTime"],
             "roomID": dbEntry["roomID"],
             "itemFound": args["objectQueried"].lower()
@@ -79,17 +80,16 @@ def formatEntries(dbEntry, args):
     return formattedEntry
 
 # retrieve the newest entry containing the item the user requested
-def queryDatabase(collection, args):
+def queryDatabase(collection, args, userID):
     objectProb = "{}Prob".format(args["objectQueried"].lower())
     newestEntry = None
-    for entry in collection.find({'$and':[{"userID": args["userID"]},{objectProb:"1.0"}]}).sort("dateTime", -1):
+    for entry in collection.find({'$and':[{"userID": userID},{objectProb:"1.0"}]}).sort("dateTime", -1):
         newestEntry = entry
         break
 
+    # return 404 error if resource cannot be found
     if newestEntry == None:
-        formattedEntry = formatEntries(newestEntry, args)
-
-        return formattedEntry, None
+        return abort(404)
 
     formattedEntry = formatEntries(newestEntry, args)
 
@@ -124,12 +124,12 @@ def queryDatabase(collection, args):
     return formattedEntry, newestEntry["image"]
 
  # saves image to file system and adds image path to entry
-def saveImage(entry, imageData):
-    userPath = "./userImgs/{}".format(entry["userID"])
+def saveImage(entry, imageData, userID):
+    userPath = "./userImgs/{}".format(userID)
     if path.isdir(userPath) == False:
         mkdir(userPath)
 
-    imgPath = "./userImgs/{}/{}_{}.jpg".format(entry["userID"], entry["roomID"], entry["dateTime"])
+    imgPath = "./userImgs/{}/{}_{}.jpg".format(userID, entry["roomID"], entry["dateTime"])
 
     imageData.save(imgPath)
 
@@ -146,30 +146,62 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def verifyToken(token):
+    decoded_token = fireBaseAuth.verify_id_token(token["idToken"])
+    if decoded_token:
+        uid = decoded_token['uid']
+    else:
+        # return http status code for bad login
+        abort(401)
+            
+    return uid
+        
 # post: allows users to login and receive a token
 class LoginAPI(Resource):
     def post(self):
-        pass
+        errors = userCredentialScheme.validate(request.form)
+        if errors:
+            abort(400)
+        
+        loginInfo = request.form.to_dict()
+        userToken = fireBaseAuth.sign_in_with_email_and_password(loginInfo["email"], loginInfo["password"])
+        
+        return userToken
+        
+# post: allows users to sign up for an account
+class SignUpAPI(Resource):
+    def post(self):
+        errors = userCredentialScheme.validate(request.form)
+        if errors:
+            abort(400)
+        
+        signUpInfo = request.form.to_dict()
+        userToken = fireBaseAuth.create_user_with_email_and_password(signUpInfo["email"], signUpInfo["password"])
+        fireBaseAuth.send_email_verification(userToken['idToken'])
+        
+        return 'ok'
 
 # get: allows users to get entry info on the apple apps and alexas
 # post: allows pis to insert entries into database
 class PiDataAPI(Resource):
-    decorators = []
 
     # NEED TO FINISH -- figure out how to send image data and json at the same time
     def get(self):
+        uid = verifyToken(request.header["token"])
+        
         errors = piDataGetScheme.validate(request.args)
         if errors:
             abort(400)
         db = authenticateToDatabase()
-        formattedEntry, imgPath = queryDatabase(db, request.args)
-        if formattedEntry["itemFound"] != "None":
-            imageData = retrieveImage(imgPath)
+        formattedEntry, imgPath = queryDatabase(db, request.args, uid)
+        imageData = retrieveImage(imgPath)
 
-        return json.dumps(formattedEntry)
+        return formattedEntry
 
     def post(self):
-        errors = piDataPostScheme(request.form)
+        uid = verifyToken(request.header["token"])
+        
+        errors = piDataPostScheme.validate(request.form)
         if errors:
             abort(400)
         entry = request.form.to_dict()
@@ -181,7 +213,7 @@ class PiDataAPI(Resource):
             abort(400)
         if imageData and allowed_file(imageData.filename):
             db = authenticateToDatabase()
-            imgPath = saveImage(entry, imageData)
+            imgPath = saveImage(entry, imageData, uid)
             entry["image"] = imgPath
             db.insert_one(entry)
 
@@ -219,9 +251,14 @@ class UserDashboardAPI(Resource):
         db = authenticateToDatabase()
         dashboard(db)
 
+@app.route("/")
+def welcomePage():
+    return render_template("index.html")
 
+api.add_resource(LoginAPI, "/login", endpoint = 'login')
+api.add_resource(SignUpAPI, '/signup', endpoint = 'signup')
 api.add_resource(PiDataAPI, "/pidata", endpoint = 'pidata')
 api.add_resource(UserDashboardAPI, "/dashboard", endpoint = 'dashboard')
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=12001)
+    app.run()
