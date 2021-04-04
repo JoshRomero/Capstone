@@ -54,13 +54,28 @@ class LoginViewController: UIViewController {
                         self.errorLabel.alpha = 1
                     }
                     else {
-            
-                        let homeViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
-            
-                        self.view.window?.rootViewController = homeViewController
-                        self.view.window?.makeKeyAndVisible()
+                        self.transitionToHome()
                     }
                 }
+    }
+    
+    @IBAction func backButtonTapped(_ sender: Any) {
+        self.transitionToRoot()
+    }
+    
+    func transitionToHome() {
+        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+        
+        view.window?.rootViewController = homeViewController
+        view.window?.makeKeyAndVisible()
+    }
+    
+    func transitionToRoot() {
+        
+        let viewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.rootViewController) as? ViewController
+        
+        view.window?.rootViewController = viewController
+        view.window?.makeKeyAndVisible()
     }
     
 }

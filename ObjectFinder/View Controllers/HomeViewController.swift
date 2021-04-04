@@ -7,11 +7,10 @@
 
 import UIKit
 import FirebaseAuth
-// import SideMenu
-import SocketIO
+import SideMenu
 
 class HomeViewController:
-    UIViewController {
+    UIViewController, MenuControllerDelegate {
     
     @IBOutlet weak var objectToLocate: UITextField!
     
@@ -21,24 +20,69 @@ class HomeViewController:
     
     @IBOutlet weak var objectLabel: UILabel!
     
-//    static let manager = SocketManager(socketURL: URL(string: "http://18.188.84.183:12001")!, config: [.log(true), .compress])
-//    static let socket = manager.defaultSocket
+    private var sideMenu: SideMenuNavigationController?
+    
+    private let aboutController = AboutViewController()
+    private let settingsController = SettingsViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
         setUpElements()
+        let menu = MenuController(with: SideMenuItem.allCases)
+        menu.delegate = self
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        sideMenu?.leftSide = true
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: view)
         
-//        HomeViewController.socket.connect()
-//
-//        HomeViewController.socket.on(clientEvent: .connect) {data, ack in
-//            print("socket connected")
-//        }
-//
-//        HomeViewController.socket.on(clientEvent: .error) {data, ack in
-//            print("socket error")
-//        }
+        addChildControllers()
+    }
+    
+    private func addChildControllers() {
+        addChild(aboutController)
+        addChild(settingsController)
+        
+        view.addSubview(aboutController.view)
+        view.addSubview(settingsController.view)
+        
+        aboutController.view.frame = view.bounds
+        settingsController.view.frame = view.bounds
+        
+        aboutController.didMove(toParent: self)
+        settingsController.didMove(toParent: self)
+        
+        aboutController.view.isHidden = true
+        settingsController.view.isHidden = true
+    }
+    
+    @IBAction func didTapMenuButton(_ sender: Any) {
+        present(sideMenu!, animated: true)
+    }
+    
+    func didSelectMenuItem(named: SideMenuItem) {
+        sideMenu?.dismiss(animated: true, completion: nil)
+            
+        title = named.rawValue
+        
+        switch named {
+        case .home:
+            aboutController.view.isHidden = true
+            settingsController.view.isHidden = true
+        case .settings:
+            settingsController.view.isHidden = false
+            aboutController.view.isHidden = true
+        case .sign_out:
+            let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+                transitionToRoot()
+            } catch let signOutError as NSError {
+                showError("Error signing out: \(signOutError)")
+            }
+        case .about:
+            settingsController.view.isHidden = true
+            aboutController.view.isHidden = false
+        }
     }
     
     func setUpElements() {
@@ -55,7 +99,7 @@ class HomeViewController:
     func validateFields() -> String? {
         
         // Check that all fields are filled in
-        if (objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "keys" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "cup" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "glasses" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "remote")
+        if (objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "keys" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "glasses" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "remote")
         {
             return nil
         }
@@ -69,21 +113,39 @@ class HomeViewController:
         let error = validateFields()
         
         if error != nil {
-            
             // There's something wrong with the field, show error message
             showError(error!)
         }
         
         else {
-            
             // Create cleaned versions of the object
+            errorLabel.alpha = 0
             let object = objectToLocate.text!.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
-                    
+            
+            let url1 = URL(string: "https://objectfinder.tech/pidata?userID=testID&objectQueried=\(object)")!
+            let request = URLRequest(url: url1)
+//            request.httpBody = body
+//            request.httpMethod = "PUT"
+            let (cleaned, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+            if let error = error {
+                print("Synchronous task ended with error: \(error)")
+                self.showError("No internet connection.")
+            }
+            else {
+                print("Synchronous task ended without errors.")
+                let item = cleaned[15].dropLast()
+                let room = cleaned[11].dropLast()
+                let dateTime = cleaned[7].dropLast()
+                if (item == "keys" || item == "glasses") {
+                    self.showObject("Your \(item) were found in room \(room) at \(dateTime).")
+                }
+                else {
+                    self.showObject("Your \(item) was found in room \(room) at \(dateTime).")
+                }
+            }
+            
             // Show object message
-            self.showObject("You're looking for: \(object)")
-//            HomeViewController.socket.emit("object", object)
-//            SocketIOManager.sharedInstance.emit(message: "message": "This is a test message")
-//            SocketIOManager.sharedInstance.emit(object: "object": "testing")
+//            self.showObject("Item: \(item)")
         }
     }
     
@@ -92,35 +154,22 @@ class HomeViewController:
             errorLabel.text = message
             objectLabel.alpha = 0
             errorLabel.alpha = 1
-        }
+    }
     
     // display which object the user is looking for
     func showObject(_ message: String) {
-            objectLabel.text = message
-            objectLabel.alpha = 1
-            errorLabel.alpha = 0
-        }
-    
-    @IBAction func signOutTapped(_ sender: Any) {
-        
-        let firebaseAuth = Auth.auth()
-        do {
-          try firebaseAuth.signOut()
-            self.transitionToRoot()
-        } catch let signOutError as NSError {
-          print ("Error signing out: %@", signOutError)
-        }
+        self.objectLabel.text = message
+        self.objectLabel.alpha = 1
+        self.errorLabel.alpha = 0
     }
     
     func transitionToRoot() {
         
-        let viewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.viewController) as? ViewController
+        let rootViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.rootViewController) as? ViewController
         
-        view.window?.rootViewController = viewController
+        view.window?.rootViewController = rootViewController
         view.window?.makeKeyAndVisible()
-            
     }
-    
 }
 
 // extension to capitalize the first letter of the object
@@ -131,5 +180,30 @@ extension String {
 
     mutating func capitalizeFirstLetter() {
         self = self.capitalizingFirstLetter()
+    }
+}
+
+extension URLSession {
+    func synchronousDataTask(urlrequest: URLRequest) -> (cleaned: [String], response: URLResponse?, error: Error?) {
+        var data: Data?
+        var response: URLResponse?
+        var error: Error?
+
+        let semaphore = DispatchSemaphore(value: 0)
+        
+        let dataTask = self.dataTask(with: urlrequest) {
+            data = $0
+            response = $1
+            error = $2
+
+            semaphore.signal()
+        }
+        dataTask.resume()
+        
+        _ = semaphore.wait(timeout: .distantFuture)
+        
+        let unformatted = String(data: data!, encoding: .utf8)!
+        let cleaned = unformatted.split{$0 == "\""}.map(String.init)
+        return (cleaned, response, error)
     }
 }

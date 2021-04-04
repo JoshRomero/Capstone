@@ -125,9 +125,22 @@ class SignUpViewController: UIViewController {
     }
     }
     
+    @IBAction func backButtonTapped(_ sender: Any) {
+        self.transitionToRoot()
+    }
+    
+    
     func showError(_ message: String) {
         errorLabel.text = message
         errorLabel.alpha = 1
+    }
+    
+    func transitionToRoot() {
+        
+        let viewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.rootViewController) as? ViewController
+        
+        view.window?.rootViewController = viewController
+        view.window?.makeKeyAndVisible()
     }
     
     func transitionToHome() {
