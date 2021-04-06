@@ -12,35 +12,26 @@ import Firebase
 
 class SignUpViewController: UIViewController {
     
-    @IBOutlet weak var
-        firstNameTextField:
-        UITextField!
+    @IBOutlet weak var firstNameTextField: UITextField!
     
-    @IBOutlet weak var
-        lastNameTextField:
-        UITextField!
+    @IBOutlet weak var lastNameTextField: UITextField!
     
-    @IBOutlet weak var
-        emailTextField:
-        UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
     
-    @IBOutlet weak var
-        passwordTextField:
-        UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
-    @IBOutlet weak var
-        signUpButton:
-        UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     
-    @IBOutlet weak var
-        errorLabel:
-        UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         setUpElements()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     func setUpElements() {
@@ -120,27 +111,14 @@ class SignUpViewController: UIViewController {
                     
                     // Transition to the home screen
                     self.transitionToHome()
+                }
             }
         }
     }
-    }
-    
-    @IBAction func backButtonTapped(_ sender: Any) {
-        self.transitionToRoot()
-    }
-    
     
     func showError(_ message: String) {
         errorLabel.text = message
         errorLabel.alpha = 1
-    }
-    
-    func transitionToRoot() {
-        
-        let viewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.rootViewController) as? ViewController
-        
-        view.window?.rootViewController = viewController
-        view.window?.makeKeyAndVisible()
     }
     
     func transitionToHome() {

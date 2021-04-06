@@ -14,5 +14,4 @@ class AboutViewController: UIViewController {
 
         view.backgroundColor = .red
     }
-
 }

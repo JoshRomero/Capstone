@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA1613BC261AAE6F00C628A8 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1613BB261AAE6F00C628A8 /* SideMenu.swift */; };
+		EA1613BF261AAE9700C628A8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */; };
+		EA1613C2261AAECF00C628A8 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1613C1261AAECF00C628A8 /* AboutViewController.swift */; };
 		EA542B6725E2991400EB51C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA542B6625E2991400EB51C7 /* AppDelegate.swift */; };
 		EA542B6925E2991400EB51C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA542B6825E2991400EB51C7 /* SceneDelegate.swift */; };
 		EA542B6B25E2991400EB51C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA542B6A25E2991400EB51C7 /* ViewController.swift */; };
@@ -19,7 +22,6 @@
 		EA798B6B25E3DB9D002AF4B6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA798B6A25E3DB9D002AF4B6 /* Constants.swift */; };
 		EAA12B1225E2A58400182937 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA12B1125E2A58400182937 /* Utilities.swift */; };
 		EAA12B1525E2AA0900182937 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EAA12B1425E2AA0900182937 /* GoogleService-Info.plist */; };
-		EAB52947260A81AF002DB811 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB52946260A81AF002DB811 /* SocketManager.swift */; };
 		EAD8017825FAC9F40054B69C /* Pods_ObjectFinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB23864A00E5D162451CF23B /* Pods_ObjectFinder.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +29,9 @@
 		4431E73B9FE46A51C8F7CFC3 /* Pods-ObjectFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectFinder.debug.xcconfig"; path = "Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder.debug.xcconfig"; sourceTree = "<group>"; };
 		62E6B15831AE679D7669043B /* Pods-ObjectFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectFinder.release.xcconfig"; path = "Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder.release.xcconfig"; sourceTree = "<group>"; };
 		BB23864A00E5D162451CF23B /* Pods_ObjectFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ObjectFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA1613BB261AAE6F00C628A8 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
+		EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		EA1613C1261AAECF00C628A8 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		EA542B6325E2991400EB51C7 /* ObjectFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObjectFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA542B6625E2991400EB51C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA542B6825E2991400EB51C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,7 +46,6 @@
 		EA798B6A25E3DB9D002AF4B6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EAA12B1125E2A58400182937 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		EAA12B1425E2AA0900182937 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		EAB52946260A81AF002DB811 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +80,7 @@
 		EA542B5A25E2991400EB51C7 = {
 			isa = PBXGroup;
 			children = (
-				EAB52946260A81AF002DB811 /* SocketManager.swift */,
+				EA1613BB261AAE6F00C628A8 /* SideMenu.swift */,
 				EA542B6525E2991400EB51C7 /* ObjectFinder */,
 				EA542B6425E2991400EB51C7 /* Products */,
 				71957C2F5719C6EBD5A79FC1 /* Pods */,
@@ -104,6 +108,7 @@
 				EA542B7125E2991500EB51C7 /* LaunchScreen.storyboard */,
 				EAA12B1425E2AA0900182937 /* GoogleService-Info.plist */,
 				EA542B7425E2991500EB51C7 /* Info.plist */,
+				EA1613C1261AAECF00C628A8 /* AboutViewController.swift */,
 			);
 			path = ObjectFinder;
 			sourceTree = "<group>";
@@ -115,6 +120,7 @@
 				EA542B7B25E2993100EB51C7 /* SignUpViewController.swift */,
 				EA542B7E25E2993D00EB51C7 /* LoginViewController.swift */,
 				EA542B8125E2994800EB51C7 /* HomeViewController.swift */,
+				EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -245,12 +251,14 @@
 			files = (
 				EA542B6B25E2991400EB51C7 /* ViewController.swift in Sources */,
 				EA542B6725E2991400EB51C7 /* AppDelegate.swift in Sources */,
+				EA1613C2261AAECF00C628A8 /* AboutViewController.swift in Sources */,
 				EAA12B1225E2A58400182937 /* Utilities.swift in Sources */,
+				EA1613BF261AAE9700C628A8 /* SettingsViewController.swift in Sources */,
+				EA1613BC261AAE6F00C628A8 /* SideMenu.swift in Sources */,
 				EA542B7C25E2993100EB51C7 /* SignUpViewController.swift in Sources */,
 				EA542B7F25E2993D00EB51C7 /* LoginViewController.swift in Sources */,
 				EA542B6925E2991400EB51C7 /* SceneDelegate.swift in Sources */,
 				EA542B8225E2994800EB51C7 /* HomeViewController.swift in Sources */,
-				EAB52947260A81AF002DB811 /* SocketManager.swift in Sources */,
 				EA798B6B25E3DB9D002AF4B6 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,7 +417,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Branson-Hanzo.ObjectFinder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -431,7 +439,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "Branson-Hanzo.ObjectFinder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

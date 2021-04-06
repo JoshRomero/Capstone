@@ -22,8 +22,8 @@ class HomeViewController:
     
     private var sideMenu: SideMenuNavigationController?
     
-    private let aboutController = AboutViewController()
     private let settingsController = SettingsViewController()
+    private let aboutController = AboutViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +36,11 @@ class HomeViewController:
         SideMenuManager.default.addPanGestureToPresent(toView: view)
         
         addChildControllers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     private func addChildControllers() {
@@ -69,8 +74,8 @@ class HomeViewController:
             aboutController.view.isHidden = true
             settingsController.view.isHidden = true
         case .settings:
-            settingsController.view.isHidden = false
-            aboutController.view.isHidden = true
+//            transitionToSettings()
+            print("Settings")
         case .sign_out:
             let firebaseAuth = Auth.auth()
             do {
@@ -80,8 +85,8 @@ class HomeViewController:
                 showError("Error signing out: \(signOutError)")
             }
         case .about:
-            settingsController.view.isHidden = true
-            aboutController.view.isHidden = false
+//            transitionToAbout()
+            print("About")
         }
     }
     
@@ -163,10 +168,24 @@ class HomeViewController:
         self.errorLabel.alpha = 0
     }
     
+//    func transitionToSettings() {
+//        let settingsViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.settingsViewController) as? SettingsViewController
+//
+//        view.window?.rootViewController = settingsViewController
+//        view.window?.makeKeyAndVisible()
+//    }
+//
+//    func transitionToAbout() {
+//        let aboutViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.aboutViewController) as? AboutViewController
+//
+//        view.window?.rootViewController = aboutViewController
+//        view.window?.makeKeyAndVisible()
+//    }
+//
     func transitionToRoot() {
-        
+
         let rootViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.rootViewController) as? ViewController
-        
+
         view.window?.rootViewController = rootViewController
         view.window?.makeKeyAndVisible()
     }
