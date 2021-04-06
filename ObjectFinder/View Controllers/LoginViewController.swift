@@ -59,6 +59,20 @@ class LoginViewController: UIViewController {
                         self.errorLabel.alpha = 1
                     }
                     else {
+                        let loginString = String(format: "%@:%@", email, password)
+                        let loginData = loginString.data(using: String.Encoding.utf8)!
+                        let base64LoginString = loginData.base64EncodedString()
+                        let url1 = URL(string: "https://objectfinder.tech/login")!
+                        var request = URLRequest(url: url1)
+                        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
+                        let (cleaned, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+//                        print(cleaned)
+                        if let error = error {
+                            print("Synchronous task ended with error: \(error)")
+                        }
+                        else {
+                            print("Synchronous task ended without errors.")
+                        }
                         self.transitionToHome()
                     }
                 }

@@ -81,8 +81,8 @@ class SignUpViewController: UIViewController {
         else {
             
             // Create cleaned versions of the data
-            let firstName = firstNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            let lastName = lastNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+//            let firstName = firstNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+//            let lastName = lastNameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             
@@ -99,15 +99,41 @@ class SignUpViewController: UIViewController {
                 else {
                     
                     // User was created successfully, now store the first and last
-                    let db = Firestore.firestore()
+//                    let db = Firestore.firestore()
+//
+//                    db.collection("users").addDocument(data: ["firstname":firstName, "lastname":lastName, "uid": result!.user.uid ]) { (error) in
+//
+//                        if error != nil {
+//                            // Show error message
+//                            self.showError("Error saving user data")
+//                        }
+//                    }
                     
-                    db.collection("users").addDocument(data: ["firstname":firstName, "lastname":lastName, "uid": result!.user.uid ]) { (error) in
-                        
-                        if error != nil {
-                            // Show error message
-                            self.showError("Error saving user data")
+                    // prepare json data
+                    let json: [String: Any] = ["email": email, "password": password]
+
+                    let jsonData = try? JSONSerialization.data(withJSONObject: json)
+
+                    // create post request
+                    let url = URL(string: "https://objectfinder.tech/signup")!
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "POST"
+
+                    // insert json data to the request
+                    request.httpBody = jsonData
+
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        guard let data = data, error == nil else {
+                            print(error?.localizedDescription ?? "No data")
+                            return
+                        }
+                        let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+                        if let responseJSON = responseJSON as? [String: Any] {
+                            print(responseJSON)
                         }
                     }
+
+                    task.resume()
                     
                     // Transition to the home screen
                     self.transitionToHome()

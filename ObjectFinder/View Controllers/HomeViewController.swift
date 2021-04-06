@@ -127,8 +127,10 @@ class HomeViewController:
             errorLabel.alpha = 0
             let object = objectToLocate.text!.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
             
-            let url1 = URL(string: "https://objectfinder.tech/pidata?userID=testID&objectQueried=\(object)")!
-            let request = URLRequest(url: url1)
+            let url1 = URL(string: "https://objectfinder.tech/pidata?objectQueried=\(object)")!
+            var request = URLRequest(url: url1)
+//            let accessToken = "access token"
+//            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 //            request.httpBody = body
 //            request.httpMethod = "PUT"
             let (cleaned, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
@@ -142,15 +144,14 @@ class HomeViewController:
                 let room = cleaned[11].dropLast()
                 let dateTime = cleaned[7].dropLast()
                 if (item == "keys" || item == "glasses") {
+                    // Show object message
                     self.showObject("Your \(item) were found in room \(room) at \(dateTime).")
                 }
                 else {
+                    // Show object message
                     self.showObject("Your \(item) was found in room \(room) at \(dateTime).")
                 }
             }
-            
-            // Show object message
-//            self.showObject("Item: \(item)")
         }
     }
     
@@ -222,6 +223,7 @@ extension URLSession {
         _ = semaphore.wait(timeout: .distantFuture)
         
         let unformatted = String(data: data!, encoding: .utf8)!
+        print("unformatted: ", unformatted)
         let cleaned = unformatted.split{$0 == "\""}.map(String.init)
         return (cleaned, response, error)
     }
