@@ -1,28 +1,22 @@
-from flask import Flask, request, Response, render_template
+from flask import Flask, request
 from flask_restful import abort, Api, Resource
 from werkzeug.utils import secure_filename
 from marshmallow import fields, Schema
 from pymongo import MongoClient
-from os import mkdir, path
+import os
 import datetime
 import socket
-import base64
 import matplotlib.pyplot as plt
 from dashboard import dashboard
 import json
-import pyrebase
+import firebase_admin
+from firebase_admin import auth, credentials
+import requests
 
 DATABASE_IP = socket.gethostbyname(socket.gethostname())
 DATABASE_PORT = 27017
 UPLOAD_FOLDER = './userImgs'
 ALLOWED_EXTENSIONS = set(['jpeg'])
-
-fireBaseConfig = {
-  "apiKey": "AIzaSyDkYMP_ilWmPr5n0Kt_N7odVehYEw6qh64",
-  "authDomain": "objectfinder-3d3f3.firebaseapp.com",
-  "databaseURL": "https://databaseName.firebaseio.com",
-  "storageBucket": "projectId.appspot.com"
-}
 
 class PiDataPostSchema(Schema):
     dateTime = fields.Str()
@@ -34,36 +28,27 @@ class PiDataPostSchema(Schema):
 class PiDataGetSchema(Schema):
     objectQueried = fields.Str(required = True)
 
-class UserDashboardSchema(Schema):
-    userID = fields.Str(required = True)
-
 class ReturnedQuerySchema(Schema):
     dateTime = fields.Str()
     roomID = fields.Str()
     itemFound = fields.Str()
 
-class UserCredentialSchema(Schema):
-    email = fields.Str(required = True)
-    password = fields.Str(required = True)
-
 app = Flask(__name__)
 api = Api(app)
-firebaseAuth = pyrebase.initialize_app(fireBaseConfig).auth()
+
+cred = credentials.Certificate(os.environ['FIREBASE_CREDENTIALS'])
+firebase = firebase_admin.initialize_app(cred)
 
 piDataPostScheme = PiDataPostSchema()
 piDataGetScheme = PiDataGetSchema()
-userDashboardScheme = UserDashboardSchema()
 returnedQueryScheme = ReturnedQuerySchema()
-userCredentialScheme = UserCredentialSchema()
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def authenticateToDatabase():
         mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_IP, DATABASE_PORT))
 
         try:
             rPiDatabase = mongo_client.rPiData
-            rPiDatabase.authenticate(name = 'serverNode', password = '7$dsV!G3D0Oc')
+            rPiDatabase.authenticate(name = os.environ['DATABASE_USER'], password = os.environ['DATABASE_PASS'])
             rPiDatabaseCollection = rPiDatabase.camNodeResults
         except:
             raise Exception('Authentication Failed')
@@ -123,14 +108,13 @@ def queryDatabase(collection, args, userID):
 
     return formattedEntry, newestEntry["image"]
 
- # saves image to file system and adds image path to entry
+# saves image to file system and adds image path to entry
 def saveImage(entry, imageData, userID):
-    userPath = "./userImgs/{}".format(userID)
-    if path.isdir(userPath) == False:
-        mkdir(userPath)
+    userPath = os.path.join(UPLOAD_FOLDER, userID)
+    if os.path.isdir(userPath) == False:
+        os.mkdir(userPath)
 
-    imgPath = "./userImgs/{}/{}_{}.jpg".format(userID, entry["roomID"], entry["dateTime"])
-
+    imgPath = os.path.join(userPath, entry["dateTime"])
     imageData.save(imgPath)
 
     return imgPath
@@ -147,39 +131,15 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def verifyToken(token):
-    decoded_token = fireBaseAuth.verify_id_token(token["idToken"])
+    print("TOKEN: ", token)
+    decoded_token = auth.verify_id_token(token)
     if decoded_token:
         uid = decoded_token['uid']
     else:
         # return http status code for bad login
         abort(401)
-            
+
     return uid
-        
-# post: allows users to login and receive a token
-class LoginAPI(Resource):
-    def post(self):
-        errors = userCredentialScheme.validate(request.form)
-        if errors:
-            abort(400)
-        
-        loginInfo = request.form.to_dict()
-        userToken = fireBaseAuth.sign_in_with_email_and_password(loginInfo["email"], loginInfo["password"])
-        
-        return userToken
-        
-# post: allows users to sign up for an account
-class SignUpAPI(Resource):
-    def post(self):
-        errors = userCredentialScheme.validate(request.form)
-        if errors:
-            abort(400)
-        
-        signUpInfo = request.form.to_dict()
-        userToken = fireBaseAuth.create_user_with_email_and_password(signUpInfo["email"], signUpInfo["password"])
-        fireBaseAuth.send_email_verification(userToken['idToken'])
-        
-        return 'ok'
 
 # get: allows users to get entry info on the apple apps and alexas
 # post: allows pis to insert entries into database
@@ -187,20 +147,22 @@ class PiDataAPI(Resource):
 
     # NEED TO FINISH -- figure out how to send image data and json at the same time
     def get(self):
-        uid = verifyToken(request.header["token"])
-        
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+
         errors = piDataGetScheme.validate(request.args)
         if errors:
             abort(400)
         db = authenticateToDatabase()
-        formattedEntry, imgPath = queryDatabase(db, request.args, uid)
-        imageData = retrieveImage(imgPath)
 
+        formattedEntry, imgPath = queryDatabase(db, request.args, uid)
+        # imageData = retrieveImage(imgPath)
         return formattedEntry
 
     def post(self):
-        uid = verifyToken(request.header["token"])
-        
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+
         errors = piDataPostScheme.validate(request.form)
         if errors:
             abort(400)
@@ -219,44 +181,15 @@ class PiDataAPI(Resource):
 
         return 'ok'
 
-# get: tells user information about the devices that are associated with their account
-# post: allows users to register new pi devices
-# put: allows users to change pi room id
-# delete: allows users to remove a pi from their registered devices
-class UserDevicesAPI(Resource):
-    def get(self):
-        pass
-
-    def post(self):
-        pass
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
-
-# display dashboard of information for all user requests
-class DashboardAPI(Resource):
-    def get(self):
-        pass
-
 # display dashboard of information for a specific user's requests
 class UserDashboardAPI(Resource):
     def get(self):
-        errors = userDashboardScheme.validate(request.form)
-        if errors:
-            abort(400)
+        #uid = verifyToken(request.headers["Authorization"])
 
         db = authenticateToDatabase()
-        dashboard(db)
+        return("authenticated")
+       # dashboard(db)
 
-@app.route("/")
-def welcomePage():
-    return render_template("index.html")
-
-api.add_resource(LoginAPI, "/login", endpoint = 'login')
-api.add_resource(SignUpAPI, '/signup', endpoint = 'signup')
 api.add_resource(PiDataAPI, "/pidata", endpoint = 'pidata')
 api.add_resource(UserDashboardAPI, "/dashboard", endpoint = 'dashboard')
 
