@@ -1,59 +1,78 @@
-# Clark Foster
-# This python program is a server to receive files using TCP
+from pymongo import MongoClient
+from socket import *
+from datetime import datetime
+from time import sleep
+from threading import *
 
-
-import socket
-import os
-
-# this device's IP
-SERVER_HOST = "192.168.1.252"
-SERVER_PORT = 1337
-
-# receive 4096 bytes each step
-BUFFER_SIZE = 4096
+# host machine ip, mongodb and server listening port
+DATABASE_DOMAIN = SERVER_DOMAIN = "172.31.28.81"
+DATABASE_PORT = 27017
+SERVER_PORT = 12001
 SEPARATOR = "<SEPARATOR>"
 
-# create server socket (TCP) and bind to local address
-s = socket.socket()
-s.bind((SERVER_HOST, SERVER_PORT))
+def queryDatabase(object, collection):
+    # retrieve the newest document from the collection based on datetime (will be changed later to include CNN results)
+    objectProb = "{}Prob".format(object)
+    for entry in collection.find({objectProb:1.0}, {objectProb:1, "dateTime":1, "image":1, "roomID":1}).sort("dateTime", -1):
+        newestEntry = entry
+        break
+    
+    # extract and format necessary information
+    necessaryInfo = str(newestEntry["dateTime"]) + SEPARATOR + str(newestEntry["roomID"]) + SEPARATOR + newestEntry["image"].decode('ascii')
+    
+    return necessaryInfo
+    
 
-# enable server to accept connections with 5 as # unaccepted connections
-# that system will allow before refusing new ones
-s.listen(5)
-i = 1
+# connect to the database
+try:
+    print("Connecting to mongoDB server @ {}:{}...".format(DATABASE_DOMAIN, DATABASE_PORT))
+    mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_DOMAIN, DATABASE_PORT))
+    print("Connected!")
+except:
+    print("Connection failed")
+    exit(0)
+
+# authenticate to database
+try:
+    rPiDatabase = mongo_client.rPiData
+    print("Authenticating to rPiData database...")
+    rPiDatabase.authenticate(name='serverNode', password='7$dsV!G3D0Oc')
+    print("Sucessfully Authenticated!")
+except:
+    print("Authentication failed")
+    exit(0)
+
+# switch to correct collection
+try:
+    print("Switching to camNodeResults collection...")
+    camNodeResultsCollection = rPiDatabase.camNodeResults
+    print("Successfully switched!")
+except:
+    print("Switch failed!")
+
+# create TCP server socket and bind to PORT
+serverSocket = create_server(('', SERVER_PORT))
+
 while True:
-    try:
-        print("Listening as {}:{}".format(SERVER_HOST, SERVER_PORT))
-
-        # accept connections
-        client_socket, address = s.accept()
-        print("[+] {} is connected.".format(address))
-
-        # receive the file indo using client socket not server socket
-        received = client_socket.recv(BUFFER_SIZE).decode()
-        filename, filesize = received.split(SEPARATOR)
-        #remove absolute path if exist
-        filename  = os.path.basename(filename)
-        filename = filename[:-5]
-        filename = filename + '_' + str(i) + ".jpeg"
-        # convert to integer
-        filesize = int(filesize)
-
-        # Now start receiving file from socket and writing to file stream
-        with open(filename, "wb") as f:
-            while True:
-                # read 1024 bytes from socket (receive)
-                bytes_read = client_socket.recv(BUFFER_SIZE)
-                if not bytes_read:
-                    # then nothing is received and transmission complete
-                    break
-                # write to the file the bytes we just received
-                f.write(bytes_read)
-
-        #close the client socket
-        client_socket.close()
-        i+=1
-    except UnicodeDecodeError:
-        continue
-#close server socket
-s.close()
+    
+    # keep socket listening for a single connection
+    serverSocket.listen(1)
+    print("Server is ready to receive a connection...")
+    
+    # create connection socket
+    connectionSocket, address = serverSocket.accept()
+    print("Connection from {} accepted!".format(address))
+    
+    # receive request message from connection socket
+    incomingRequest = connectionSocket.recv(1024).decode()
+    print("Item requested from client: {} at {}".format(incomingRequest, datetime.now()))
+    
+    # query database and send requested information from query to sender
+    requestedInformation = queryDatabase(incomingRequest, camNodeResultsCollection)
+    encodedInformation = requestedInformation.encode()
+    sizeEncodedInfo = len(encodedInformation)
+    connectionSocket.sendall(str(sizeEncodedInfo).encode())
+    sleep(.01)
+    connectionSocket.sendall(requestedInformation.encode())
+    
+    connectionSocket.close()
