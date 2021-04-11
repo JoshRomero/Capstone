@@ -128,7 +128,7 @@ class InterfaceController: WKInterfaceController {
             // after getting the logged in results update the UI
             if returned && loggedin{
                 DispatchQueue.main.async {
-                    self.pushController(withName: "Search", context: nil)
+                    self.pushController(withName: "Search Screen", context: nil)
                 }
             }else{
                 DispatchQueue.main.async {
@@ -145,10 +145,6 @@ class InterfaceController: WKInterfaceController {
     }
         
     @IBAction func SearchButtonPressed() {
-        while true {
-            self.pushController(withName: "Search Screen", context: nil)
-            break
-        }
         let options = ["Keys", "Wallet"]
         self.presentTextInputController(withSuggestions: options, allowedInputMode: .plain, completion: { results in
             guard let results = results else { return }
@@ -160,6 +156,7 @@ class InterfaceController: WKInterfaceController {
                 if LowercaseInput!.contains("key") {
                     self.TextLabel.setText("Keys")
                     self.TextLabel2.setText("Searching for:")
+                    
                 }
                 
                 else if LowercaseInput!.contains("keys") {
@@ -185,3 +182,4 @@ class InterfaceController: WKInterfaceController {
             })
     }
 }
+
