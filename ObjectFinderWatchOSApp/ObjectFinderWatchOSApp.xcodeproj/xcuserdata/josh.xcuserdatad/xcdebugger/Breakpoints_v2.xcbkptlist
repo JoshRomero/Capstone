@@ -3,4 +3,54 @@
    uuid = "0086C90E-18D4-4DB1-ADE2-B61F32FAC91E"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4BDF021E-71D4-4DB0-8FE8-C114E8D0BD71"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ObjectFinderWatchOSApp WatchKit Extension/InterfaceController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "StartButtonPressed()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4BDF021E-71D4-4DB0-8FE8-C114E8D0BD71 - e9c76d310ca3d2f1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in ObjectFinderWatchOSApp_WatchKit_Extension.InterfaceController.StartButtonPressed() -&gt; ()"
+                  moduleName = "ObjectFinderWatchOSApp WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/josh/Desktop/Capstone/ObjectFinderWatchOSApp/ObjectFinderWatchOSApp%20WatchKit%20Extension/InterfaceController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "900">
+               </Location>
+               <Location
+                  uuid = "4BDF021E-71D4-4DB0-8FE8-C114E8D0BD71 - 1610c59d940ec126"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; () in closure #1 () -&gt; () in ObjectFinderWatchOSApp_WatchKit_Extension.InterfaceController.StartButtonPressed() -&gt; ()"
+                  moduleName = "ObjectFinderWatchOSApp WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/josh/Desktop/Capstone/ObjectFinderWatchOSApp/ObjectFinderWatchOSApp%20WatchKit%20Extension/InterfaceController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "129"
+                  endingLineNumber = "129"
+                  offsetFromSymbolStart = "42">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

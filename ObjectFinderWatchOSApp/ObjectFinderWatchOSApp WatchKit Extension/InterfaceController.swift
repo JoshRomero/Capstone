@@ -19,8 +19,6 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var TextLabel2: WKInterfaceLabel!
     
     @IBOutlet private var loadingLabel: WKInterfaceLabel!
-    private var loadingTimer = Timer()
-    private var progressTracker = 1
     
     
     override func awake(withContext context: Any?) {
@@ -143,6 +141,14 @@ class InterfaceController: WKInterfaceController {
         self.pushController(withName: "Start Screen", context: nil)
 
     }
+    
+    
+    
+    @IBAction func HomeButtonPressed() {
+        loggedin = false
+        self.pushController(withName: "Start Screen", context: nil)
+    }
+    
         
     @IBAction func SearchButtonPressed() {
         let options = ["Keys", "Wallet"]

@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
     </dependencies>
     <scenes>
         <!--Start Screen-->
@@ -86,16 +87,23 @@
             <objects>
                 <controller identifier="Search Screen" fullScreen="YES" id="IMa-7L-cPV" customClass="InterfaceController" customModule="ObjectFinderWatchOSApp_WatchKit_Extension">
                     <items>
+                        <button width="93" height="32" alignment="left" title="  &lt; Home" id="Hxd-wT-2AD">
+                            <color key="titleColor" name="AccentColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="HomeButtonPressed" destination="IMa-7L-cPV" id="Avq-Hd-8wh"/>
+                            </connections>
+                        </button>
                         <label width="136" height="71" alignment="center" text="Logged In" textAlignment="center" id="ffN-Uh-xDn">
-                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
                         </label>
                         <label width="136" height="48" alignment="center" textAlignment="center" id="UmD-wk-Gnl">
-                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
                         </label>
                         <button alignment="center" verticalAlignment="bottom" title="SEARCH" id="naL-6j-Bee">
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="font" type="system" weight="semibold" pointSize="17"/>
                             <connections>
                                 <action selector="SearchButtonPressed" destination="IMa-7L-cPV" id="Jf6-kJ-e8A"/>
@@ -103,7 +111,7 @@
                         </button>
                         <label width="52" alignment="left" verticalAlignment="bottom" id="pHe-7e-X0J"/>
                     </items>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <outlet property="SearchButton" destination="naL-6j-Bee" id="haE-6m-k4n"/>
                         <outlet property="TextLabel" destination="UmD-wk-Gnl" id="3Vq-Kl-Up0"/>
@@ -111,7 +119,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="901" y="-118"/>
+            <point key="canvasLocation" x="901" y="-126.5"/>
         </scene>
         <!--Notification Controller-->
         <scene sceneID="Niz-AI-uX2">
@@ -147,5 +155,8 @@
     <resources>
         <image name="LogoBackground" width="1200" height="1200"/>
         <image name="LogoBackgroundRed" width="188" height="187"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
