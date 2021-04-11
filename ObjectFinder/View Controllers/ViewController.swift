@@ -6,13 +6,8 @@
 //
 
 import UIKit
-//import AVKit
 
 class ViewController: UIViewController {
-    
-//    var videoPlayer:AVPlayer?
-//
-//    var videoPlayerLayer:AVPlayerLayer?
     
     @IBOutlet weak var signUpButton: UIButton!
     
@@ -26,11 +21,13 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        // navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     func setUpElements() {
+        
         Utilities.styleFilledButton(signUpButton)
         Utilities.styleHollowButton(loginButton)
+        
     }
 }

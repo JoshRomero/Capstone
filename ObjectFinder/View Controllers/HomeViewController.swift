@@ -36,6 +36,23 @@ class HomeViewController:
         SideMenuManager.default.addPanGestureToPresent(toView: view)
         
         addChildControllers()
+        let token =
+        print(token)
+    }
+    
+    func fetchIDToken(completion: @escaping (String) -> Void) {
+        let currentUser = Auth.auth().currentUser
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+          if let error = error {
+            // Handle error
+            print("error: ", error)
+            return;
+          }
+
+          // Send token to your backend via HTTPS
+          // ...
+          completion(idToken!)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -126,10 +143,10 @@ class HomeViewController:
             // Create cleaned versions of the object
             errorLabel.alpha = 0
             let object = objectToLocate.text!.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
-            
+//            let idToken = Auth.auth().getIDToken()
             let url1 = URL(string: "https://objectfinder.tech/pidata?objectQueried=\(object)")!
-            var request = URLRequest(url: url1)
-//            let accessToken = "access token"
+            let request = URLRequest(url: url1)
+//            let accessToken = idToken
 //            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 //            request.httpBody = body
 //            request.httpMethod = "PUT"
@@ -144,11 +161,11 @@ class HomeViewController:
                 let room = cleaned[11].dropLast()
                 let dateTime = cleaned[7].dropLast()
                 if (item == "keys" || item == "glasses") {
-                    // Show object message
+//                  Show object message
                     self.showObject("Your \(item) were found in room \(room) at \(dateTime).")
                 }
                 else {
-                    // Show object message
+//                  Show object message
                     self.showObject("Your \(item) was found in room \(room) at \(dateTime).")
                 }
             }
@@ -223,7 +240,6 @@ extension URLSession {
         _ = semaphore.wait(timeout: .distantFuture)
         
         let unformatted = String(data: data!, encoding: .utf8)!
-        print("unformatted: ", unformatted)
         let cleaned = unformatted.split{$0 == "\""}.map(String.init)
         return (cleaned, response, error)
     }

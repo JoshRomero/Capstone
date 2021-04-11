@@ -325,6 +325,7 @@ PODS:
     - gRPC-Core/Interface (= 1.28.2)
   - gRPC-Core/Interface (1.28.2)
   - GTMSessionFetcher/Core (1.5.0)
+  - KeychainAccess (4.2.2)
   - leveldb-library (1.22.1)
   - nanopb (1.30906.0):
     - nanopb/decode (= 1.30906.0)
@@ -332,9 +333,7 @@ PODS:
   - nanopb/decode (1.30906.0)
   - nanopb/encode (1.30906.0)
   - PromisesObjC (1.2.12)
-  - Socket.IO-Client-Swift (15.2.0):
-    - Starscream (~> 3.1)
-  - Starscream (3.1.1)
+  - SideMenu (6.5.0)
 
 DEPENDENCIES:
   - Firebase/Analytics
@@ -342,7 +341,8 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Firestore
   - FirebaseFirestoreSwift
-  - Socket.IO-Client-Swift (~> 15.2.0)
+  - KeychainAccess
+  - SideMenu
 
 SPEC REPOS:
   trunk:
@@ -362,11 +362,11 @@ SPEC REPOS:
     - "gRPC-C++"
     - gRPC-Core
     - GTMSessionFetcher
+    - KeychainAccess
     - leveldb-library
     - nanopb
     - PromisesObjC
-    - Socket.IO-Client-Swift
-    - Starscream
+    - SideMenu
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -385,12 +385,12 @@ SPEC CHECKSUMS:
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Socket.IO-Client-Swift: 1e3e3a1f09f3312a167f0d781eb2f383d477357c
-  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+  SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
 
-PODFILE CHECKSUM: 57645079a9b92bac95cbb13190085c97e762fc84
+PODFILE CHECKSUM: 3665da6c431f3c0a28caa9ba253d8ac868267db1
 
 COCOAPODS: 1.10.1
