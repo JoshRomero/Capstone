@@ -8,14 +8,11 @@
 import WatchKit
 import Foundation
 
-var n = 0
 var loggedin = false
 
 class InterfaceController: WKInterfaceController {
     
     @IBOutlet var StartButton: WKInterfaceButton!
-    
-    @IBOutlet var SearchButton: WKInterfaceButton!
     
     @IBOutlet var TextLabel: WKInterfaceLabel!
     
@@ -60,7 +57,7 @@ class InterfaceController: WKInterfaceController {
             
             // TODO 
 //            sleep(UInt32(Int.random(in: 1..<10)))
-            sleep(2)
+            sleep(4)
             // add the get data function that will grab the information from the app
 //            loggedin = Bool.random()
             loggedin = true
@@ -131,7 +128,7 @@ class InterfaceController: WKInterfaceController {
             // after getting the logged in results update the UI
             if returned && loggedin{
                 DispatchQueue.main.async {
-                    self.pushController(withName: "Search Screen", context: nil)
+                    self.pushController(withName: "Search", context: nil)
                 }
             }else{
                 DispatchQueue.main.async {
@@ -148,7 +145,10 @@ class InterfaceController: WKInterfaceController {
     }
         
     @IBAction func SearchButtonPressed() {
-        SearchButton.setTitle("Search Again")
+        while true {
+            self.pushController(withName: "Search Screen", context: nil)
+            break
+        }
         let options = ["Keys", "Wallet"]
         self.presentTextInputController(withSuggestions: options, allowedInputMode: .plain, completion: { results in
             guard let results = results else { return }

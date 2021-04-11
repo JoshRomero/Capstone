@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -146,6 +146,9 @@
 				B269F2DC261CD19000632782 /* PBXTargetDependency */,
 			);
 			name = ObjectFinderWatchOSApp;
+			packageProductDependencies = (
+				B20C72DC262290AA00C9D767 /* Lottie */,
+			);
 			productName = ObjectFinderWatchOSApp;
 			productReference = B269F2D5261CD18F00632782 /* ObjectFinderWatchOSApp.app */;
 			productType = "com.apple.product-type.application.watchapp2-container";
@@ -213,6 +216,9 @@
 				Base,
 			);
 			mainGroup = B269F2CE261CD18F00632782;
+			packageReferences = (
+				B20C72DB262290AA00C9D767 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = B269F2D6261CD18F00632782 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -548,6 +554,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B20C72DB262290AA00C9D767 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B20C72DC262290AA00C9D767 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B20C72DB262290AA00C9D767 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B269F2CF261CD18F00632782 /* Project object */;
 }
