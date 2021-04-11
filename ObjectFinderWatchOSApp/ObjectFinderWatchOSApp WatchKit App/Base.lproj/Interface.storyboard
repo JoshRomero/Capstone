@@ -16,17 +16,47 @@
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="font" type="system" weight="semibold" pointSize="17"/>
                             <connections>
-                                <action selector="StartButtonPressed" destination="AgC-eL-Hgc" id="aRG-le-9Nl"/>
+                                <action selector="StartButtonPressed" destination="AgC-eL-Hgc" id="Jt2-qj-Nut"/>
                             </connections>
                         </button>
                     </items>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
-                        <outlet property="StartButton" destination="JZ2-eB-QFO" id="FkK-Uu-5wv"/>
+                        <outlet property="StartButton" destination="JZ2-eB-QFO" id="XrD-Z4-cel"/>
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="175" y="-102"/>
+            <point key="canvasLocation" x="180" y="-102"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="bpX-SH-ETP">
+            <objects>
+                <controller identifier="Login" backgroundImage="LogoBackgroundRed" fullScreen="YES" id="y3H-2K-Me5" customClass="InterfaceController" customModule="ObjectFinderWatchOSApp_WatchKit_Extension">
+                    <items>
+                        <button width="135" height="54" alignment="center" verticalAlignment="center" title="Try Again" id="jhD-bW-KBx">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" type="system" weight="semibold" pointSize="16"/>
+                            <connections>
+                                <action selector="ResetButtonPressed" destination="y3H-2K-Me5" id="p5j-yC-MXb"/>
+                            </connections>
+                        </button>
+                        <label height="22" alignment="center" text="Please Press the" textAlignment="center" id="fob-6X-4Qx">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                        <label alignment="center" text="Button Below after" textAlignment="center" id="rhy-hE-F0i">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                        <label alignment="center" text="logining into the" textAlignment="center" id="MEi-8A-NFF">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                        <label alignment="center" text="Mobile App" textAlignment="center" id="9mL-tx-YUE">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="416" y="-102"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -81,7 +111,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="438" y="-102"/>
+            <point key="canvasLocation" x="648" y="-102"/>
         </scene>
         <!--Notification Controller-->
         <scene sceneID="Niz-AI-uX2">
@@ -93,5 +123,6 @@
     </scenes>
     <resources>
         <image name="LogoBackground" width="1200" height="1200"/>
+        <image name="LogoBackgroundRed" width="188" height="187"/>
     </resources>
 </document>

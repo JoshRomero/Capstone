@@ -8,8 +8,11 @@
 import WatchKit
 import Foundation
 
-class InterfaceController: WKInterfaceController {
+var n = 0
+var loggedin = false
 
+class InterfaceController: WKInterfaceController {
+    
     @IBOutlet var StartButton: WKInterfaceButton!
     
     @IBOutlet var SearchButton: WKInterfaceButton!
@@ -17,6 +20,11 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var TextLabel: WKInterfaceLabel!
     
     @IBOutlet var TextLabel2: WKInterfaceLabel!
+    
+    @IBOutlet private var loadingLabel: WKInterfaceLabel!
+    private var loadingTimer = Timer()
+    private var progressTracker = 1
+    
     
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
@@ -30,10 +38,115 @@ class InterfaceController: WKInterfaceController {
         // This method is called when watch view controller is no longer visible
     }
     
-    @IBAction func StartButtonPressed() {
+    @IBAction func LoginButtonPressed() {
         self.pushController(withName: "Search Screen", context: nil)
     }
     
+    
+    func check_if_logged_in() -> Bool{
+        var winner = 0
+        
+        // if the app does not respond within 5 seconds then if will for try again page (in the background)
+        DispatchQueue.global(qos: .userInitiated).async {
+            sleep(5)
+            if winner == 0{
+                winner = 2
+            }
+        }
+        
+        // communicate to the app to see if it is logged in (in the background)
+        DispatchQueue.global(qos: .userInitiated).async {
+            
+            
+            // TODO 
+//            sleep(UInt32(Int.random(in: 1..<10)))
+            sleep(2)
+            // add the get data function that will grab the information from the app
+//            loggedin = Bool.random()
+            loggedin = true
+            
+            //
+            if winner == 0{
+                winner = 1
+            }
+        }
+        
+        // keep looping until you get the feedback from the app or it times out
+        while true{
+            if winner == 2{
+                loggedin = false
+                return false
+            }else if winner == 1{
+                // trash this after we get info from app
+//                loggedin = true
+                return true
+            }
+        }
+        
+    }
+    
+    @IBAction func StartButtonPressed() {
+        
+        // grab the information from the app and update the UI in the background
+        DispatchQueue.global(qos: .userInitiated).async {
+            // controlling the Loading... changes in the background
+            DispatchQueue.global(qos: .userInitiated).async {
+                var count = 0
+                while true{
+                    if count == 1{
+                        // updating the UI
+                        DispatchQueue.main.async {
+                            self.StartButton.setTitle("Loading.")
+                        }
+                    }else if count == 2 {
+                        // updating the UI
+                        DispatchQueue.main.async {
+                            self.StartButton.setTitle("Loading..")
+                        }
+                    }else if count == 3 {
+                        // updating the UI
+                        DispatchQueue.main.async {
+                            self.StartButton.setTitle("Loading...")
+                        }
+                    }else{
+                        // updating the UI
+                        DispatchQueue.main.async {
+                            self.StartButton.setTitle("Loading")
+                        }
+                    }
+                    
+                    count += 1
+                    sleep(1)
+                    if count == 4 && !loggedin{
+                        count = 0
+                    }
+                    else if loggedin{
+                        break
+                    }
+                }
+            }
+            
+            // get data from app
+            let returned = self.check_if_logged_in()
+            // after getting the logged in results update the UI
+            if returned && loggedin{
+                DispatchQueue.main.async {
+                    self.pushController(withName: "Search Screen", context: nil)
+                }
+            }else{
+                DispatchQueue.main.async {
+                    self.pushController(withName: "Login", context: nil)
+                }
+            }
+        
+        }
+    }
+    
+    @IBAction func ResetButtonPressed() {
+        self.pushController(withName: "Start Screen", context: nil)
+
+    }
+        
     @IBAction func SearchButtonPressed() {
         SearchButton.setTitle("Search Again")
         let options = ["Keys", "Wallet"]
