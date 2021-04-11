@@ -86,7 +86,7 @@
             <objects>
                 <controller identifier="Search Screen" fullScreen="YES" id="IMa-7L-cPV" customClass="InterfaceController" customModule="ObjectFinderWatchOSApp_WatchKit_Extension">
                     <items>
-                        <label width="136" height="71" alignment="center" textAlignment="center" id="ffN-Uh-xDn">
+                        <label width="136" height="71" alignment="center" text="Logged In" textAlignment="center" id="ffN-Uh-xDn">
                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
                         </label>
