@@ -113,7 +113,7 @@
                     </items>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
-                        <outlet property="SearchButton" destination="naL-6j-Bee" id="haE-6m-k4n"/>
+                        <outlet property="SearchButton" destination="naL-6j-Bee" id="ylq-YR-4n9"/>
                         <outlet property="TextLabel" destination="UmD-wk-Gnl" id="3Vq-Kl-Up0"/>
                         <outlet property="TextLabel2" destination="ffN-Uh-xDn" id="aq8-pn-4av"/>
                     </connections>
