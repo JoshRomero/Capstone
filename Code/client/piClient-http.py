@@ -33,7 +33,6 @@ if __name__ == "__main__":
             sleep(.5)
             
             tmpImage = tempfile.NamedTemporaryFile(suffix = ".jpeg")
-            print(tmpImage.name)
             
             # capture image and append to in-memory byte stream
             captureTime = datetime.now()
