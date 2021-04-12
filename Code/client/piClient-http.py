@@ -6,9 +6,6 @@ import ssl
 import requests
 import tempfile
 
-# NEED TO: RESOLVE UNICODE ISSUE WITH IMAGE BYTES -- CURRENTLY CANNOT SEND IMAGES IN IN ENTRY FOR SOME REASON
-# CHECK PI FOR NEWEST CODE
-
 ROOM_ID = 1
 items = {"keysProb": 0.0, "glassesProb": 0.0, "remoteProb": 0.0}
 
@@ -52,7 +49,7 @@ if __name__ == "__main__":
             entry = createEntry(uid, captureTime)
             
             # send post request to server to insert image and related data
-            url = "http://18.188.84.183:12001/pidata"
+            url = "http://objectfinder.tech/pidata"
             r = requests.post(url, files=file, data=entry)
             
             # reset probability values for each item
