@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>dreamstime_xxl_124816345.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\dreamstime_xxl_124816345.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>667</width>
+		<height>375</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>323</xmin>
+			<ymin>107</ymin>
+			<xmax>608</xmax>
+			<ymax>321</ymax>
+		</bndbox>
+	</object>
+</annotation>

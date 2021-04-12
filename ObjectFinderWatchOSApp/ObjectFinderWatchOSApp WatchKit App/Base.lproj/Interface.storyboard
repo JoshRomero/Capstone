@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="17701" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch38"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+    </dependencies>
+    <scenes>
+        <!--Start Screen-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller identifier="Start Screen" backgroundImage="LogoBackground" hidesWhenLoading="NO" fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="ObjectFinderWatchOSApp_WatchKit_App" customModuleProvider="target">
+                    <items>
+                        <button alignment="center" verticalAlignment="center" title="START" id="JZ2-eB-QFO">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" type="system" weight="semibold" pointSize="17"/>
+                            <connections>
+                                <action selector="StartButtonPressed" destination="AgC-eL-Hgc" id="Jt2-qj-Nut"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="StartButton" destination="JZ2-eB-QFO" id="XrD-Z4-cel"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="179" y="-118"/>
+        </scene>
+        <!--Login-->
+        <scene sceneID="bpX-SH-ETP">
+            <objects>
+                <controller identifier="Login" backgroundImage="LogoBackgroundRed" hidesWhenLoading="NO" fullScreen="YES" id="y3H-2K-Me5" customClass="InterfaceController" customModule="ObjectFinderWatchOSApp_WatchKit_Extension">
+                    <items>
+                        <label width="100" height="17" alignment="left" id="0BA-CQ-H46"/>
+                        <label height="15" alignment="center" text="Please login to" textAlignment="center" id="fob-6X-4Qx">
+                            <fontDescription key="font" style="UICTFontTextStyleCaption1"/>
+                        </label>
+                        <label height="19" alignment="center" text="the mobile app" textAlignment="center" id="rhy-hE-F0i">
+                            <fontDescription key="font" style="UICTFontTextStyleCaption1"/>
+                        </label>
+                        <label height="16" alignment="center" textAlignment="center" id="MEi-8A-NFF">
+                            <fontDescription key="font" style="UICTFontTextStyleFootnote"/>
+                        </label>
+                        <button alignment="center" verticalAlignment="bottom" title="Try Again" id="jhD-bW-KBx">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" type="system" weight="semibold" pointSize="15"/>
+                            <connections>
+                                <action selector="ResetButtonPressed" destination="y3H-2K-Me5" id="p5j-yC-MXb"/>
+                            </connections>
+                        </button>
+                        <label width="100" height="13" alignment="left" verticalAlignment="bottom" id="ceG-FV-j9G"/>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="416" y="-118"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="AEw-b0-oYE">
+            <objects>
+                <notificationController id="YCC-NB-fut">
+                    <items>
+                        <label alignment="left" text="Alert Label" numberOfLines="0" id="IdU-wH-bcW"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
+                        <segue destination="4sK-HA-Art" kind="relationship" relationship="dynamicNotificationInterface" id="kXh-Jw-8B1"/>
+                        <segue destination="eXb-UN-Cd0" kind="relationship" relationship="dynamicInteractiveNotificationInterface" id="mpB-YA-K8N"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="220" y="643"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="ZPc-GJ-vnh">
+            <objects>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="ObjectFinderWatchOSApp_WatchKit_App" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="468" y="643"/>
+        </scene>
+        <!--Search Screen-->
+        <scene sceneID="PRu-D8-J0O">
+            <objects>
+                <controller identifier="Search Screen" fullScreen="YES" id="IMa-7L-cPV" customClass="InterfaceController" customModule="ObjectFinderWatchOSApp_WatchKit_Extension">
+                    <items>
+                        <button width="93" height="32" alignment="left" title="  &lt; Home" id="Hxd-wT-2AD">
+                            <color key="titleColor" name="AccentColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="HomeButtonPressed" destination="IMa-7L-cPV" id="Avq-Hd-8wh"/>
+                            </connections>
+                        </button>
+                        <label width="136" height="71" alignment="center" text="Logged In" textAlignment="center" id="ffN-Uh-xDn">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
+                        </label>
+                        <label width="136" height="48" alignment="center" textAlignment="center" id="UmD-wk-Gnl">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
+                        </label>
+                        <button alignment="center" verticalAlignment="bottom" title="SEARCH" id="naL-6j-Bee">
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" type="system" weight="semibold" pointSize="17"/>
+                            <connections>
+                                <action selector="SearchButtonPressed" destination="IMa-7L-cPV" id="Jf6-kJ-e8A"/>
+                            </connections>
+                        </button>
+                        <label width="52" alignment="left" verticalAlignment="bottom" id="pHe-7e-X0J"/>
+                    </items>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <outlet property="SearchButton" destination="naL-6j-Bee" id="ylq-YR-4n9"/>
+                        <outlet property="TextLabel" destination="UmD-wk-Gnl" id="3Vq-Kl-Up0"/>
+                        <outlet property="TextLabel2" destination="ffN-Uh-xDn" id="aq8-pn-4av"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="901" y="-126.5"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="Niz-AI-uX2">
+            <objects>
+                <controller id="eXb-UN-Cd0" customClass="NotificationController" customModule="ObjectFinderWatchOSApp_WatchKit_App" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="468" y="345"/>
+        </scene>
+        <!--Search-->
+        <scene sceneID="MHf-N5-hza">
+            <objects>
+                <controller identifier="Search" backgroundImage="LogoBackgroundRed" hidesWhenLoading="NO" fullScreen="YES" id="L2s-84-uSy" customClass="InterfaceController" customModule="ObjectFinderWatchOSApp_WatchKit_Extension">
+                    <items>
+                        <label width="100" height="19" alignment="left" id="Zbi-sN-LUk"/>
+                        <label height="21" alignment="center" text="Login Successful" textAlignment="center" id="rAk-cB-9ia">
+                            <fontDescription key="font" style="UICTFontTextStyleCaption1"/>
+                        </label>
+                        <button alignment="center" verticalAlignment="bottom" title="SEARCH" id="a9e-Ei-nBN">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="font" type="system" weight="semibold" pointSize="17"/>
+                            <connections>
+                                <action selector="SearchButtonPressed" destination="L2s-84-uSy" id="m8R-UD-Lhr"/>
+                            </connections>
+                        </button>
+                        <label width="100" height="12" alignment="left" verticalAlignment="bottom" id="F30-nT-qdO"/>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="656" y="-118"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LogoBackground" width="1200" height="1200"/>
+        <image name="LogoBackgroundRed" width="188" height="187"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

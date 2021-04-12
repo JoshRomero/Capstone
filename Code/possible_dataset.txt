@@ -1,0 +1,887 @@
+Seems promising
+
+Works
+##########
+## 1.1 Installation
+
+Python3 is required.
+
+1. Clone this repository
+   ```bash
+   git clone https://github.com/EscVM/OIDv4_ToolKit.git
+   ```
+2. Install the required packages
+   ```bash
+   pip3 install -r requirements.txt
+   ```
+Peek inside the requirements file if you have everything already installed. Most of the dependencies are common libraries.
+
+## 1.2 Launch the ToolKit to check the available options
+First of all, if you simply want a quick reminder of al the possible options given by the script, you can simply launch, from your console of choice, the [main.py](main.py). Remember to point always at the main directory of the project
+   ```bash
+   python3 main.py
+   ```
+or in the following way to get more information
+   ```bash
+   python3 main.py -h
+##########
+
+
+http://visualgenome.org/api/v0/api_home.html
+
+https://github.com/fyu/lsun/blob/master/README.md
+
+
+
+Google
+https://storage.googleapis.com/openimages/web/download.html
+
+
+Entity
+Coin
+Flag
+Light bulb
+Toy
+Doll
+Balloon
+Dice
+Flying disc
+Kite
+Teddy bear
+Home appliance
+Washing machine
+Toaster
+Oven
+Blender
+Gas stove
+Mechanical fan
+Heater
+Kettle
+Hair dryer
+Refrigerator
+Wood-burning stove
+Humidifier
+Mixer
+Coffeemaker
+Microwave oven
+Dishwasher
+Sewing machine
+Hand dryer
+Ceiling fan
+Plumbing fixture
+Sink
+Bidet
+Shower
+Tap
+Bathtub
+Toilet
+Office supplies
+Scissors
+Poster
+Calculator
+Box
+Stapler
+Whiteboard
+Pencil sharpener
+Eraser
+Fax
+Adhesive tape
+Ring binder
+Pencil case
+Plastic bag
+Paper cutter
+Toilet paper
+Envelope
+Pen
+Paper towel
+Pillow
+Kitchenware
+Kitchen utensil
+Chopsticks
+Ladle
+Spatula
+Can opener
+Cutting board
+Whisk
+Drinking straw
+Knife
+Bottle opener
+Measuring cup
+Pizza cutter
+Spoon
+Fork
+Tableware
+Chopsticks
+Teapot
+Mug
+Coffee cup
+Salt and pepper shakers
+Mixing bowl
+Saucer
+Cocktail shaker
+Bottle
+Bowl
+Plate
+Pitcher
+Kitchen knife
+Jug
+Platter
+Wine glass
+Spoon
+Fork
+Serving tray
+Cake stand
+Frying pan
+Wok
+Spice rack
+Kitchen appliance
+Oven
+Blender
+Slow cooker
+Food processor
+Refrigerator
+Waffle iron
+Mixer
+Coffeemaker
+Microwave oven
+Pressure cooker
+Dishwasher
+Fireplace
+Countertop
+Book
+Furniture
+Chair
+Cabinetry
+Desk
+Wine rack
+Couch
+Sofa bed
+Loveseat
+Wardrobe
+Nightstand
+Bookcase
+Bed
+Infant bed
+Studio couch
+Filing cabinet
+Table
+Coffee table
+Kitchen & dining room table
+Chest of drawers
+Cupboard
+Bench
+Drawer
+Stool
+Shelf
+Wall clock
+Bathroom cabinet
+Closet
+Dog bed
+Cat furniture
+Lantern
+Clock
+Alarm clock
+Digital clock
+Wall clock
+Vase
+Window blind
+Curtain
+Mirror
+Sculpture
+Snowman
+Bust
+Bronze sculpture
+Picture frame
+Candle
+Lamp
+Bathroom accessory
+Towel
+Toilet paper
+Soap dispenser
+Facial tissue holder
+Beehive
+Tent
+Parking meter
+Traffic light
+Billboard
+Traffic sign
+Stop sign
+Fire hydrant
+Fountain
+Street light
+Jacuzzi
+Building
+Tree house
+Lighthouse
+Skyscraper
+Castle
+Tower
+House
+Office building
+Convenience store
+Medical equipment
+Syringe
+Stretcher
+Stethoscope
+Band-aid
+Musical instrument
+Organ
+Banjo
+Cello
+Drum
+Horn
+Guitar
+Harp
+Harpsichord
+Harmonica
+Musical keyboard
+Oboe
+Piano
+Saxophone
+Trombone
+Trumpet
+Violin
+Chime
+Flute
+Accordion
+Maracas
+Sports equipment
+Paddle
+Ball
+Football
+Cricket ball
+Volleyball
+Tennis ball
+Rugby ball
+Bicycle
+Bicycle wheel
+Surfboard
+Bow and arrow
+Hiking equipment
+Roller skates
+Flying disc
+Baseball bat
+Baseball glove
+Punching bag
+Golf ball
+Lifejacket
+Scoreboard
+Snowboard
+Skateboard
+Ski
+Bowling equipment
+Dumbbell
+Stationary bicycle
+Treadmill
+Training bench
+Indoor rower
+Horizontal bar
+Parachute
+Racket
+Tennis racket
+Table tennis racket
+Balance beam
+Helmet
+Bicycle helmet
+Football helmet
+Billiard table
+Tool
+Container
+Tin can
+Barrel
+Bottle
+Picnic basket
+Jug
+Waste container
+Beaker
+Flowerpot
+Ladder
+Toothbrush
+Screwdriver
+Drill
+Chainsaw
+Wrench
+Flashlight
+Scissors
+Ratchet
+Kitchen utensil
+Chopsticks
+Ladle
+Spatula
+Can opener
+Cutting board
+Whisk
+Drinking straw
+Knife
+Bottle opener
+Measuring cup
+Pizza cutter
+Spoon
+Fork
+Hammer
+Scale
+Snowplow
+Nail
+Tripod
+Torch
+Chisel
+Axe
+Camera
+Grinder
+Ruler
+Binoculars
+Weapon
+Bow and arrow
+Cannon
+Dagger
+Knife
+Rifle
+Shotgun
+Tank
+Axe
+Handgun
+Sword
+Missile
+Bomb
+Cassette deck
+Headphones
+Laptop
+Computer keyboard
+Printer
+Computer mouse
+Computer monitor
+Ac power plugs and socket-outlets
+Light switch
+Musical keyboard
+Television
+Telephone
+Mobile phone
+Corded phone
+Tablet computer
+Microphone
+Ipod
+Remote control
+Swimming pool
+Person
+Man
+Woman
+Boy
+Girl
+Body part
+Human eye
+Skull
+Head
+Human face
+Human mouth
+Human ear
+Human head
+Hair
+Human hand
+Human foot
+Human arm
+Human leg
+Human beard
+Food
+Fast food
+Hot dog
+French fries
+Waffle
+Pancake
+Burrito
+Snack
+Pretzel
+Popcorn
+Cookie
+Dessert
+Muffin
+Cookie
+Ice cream
+Cake
+Candy
+Guacamole
+Fruit
+Apple
+Grape
+Common fig
+Pear
+Strawberry
+Tomato
+Lemon
+Banana
+Orange
+Peach
+Mango
+Pineapple
+Grapefruit
+Pomegranate
+Watermelon
+Cantaloupe
+Egg
+Baked goods
+Pretzel
+Bagel
+Muffin
+Cookie
+Bread
+Pastry
+Doughnut
+Croissant
+Tart
+Mushroom
+Pasta
+Pizza
+Seafood
+Squid
+Shellfish
+Oyster
+Lobster
+Shrimp
+Crab
+Taco
+Cooking spray
+Vegetable
+Cucumber
+Radish
+Artichoke
+Potato
+Tomato
+Asparagus
+Squash
+Pumpkin
+Zucchini
+Cabbage
+Carrot
+Salad
+Broccoli
+Bell pepper
+Winter melon
+Honeycomb
+Sandwich
+Hamburger
+Submarine sandwich
+Dairy
+Cheese
+Milk
+Sushi
+Plant
+Houseplant
+Tree
+Christmas tree
+Palm tree
+Maple
+Willow
+Flower
+Lavender
+Rose
+Sunflower
+Lily
+Vehicle
+Land vehicle
+Ambulance
+Cart
+Bicycle
+Bicycle wheel
+Bus
+Snowmobile
+Golf cart
+Motorcycle
+Segway
+Tank
+Train
+Truck
+Unicycle
+Car
+Limousine
+Van
+Taxi
+Wheelchair
+Auto part
+Vehicle registration plate
+Wheel
+Seat belt
+Tire
+Watercraft
+Boat
+Barge
+Gondola
+Canoe
+Jet ski
+Submarine
+Aerial vehicle
+Helicopter
+Airplane
+Rocket
+Clothing
+Shorts
+Dress
+Swimwear
+Brassiere
+Tiara
+Shirt
+Coat
+Suit
+Hat
+Cowboy hat
+Fedora
+Sombrero
+Sun hat
+Scarf
+Skirt
+Miniskirt
+Jacket
+Fashion accessory
+Glove
+Baseball glove
+Belt
+Sunglasses
+Tiara
+Necklace
+Sock
+Earrings
+Tie
+Goggles
+Hat
+Cowboy hat
+Fedora
+Sombrero
+Sun hat
+Scarf
+Handbag
+Watch
+Umbrella
+Glasses
+Crown
+Swim cap
+Trousers
+Jeans
+Footwear
+Roller skates
+Boot
+High heels
+Sandal
+Sports uniform
+Luggage & bags
+Backpack
+Suitcase
+Briefcase
+Handbag
+Helmet
+Bicycle helmet
+Football helmet
+Animal
+Bird
+Magpie
+Woodpecker
+Blue jay
+Ostrich
+Penguin
+Raven
+Chicken
+Eagle
+Owl
+Duck
+Canary
+Goose
+Swan
+Falcon
+Parrot
+Sparrow
+Turkey
+Invertebrate
+Tick
+Centipede
+Marine invertebrates
+Starfish
+Isopod
+Squid
+Lobster
+Jellyfish
+Shrimp
+Crab
+Insect
+Bee
+Beetle
+Lady bug
+Ant
+Moths and butterflies
+Caterpillar
+Butterfly
+Dragonfly
+Scorpion
+Worm
+Spider
+Oyster
+Snail
+Mammal
+Bat
+Carnivore
+Bear
+Brown bear
+Panda
+Polar bear
+Teddy bear
+Cat
+Fox
+Jaguar
+Lynx
+Red panda
+Tiger
+Lion
+Dog
+Leopard
+Cheetah
+Otter
+Raccoon
+Camel
+Cattle
+Giraffe
+Rhinoceros
+Goat
+Horse
+Hamster
+Kangaroo
+Koala
+Mouse
+Pig
+Rabbit
+Squirrel
+Sheep
+Zebra
+Monkey
+Hippopotamus
+Deer
+Elephant
+Porcupine
+Hedgehog
+Bull
+Antelope
+Mule
+Marine mammal
+Dolphin
+Whale
+Sea lion
+Harbor seal
+Skunk
+Alpaca
+Armadillo
+Reptile & Amphibian
+Dinosaur
+Lizard
+Snake
+Turtle
+Tortoise
+Sea turtle
+Crocodile
+Frog
+Fish
+Goldfish
+Shark
+Rays and skates
+Seahorse
+Shellfish
+Oyster
+Lobster
+Shrimp
+Crab
+Cosmetics
+Face powder
+Hair spray
+Lipstick
+Perfume
+Personal care
+Toothbrush
+Sunglasses
+Goggles
+Crutch
+Cream
+Diaper
+Glasses
+Wheelchair
+Medical equipment
+Syringe
+Stretcher
+Stethoscope
+Band-aid
+Musical instrument
+Organ
+Banjo
+Cello
+Drum
+Horn
+Guitar
+Harp
+Harpsichord
+Harmonica
+Musical keyboard
+Oboe
+Piano
+Saxophone
+Trombone
+Trumpet
+Violin
+Chime
+Flute
+Accordion
+Maracas
+Sports equipment
+Paddle
+Ball
+Football
+Cricket ball
+Volleyball
+Tennis ball
+Rugby ball
+Bicycle
+Bicycle wheel
+Surfboard
+Bow and arrow
+Hiking equipment
+Roller skates
+Flying disc
+Baseball bat
+Baseball glove
+Punching bag
+Golf ball
+Lifejacket
+Scoreboard
+Snowboard
+Skateboard
+Ski
+Bowling equipment
+Dumbbell
+Stationary bicycle
+Treadmill
+Training bench
+Indoor rower
+Horizontal bar
+Parachute
+Racket
+Tennis racket
+Table tennis racket
+Balance beam
+Helmet
+Bicycle helmet
+Football helmet
+Billiard table
+Tool
+Container
+Tin can
+Barrel
+Bottle
+Picnic basket
+Jug
+Waste container
+Beaker
+Flowerpot
+Ladder
+Toothbrush
+Screwdriver
+Drill
+Chainsaw
+Wrench
+Flashlight
+Scissors
+Ratchet
+Kitchen utensil
+Chopsticks
+Ladle
+Spatula
+Can opener
+Cutting board
+Whisk
+Drinking straw
+Knife
+Bottle opener
+Measuring cup
+Pizza cutter
+Spoon
+Fork
+Hammer
+Scale
+Snowplow
+Nail
+Tripod
+Torch
+Chisel
+Axe
+Camera
+Grinder
+Ruler
+Binoculars
+Weapon
+Bow and arrow
+Cannon
+Dagger
+Knife
+Rifle
+Shotgun
+Tank
+Axe
+Handgun
+Sword
+Missile
+Bomb
+Cassette deck
+Headphones
+Laptop
+Computer keyboard
+Printer
+Computer mouse
+Computer monitor
+Ac power plugs and socket-outlets
+Light switch
+Television
+Telephone
+Mobile phone
+Corded phone
+Tablet computer
+Microphone
+Ipod
+Remote control
+Drink
+Beer
+Cocktail
+Coffee
+Juice
+Tea
+Wine
+Bicycle wheel
+Door handle
+Door
+Door handle
+Window
+Stairs
+Porch
+Human eye
+Skull
+Head
+Human face
+Human mouth
+Human ear
+Human head
+Hair
+Human hand
+Human foot
+Human arm
+Human leg
+Human beard
+Body part
+Human eye
+Skull
+Head
+Human face
+Human mouth
+Human ear
+Human head
+Hair
+Human hand
+Human foot
+Human arm
+Human leg
+Human beard
+Auto part
+Vehicle registration plate
+Wheel
+Seat belt
+Tire
+Coconut

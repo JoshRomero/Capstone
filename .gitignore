@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+/database/objectFinderSystem-data
+/Code/server/objectfinder-3d3f3-firebase-adminsdk-waj5p-cdda3964ac.json
+
 # User-specific files
 *.rsuser
 *.suo

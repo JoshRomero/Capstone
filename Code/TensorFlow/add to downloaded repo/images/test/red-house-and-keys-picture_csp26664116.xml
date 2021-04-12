@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>red-house-and-keys-picture_csp26664116.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\red-house-and-keys-picture_csp26664116.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>450</width>
+		<height>356</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>31</xmin>
+			<ymin>77</ymin>
+			<xmax>240</xmax>
+			<ymax>278</ymax>
+		</bndbox>
+	</object>
+</annotation>

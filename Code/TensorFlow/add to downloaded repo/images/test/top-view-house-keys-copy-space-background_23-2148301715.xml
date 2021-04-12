@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Key_images</folder>
+	<filename>top-view-house-keys-copy-space-background_23-2148301715.jpg</filename>
+	<path>C:\Users\Joshw\Desktop\Key_images\top-view-house-keys-copy-space-background_23-2148301715.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>626</width>
+		<height>352</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>key</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>80</xmin>
+			<ymin>211</ymin>
+			<xmax>224</xmax>
+			<ymax>334</ymax>
+		</bndbox>
+	</object>
+</annotation>
