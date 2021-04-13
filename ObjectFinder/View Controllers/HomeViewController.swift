@@ -130,7 +130,7 @@ class HomeViewController:
             currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
               if let error = error {
                 // Handle error
-                print("error: ", error)
+                print("error:", error)
                 return;
               }
 
