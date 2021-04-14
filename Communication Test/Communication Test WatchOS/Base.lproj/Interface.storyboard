@@ -11,8 +11,8 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Communication_Test_WatchOS" customModuleProvider="target">
                     <items>
-                        <label width="136" height="61" alignment="center" verticalAlignment="center" text="Message from IOS" textAlignment="center" id="Fx7-o6-zdG"/>
-                        <button width="136" alignment="center" verticalAlignment="center" title="Button" id="7sQ-fY-wnP">
+                        <label width="136" height="61" alignment="center" verticalAlignment="center" textAlignment="center" id="Fx7-o6-zdG"/>
+                        <button width="136" alignment="center" verticalAlignment="center" title="Send Msg" id="7sQ-fY-wnP">
                             <fontDescription key="font" type="system" pointSize="17"/>
                             <connections>
                                 <action selector="btnSendToPhone" destination="AgC-eL-Hgc" id="DJv-u8-0k8"/>
