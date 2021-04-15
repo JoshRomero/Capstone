@@ -28,6 +28,10 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Login"/>
                                         <connections>
+<<<<<<< Updated upstream
+=======
+                                            <action selector="test_tap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="l5P-gd-07j"/>
+>>>>>>> Stashed changes
                                             <segue destination="qav-bh-tuA" kind="show" id="6la-JL-L5a"/>
                                         </connections>
                                     </button>
