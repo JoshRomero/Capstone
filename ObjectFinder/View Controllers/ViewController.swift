@@ -6,11 +6,6 @@
 //
 
 import UIKit
-<<<<<<< Updated upstream
-
-class ViewController: UIViewController {
-    
-=======
 import WatchConnectivity
 
 class ViewController: UIViewController {
@@ -19,13 +14,10 @@ class ViewController: UIViewController {
     var message = ""
     var session: WCSession?
     
->>>>>>> Stashed changes
     @IBOutlet weak var signUpButton: UIButton!
     
     @IBOutlet weak var loginButton: UIButton!
     
-<<<<<<< Updated upstream
-=======
     func createWCSession()
     {
         if WCSession.isSupported()
@@ -54,16 +46,12 @@ class ViewController: UIViewController {
         
     }
     
->>>>>>> Stashed changes
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setUpElements()
-<<<<<<< Updated upstream
-=======
         createWCSession()
         listening()
->>>>>>> Stashed changes
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,13 +65,11 @@ class ViewController: UIViewController {
         Utilities.styleHollowButton(loginButton)
         
     }
-<<<<<<< Updated upstream
-=======
     
     @IBAction func test_tap(_ sender: Any) {
         
         if let validSession = self.session, validSession.isReachable {
-        validSession.sendMessage(["iPhone": "true"], replyHandler: nil, errorHandler: nil)
+        validSession.sendMessage(["iPhone": "clock"], replyHandler: nil, errorHandler: nil)
           }
     }
     
@@ -105,5 +91,4 @@ extension ViewController: WCSessionDelegate {
  }
     func sessionDidDeactivate(_ session: WCSession) {
  }
->>>>>>> Stashed changes
 }

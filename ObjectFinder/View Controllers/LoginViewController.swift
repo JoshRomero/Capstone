@@ -8,10 +8,6 @@
 import UIKit
 import FirebaseAuth
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!

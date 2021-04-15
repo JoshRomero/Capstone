@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-<<<<<<< Updated upstream
-=======
 		03D25E5D26279FCA003877AA /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E5B26279FCA003877AA /* Interface.storyboard */; };
 		03D25E5F26279FCD003877AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E5E26279FCD003877AA /* Assets.xcassets */; };
 		03D25E6626279FCD003877AA /* My_WatchOF Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 03D25E6526279FCD003877AA /* My_WatchOF Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -17,7 +15,7 @@
 		03D25E6F26279FCD003877AA /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D25E6E26279FCD003877AA /* ComplicationController.swift */; };
 		03D25E7126279FCF003877AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E7026279FCF003877AA /* Assets.xcassets */; };
 		03D25E7526279FCF003877AA /* My_WatchOF.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 03D25E5926279FCA003877AA /* My_WatchOF.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
->>>>>>> Stashed changes
+		DCB304D18BE1EAC0C811318E /* Pods_ObjectFinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1B91C23B6323830DC197D6 /* Pods_ObjectFinder.framework */; };
 		EA1613BC261AAE6F00C628A8 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1613BB261AAE6F00C628A8 /* SideMenu.swift */; };
 		EA1613BF261AAE9700C628A8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */; };
 		EA1613C2261AAECF00C628A8 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1613C1261AAECF00C628A8 /* AboutViewController.swift */; };
@@ -33,12 +31,8 @@
 		EA798B6B25E3DB9D002AF4B6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA798B6A25E3DB9D002AF4B6 /* Constants.swift */; };
 		EAA12B1225E2A58400182937 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA12B1125E2A58400182937 /* Utilities.swift */; };
 		EAA12B1525E2AA0900182937 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EAA12B1425E2AA0900182937 /* GoogleService-Info.plist */; };
-		EAD8017825FAC9F40054B69C /* Pods_ObjectFinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB23864A00E5D162451CF23B /* Pods_ObjectFinder.framework */; };
 /* End PBXBuildFile section */
 
-<<<<<<< Updated upstream
-/* Begin PBXFileReference section */
-=======
 /* Begin PBXContainerItemProxy section */
 		03D25E6726279FCD003877AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -92,10 +86,9 @@
 		03D25E6E26279FCD003877AA /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		03D25E7026279FCF003877AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03D25E7226279FCF003877AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
->>>>>>> Stashed changes
-		4431E73B9FE46A51C8F7CFC3 /* Pods-ObjectFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectFinder.debug.xcconfig"; path = "Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder.debug.xcconfig"; sourceTree = "<group>"; };
-		62E6B15831AE679D7669043B /* Pods-ObjectFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectFinder.release.xcconfig"; path = "Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder.release.xcconfig"; sourceTree = "<group>"; };
-		BB23864A00E5D162451CF23B /* Pods_ObjectFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ObjectFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		17F8C235FAAF354C02ABA993 /* Pods-ObjectFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectFinder.release.xcconfig"; path = "Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder.release.xcconfig"; sourceTree = "<group>"; };
+		6C1B91C23B6323830DC197D6 /* Pods_ObjectFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ObjectFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFAF7BB96BBC3E49A867EE56 /* Pods-ObjectFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectFinder.debug.xcconfig"; path = "Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder.debug.xcconfig"; sourceTree = "<group>"; };
 		EA1613BB261AAE6F00C628A8 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		EA1613C1261AAECF00C628A8 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
@@ -116,8 +109,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-<<<<<<< Updated upstream
-=======
 		03D25E6226279FCD003877AA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,20 +116,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
->>>>>>> Stashed changes
+		4BDAC735733F018604BE149E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EA542B6025E2991400EB51C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAD8017825FAC9F40054B69C /* Pods_ObjectFinder.framework in Frameworks */,
+				DCB304D18BE1EAC0C811318E /* Pods_ObjectFinder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-<<<<<<< Updated upstream
-=======
 		03D25E5A26279FCA003877AA /* My_WatchOF */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,11 +156,10 @@
 			path = "My_WatchOF Extension";
 			sourceTree = "<group>";
 		};
->>>>>>> Stashed changes
-		710C40A4EDD38C9877E13983 /* Frameworks */ = {
+		0FB305D247126E1E28ACC961 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BB23864A00E5D162451CF23B /* Pods_ObjectFinder.framework */,
+				6C1B91C23B6323830DC197D6 /* Pods_ObjectFinder.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -173,8 +167,8 @@
 		71957C2F5719C6EBD5A79FC1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4431E73B9FE46A51C8F7CFC3 /* Pods-ObjectFinder.debug.xcconfig */,
-				62E6B15831AE679D7669043B /* Pods-ObjectFinder.release.xcconfig */,
+				DFAF7BB96BBC3E49A867EE56 /* Pods-ObjectFinder.debug.xcconfig */,
+				17F8C235FAAF354C02ABA993 /* Pods-ObjectFinder.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -184,14 +178,11 @@
 			children = (
 				EA1613BB261AAE6F00C628A8 /* SideMenu.swift */,
 				EA542B6525E2991400EB51C7 /* ObjectFinder */,
-<<<<<<< Updated upstream
-=======
 				03D25E5A26279FCA003877AA /* My_WatchOF */,
 				03D25E6926279FCD003877AA /* My_WatchOF Extension */,
->>>>>>> Stashed changes
 				EA542B6425E2991400EB51C7 /* Products */,
 				71957C2F5719C6EBD5A79FC1 /* Pods */,
-				710C40A4EDD38C9877E13983 /* Frameworks */,
+				0FB305D247126E1E28ACC961 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -199,11 +190,8 @@
 			isa = PBXGroup;
 			children = (
 				EA542B6325E2991400EB51C7 /* ObjectFinder.app */,
-<<<<<<< Updated upstream
-=======
 				03D25E5926279FCA003877AA /* My_WatchOF.app */,
 				03D25E6526279FCD003877AA /* My_WatchOF Extension.appex */,
->>>>>>> Stashed changes
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -249,14 +237,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-<<<<<<< Updated upstream
-=======
 		03D25E5826279FCA003877AA /* My_WatchOF */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03D25E7D26279FCF003877AA /* Build configuration list for PBXNativeTarget "My_WatchOF" */;
 			buildPhases = (
 				03D25E5726279FCA003877AA /* Resources */,
 				03D25E7926279FCF003877AA /* Embed App Extensions */,
+				4BDAC735733F018604BE149E /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -285,28 +272,21 @@
 			productReference = 03D25E6526279FCD003877AA /* My_WatchOF Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
->>>>>>> Stashed changes
 		EA542B6225E2991400EB51C7 /* ObjectFinder */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EA542B7725E2991500EB51C7 /* Build configuration list for PBXNativeTarget "ObjectFinder" */;
 			buildPhases = (
-				E97350C4C1DADBDF6A767B7D /* [CP] Check Pods Manifest.lock */,
+				B6588B298D0552DFC9955AB7 /* [CP] Check Pods Manifest.lock */,
 				EA542B5F25E2991400EB51C7 /* Sources */,
 				EA542B6025E2991400EB51C7 /* Frameworks */,
 				EA542B6125E2991400EB51C7 /* Resources */,
-				2E5E2A00FF496F5BEDEF67B0 /* [CP] Embed Pods Frameworks */,
-<<<<<<< Updated upstream
-=======
 				03D25E7626279FCF003877AA /* Embed Watch Content */,
->>>>>>> Stashed changes
+				D456729FE62CD007B556876A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-<<<<<<< Updated upstream
-=======
 				03D25E7426279FCF003877AA /* PBXTargetDependency */,
->>>>>>> Stashed changes
 			);
 			name = ObjectFinder;
 			productName = ObjectFinder;
@@ -322,15 +302,12 @@
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
-<<<<<<< Updated upstream
-=======
 					03D25E5826279FCA003877AA = {
 						CreatedOnToolsVersion = 12.4;
 					};
 					03D25E6426279FCD003877AA = {
 						CreatedOnToolsVersion = 12.4;
 					};
->>>>>>> Stashed changes
 					EA542B6225E2991400EB51C7 = {
 						CreatedOnToolsVersion = 12.4;
 					};
@@ -350,18 +327,13 @@
 			projectRoot = "";
 			targets = (
 				EA542B6225E2991400EB51C7 /* ObjectFinder */,
-<<<<<<< Updated upstream
-=======
 				03D25E5826279FCA003877AA /* My_WatchOF */,
 				03D25E6426279FCD003877AA /* My_WatchOF Extension */,
->>>>>>> Stashed changes
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-<<<<<<< Updated upstream
-=======
 		03D25E5726279FCA003877AA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -379,7 +351,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
->>>>>>> Stashed changes
 		EA542B6125E2991400EB51C7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -394,24 +365,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2E5E2A00FF496F5BEDEF67B0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E97350C4C1DADBDF6A767B7D /* [CP] Check Pods Manifest.lock */ = {
+		B6588B298D0552DFC9955AB7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -433,11 +387,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D456729FE62CD007B556876A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-<<<<<<< Updated upstream
-=======
 		03D25E6126279FCD003877AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -448,7 +417,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
->>>>>>> Stashed changes
 		EA542B5F25E2991400EB51C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -469,9 +437,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-<<<<<<< Updated upstream
-/* Begin PBXVariantGroup section */
-=======
 /* Begin PBXTargetDependency section */
 		03D25E6826279FCD003877AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -494,7 +459,6 @@
 			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
->>>>>>> Stashed changes
 		EA542B6C25E2991400EB51C7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -514,8 +478,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-<<<<<<< Updated upstream
-=======
 		03D25E7726279FCF003877AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -598,7 +560,6 @@
 			};
 			name = Release;
 		};
->>>>>>> Stashed changes
 		EA542B7525E2991500EB51C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -717,7 +678,7 @@
 		};
 		EA542B7825E2991500EB51C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4431E73B9FE46A51C8F7CFC3 /* Pods-ObjectFinder.debug.xcconfig */;
+			baseConfigurationReference = DFAF7BB96BBC3E49A867EE56 /* Pods-ObjectFinder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -738,7 +699,7 @@
 		};
 		EA542B7925E2991500EB51C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 62E6B15831AE679D7669043B /* Pods-ObjectFinder.release.xcconfig */;
+			baseConfigurationReference = 17F8C235FAAF354C02ABA993 /* Pods-ObjectFinder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -761,8 +722,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-<<<<<<< Updated upstream
-=======
 		03D25E7C26279FCF003877AA /* Build configuration list for PBXNativeTarget "My_WatchOF Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -781,7 +740,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
->>>>>>> Stashed changes
 		EA542B5E25E2991400EB51C7 /* Build configuration list for PBXProject "ObjectFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -14,5 +14,6 @@ target 'ObjectFinder' do
   pod 'FirebaseFirestoreSwift'
   pod 'SideMenu'
   pod 'KeychainAccess'
+  pod 'GoogleUtilities'
 
 end

@@ -269,7 +269,8 @@ extension InterfaceController: WCSessionDelegate
                     loggedin = false
                 }
                 else{
-                    searching_for = value
+                    self.TextLabel.setText(value)
+                    self.TextLabel2.setText("Found in:")
                 }
                 
                 returned = true
