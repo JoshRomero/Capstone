@@ -8,9 +8,14 @@
 import UIKit
 import FirebaseAuth
 import SideMenu
+import WatchConnectivity
 
 class HomeViewController:
     UIViewController, MenuControllerDelegate {
+    var got_message = false
+    var message = ""
+    var session: WCSession?
+    var logged_in = true
     
     @IBOutlet weak var objectToLocate: UITextField!
     
@@ -25,6 +30,65 @@ class HomeViewController:
     private let settingsController = SettingsViewController()
     private let aboutController = AboutViewController()
 
+    func createWCSession()
+    {
+        if WCSession.isSupported()
+        {
+            session = WCSession.default
+            session?.delegate = self
+            session?.activate()
+        }
+    }
+    
+    func get_from_DB(data: String) -> String
+    {
+        print("got the message:", data)
+        var results = ""
+        if data.contains("key"){
+            results = "Room 1"
+        }
+        else if data.contains("wallet")
+        {
+            results = "Room 2"
+        }
+        
+        // search in DB for the proper results
+        return results
+    }
+    
+    func BoolToString(b: Bool?)->String { return b?.description ?? "<None>"}
+    
+    func listening()
+    {
+        DispatchQueue.global(qos: .userInitiated).async {
+            while true
+            {
+                if self.got_message
+                {
+                    if self.message == "logged in?"
+                    {
+                        let return_message = self.BoolToString(b: self.logged_in)
+                        print("sent message to watch:", return_message)
+                        if let validSession = self.session, validSession.isReachable {
+                        validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
+                          }
+                    }else{
+                        
+                        let return_message = self.get_from_DB(data: self.message)
+                        print("sent message to watch:", return_message)
+                        if let validSession = self.session, validSession.isReachable {
+                        validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
+                          }
+                    }
+                    self.got_message = false
+                    
+                }
+            }
+        }
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpElements()
@@ -35,6 +99,8 @@ class HomeViewController:
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: view)
         
+        createWCSession()
+        listening()
         addChildControllers()
     }
     
@@ -77,6 +143,7 @@ class HomeViewController:
 //            transitionToSettings()
             print("Settings")
         case .sign_out:
+            logged_in = false
             let firebaseAuth = Auth.auth()
             do {
                 try firebaseAuth.signOut()
@@ -235,3 +302,21 @@ extension URLSession {
         return (cleaned, response, error)
     }
 }
+
+extension HomeViewController: WCSessionDelegate {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+ }
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+         if let value = message["watch"] as? String {
+            self.message = value
+         }
+        self.got_message = true
+        
+        print("Iphone got message from watch:",self.message)
+       }
+    func sessionDidBecomeInactive(_ session: WCSession) {
+ }
+    func sessionDidDeactivate(_ session: WCSession) {
+ }
+}
+

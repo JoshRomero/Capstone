@@ -51,6 +51,15 @@ class InterfaceController: WKInterfaceController {
         self.pushController(withName: "Start Screen", context: nil)
     }
     
+    
+    func send_message(data1: String) -> Void
+    {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let data: [String: Any] = ["watch": data1 as Any] //Create your dictionary as per uses
+            self.session.sendMessage(data, replyHandler: nil, errorHandler: nil) //**6.1
+        }
+    }
+    
     func check_if_logged_in() -> Void{
         if !loggedin
         {
@@ -63,6 +72,7 @@ class InterfaceController: WKInterfaceController {
                     winner = 2
                 }
             }
+            print("watch sent message to phone")
             // communicate to the app to see if it is logged in (in the background)
             DispatchQueue.global(qos: .userInitiated).async {
                 let data: [String: Any] = ["watch": "logged in?" as Any] //Create your dictionary as per uses
@@ -233,6 +243,8 @@ class InterfaceController: WKInterfaceController {
                         else {
                             self.TextLabel.setText("Error, Please Try Again")
                         }
+                        
+                            self.send_message(data1: LowercaseInput!)
                     }
                     })
             }else{
@@ -254,10 +266,12 @@ extension InterfaceController: WCSessionDelegate
     {
         if let value = message["iPhone"] as? String
         {
+            print("Got message from Phone:" , value)
             if !timed_out{
                 if value == "true"
                 {
                     loggedin = true
+                    returned = true
                     DispatchQueue.global(qos: .userInitiated).async {
                         sleep(60)
                         loggedin = false
@@ -266,14 +280,17 @@ extension InterfaceController: WCSessionDelegate
                 }
                 else if value == "false"
                 {
+                    returned = true
                     loggedin = false
                 }
                 else{
+                    returned = true
                     self.TextLabel.setText(value)
                     self.TextLabel2.setText("Found in:")
                 }
                 
-                returned = true
+            }else{
+                timed_out = false
             }
             
         }

@@ -7,8 +7,12 @@
 
 import UIKit
 import FirebaseAuth
+//import WatchConnectivity
 
 class LoginViewController: UIViewController {
+//    var got_message = false
+//    var message = ""
+//    var session: WCSession?
     
     @IBOutlet weak var emailTextField: UITextField!
     
@@ -20,12 +24,42 @@ class LoginViewController: UIViewController {
     
     public var DEBUG = true
     
+//    func createWCSession()
+//    {
+//        if WCSession.isSupported()
+//        {
+//            session = WCSession.default
+//            session?.delegate = self
+//            session?.activate()
+//        }
+//    }
+//
+//    func listening()
+//    {
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            while true
+//            {
+//                if self.got_message
+//                {
+//                    if let validSession = self.session, validSession.isReachable {
+//                    validSession.sendMessage(["iPhone": "false"], replyHandler: nil, errorHandler: nil)
+//                      }
+//                    self.got_message = false
+//
+//                }
+//            }
+//        }
+//
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         // self.textField.delegate = self
         setUpElements()
+//        createWCSession()
+//        listening()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,3 +107,20 @@ class LoginViewController: UIViewController {
         self.view.window?.makeKeyAndVisible()
     }
 }
+
+//extension LoginViewController: WCSessionDelegate {
+//    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+// }
+//    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+//         if let value = message["watch"] as? String {
+//            self.message = value
+//         }
+//        self.got_message = true
+//
+//        print("Iphone got message from watch:",self.message)
+//       }
+//    func sessionDidBecomeInactive(_ session: WCSession) {
+// }
+//    func sessionDidDeactivate(_ session: WCSession) {
+// }
+//}
