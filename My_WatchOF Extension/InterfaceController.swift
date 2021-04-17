@@ -219,23 +219,15 @@ class InterfaceController: WKInterfaceController {
                         let UserInput = (results[0] as? String)
                         let LowercaseInput = UserInput?.lowercased()
                         
-                        if LowercaseInput!.contains("key") {
+                        if LowercaseInput!.contains("keys") {
+                            self.send_message(data1: "Keys")
                             self.TextLabel.setText("Keys")
                             self.TextLabel2.setText("Searching for:")
                             
                         }
                         
-                        else if LowercaseInput!.contains("keys") {
-                            self.TextLabel.setText("Keys")
-                            self.TextLabel2.setText("Searching for:")
-                        }
-                        
-                        else if LowercaseInput!.contains("wallet") {
-                            self.TextLabel.setText("Wallet")
-                            self.TextLabel2.setText("Searching for:")
-                        }
-                        
                         else if LowercaseInput!.contains("wallets") {
+                            self.send_message(data1: "Wallet")
                             self.TextLabel.setText("Wallet")
                             self.TextLabel2.setText("Searching for:")
                         }
@@ -244,7 +236,6 @@ class InterfaceController: WKInterfaceController {
                             self.TextLabel.setText("Error, Please Try Again")
                         }
                         
-                            self.send_message(data1: LowercaseInput!)
                     }
                     })
             }else{

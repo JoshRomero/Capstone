@@ -4,16 +4,19 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="17500"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
     </dependencies>
     <scenes>
         <!--Start Screen-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller identifier="Start Screen" backgroundImage="Magnifying Glass3" hidesWhenLoading="NO" fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="My_WatchOF" customModuleProvider="target">
+                <controller identifier="Start Screen" contentMode="scaleAspectFit" hidesWhenLoading="NO" fullScreen="YES" id="AgC-eL-Hgc" customClass="InterfaceController" customModule="My_WatchOF" customModuleProvider="target">
                     <items>
+                        <imageView width="32" height="34" alignment="center" verticalAlignment="center" image="Magnifying_Glass_BB3" id="Lyl-z6-sZd"/>
+                        <label alignment="center" verticalAlignment="center" text=" " id="aE2-tb-20E"/>
                         <button width="84" height="35" alignment="center" verticalAlignment="center" title="Start" id="PrS-tS-R5Y">
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" red="0.6705882353" green="0.31372549020000001" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="font" type="system" pointSize="15"/>
                             <connections>
                                 <action selector="StartButtonPressed" destination="AgC-eL-Hgc" id="u4z-9A-kAY"/>
                             </connections>
@@ -24,20 +27,21 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="119" y="-21"/>
+            <point key="canvasLocation" x="182" y="-20"/>
         </scene>
         <!--Login-->
         <scene sceneID="d6K-8q-Z7v">
             <objects>
-                <controller identifier="Login" backgroundImage="Screen Shot 2021-03-15 at 6.02.15 PM" hidesWhenLoading="NO" fullScreen="YES" id="GnP-QT-9wN" customClass="InterfaceController" customModule="My_WatchOF" customModuleProvider="target">
+                <controller identifier="Login" hidesWhenLoading="NO" fullScreen="YES" id="GnP-QT-9wN" customClass="InterfaceController" customModule="My_WatchOF" customModuleProvider="target">
                     <items>
-                        <label width="134" height="78" alignment="left" text="Please login on the app." textAlignment="center" numberOfLines="2" id="gE6-bw-9tx"/>
+                        <label width="134" height="70" alignment="left" text="Please login on the app." textAlignment="center" numberOfLines="2" id="gE6-bw-9tx"/>
                         <button width="92" height="37" alignment="center" verticalAlignment="bottom" title="Try Again" id="RDP-pO-Dlk">
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" red="0.6705882353" green="0.31372549020000001" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="TryAgainButtonPressed" destination="GnP-QT-9wN" id="MHb-SR-Tuu"/>
                             </connections>
                         </button>
+                        <imageView width="32" height="34" alignment="center" verticalAlignment="center" image="Magnifying_Glass_BB3" id="ZSH-Nk-Ece"/>
                     </items>
                 </controller>
             </objects>
@@ -49,15 +53,16 @@
                 <controller identifier="Search Screen" hidesWhenLoading="NO" fullScreen="YES" id="8dd-5M-Orb" customClass="InterfaceController" customModule="My_WatchOF_Extension">
                     <items>
                         <button width="74" height="13" alignment="left" title="&lt; Home" id="ZS9-Sb-PgB">
-                            <color key="titleColor" name="AccentColor"/>
+                            <color key="titleColor" red="0.6705882353" green="0.31372549020000001" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="HomeButtonPressed" destination="8dd-5M-Orb" id="CB3-sc-xvr"/>
                             </connections>
                         </button>
-                        <label width="135" height="61" alignment="left" text="Logged in" textAlignment="center" id="ST4-UV-1Gk"/>
-                        <label width="134" height="40" alignment="left" textAlignment="center" id="Je5-Vf-fL6"/>
+                        <label width="135" height="61" alignment="center" text="Logged in" textAlignment="center" id="ST4-UV-1Gk"/>
+                        <label width="99" height="40" alignment="center" textAlignment="center" id="Je5-Vf-fL6"/>
                         <button width="1" alignment="left" title="Search" id="45d-fO-mhX">
+                            <color key="backgroundColor" red="0.6705882353" green="0.31372549020000001" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="SearchButtonPressed" destination="8dd-5M-Orb" id="EXK-9F-zHd"/>
                             </connections>
@@ -74,10 +79,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Magnifying Glass3" width="1200" height="1200"/>
-        <image name="Screen Shot 2021-03-15 at 6.02.15 PM" width="188" height="187"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <image name="Magnifying_Glass_BB3" width="1200" height="1200"/>
     </resources>
 </document>

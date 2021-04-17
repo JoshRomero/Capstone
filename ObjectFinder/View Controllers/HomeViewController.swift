@@ -39,25 +39,27 @@ class HomeViewController:
             session?.activate()
         }
     }
+    // This needs to be change to get data from the database
+//    func get_from_DB(data: String) -> String
+//    {
+//        print("got the message:", data)
+//        var results = ""
+//        if data.contains("key"){
+//            results = "Room 1"
+//        }
+//        else if data.contains("wallet")
+//        {
+//            results = "Room 2"
+//        }
+//
+//        // search in DB for the proper results
+//        return results
+//    }
     
-    func get_from_DB(data: String) -> String
-    {
-        print("got the message:", data)
-        var results = ""
-        if data.contains("key"){
-            results = "Room 1"
-        }
-        else if data.contains("wallet")
-        {
-            results = "Room 2"
-        }
-        
-        // search in DB for the proper results
-        return results
-    }
-    
+    // used to change bools to strings
     func BoolToString(b: Bool?)->String { return b?.description ?? "<None>"}
     
+    // always listening for a message from the watch
     func listening()
     {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -74,11 +76,52 @@ class HomeViewController:
                           }
                     }else{
                         
-                        let return_message = self.get_from_DB(data: self.message)
-                        print("sent message to watch:", return_message)
-                        if let validSession = self.session, validSession.isReachable {
-                        validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
+                        
+                        let currentUser = Auth.auth().currentUser
+                        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+                          if let error = error {
+                            // Handle error
+                            print("error:", error)
+                            return;
                           }
+
+                          // Send token to your backend via HTTPS
+                          // ...
+                            let object = self.message.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
+                            let url1 = URL(string: "https://objectfinder.tech/pidata?object=\(object)")!
+                            var request = URLRequest(url: url1)
+                            request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                            request.httpMethod = "GET"
+                            let (cleaned, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                            if let error = error {
+                                print("Synchronous task ended with error: \(error)")
+                                self.showError("No internet connection.")
+                            }
+                            else {
+                                print("Synchronous task ended without errors.")
+                                var room = cleaned[7]
+                                room = "Room \(room)"
+                                if let validSession = self.session, validSession.isReachable {
+                                validSession.sendMessage(["iPhone": room], replyHandler: nil, errorHandler: nil)
+                                  }
+                            }
+                        }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+//                        let return_message = self.get_from_DB(data: self.message)
+//                        print("sent message to watch:", return_message)
+//                        if let validSession = self.session, validSession.isReachable {
+//                        validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
+//                          }
                     }
                     self.got_message = false
                     
@@ -203,7 +246,7 @@ class HomeViewController:
 
               // Send token to your backend via HTTPS
               // ...
-                let url1 = URL(string: "https://objectfinder.tech/pidata?objectQueried=\(object)")!
+                let url1 = URL(string: "https://objectfinder.tech/pidata?object=\(object)")!
                 var request = URLRequest(url: url1)
                 request.setValue(idToken, forHTTPHeaderField: "Authorization")
                 request.httpMethod = "GET"
@@ -303,6 +346,8 @@ extension URLSession {
     }
 }
 
+
+// needed to receive messages
 extension HomeViewController: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
  }

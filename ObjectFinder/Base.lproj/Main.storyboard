@@ -375,7 +375,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="YH4-0q-UmG"/>
+        <segue reference="nCQ-Ho-Kez"/>
+        <segue reference="wuU-Mf-v2E"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Magnifying Glass3" width="1200" height="1200"/>
