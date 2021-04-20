@@ -7,10 +7,6 @@ import json
 import os
 import requests
 
-class WirelessLoginSchema(Schema):
-    ssid = fields.Str()
-    psk = fields.Str()
-
 class UserLoginSchema(Schema):
     email = fields.Str()
     password = fields.Str()
@@ -28,7 +24,6 @@ api = Api(app)
 configFile = open(os.environ['FIREBASE_CONFIG'])
 firebase = pyrebase.initialize_app(json.load(configFile))
 
-wirelessLoginScheme = WirelessLoginSchema()
 userLoginScheme = UserLoginSchema()
 systemRoomScheme = SystemRoomSchema()
 systemStatusScheme = SystemRoomSchema()
@@ -37,12 +32,11 @@ systemStatusScheme = SystemRoomSchema()
 def refreshToken():
     with open(os.environ['CURR_USER'], "r") as file:
         jsonUser = json.loads(file.read())
-        
-        # A user's idToken expires after 1 hour, so be sure to use the user's refreshToken to avoid stale tokens.
-        jsonUser = auth.refresh(jsonUser['refreshToken'])
-        writeCurrUserInfo(jsonUser)
-        
         file.close()
+        
+    # A user's idToken expires after 1 hour, so be sure to use the user's refreshToken to avoid stale tokens.
+    jsonUser = auth.refresh(jsonUser['refreshToken'])
+    writeCurrUserInfo(jsonUser)
 
 def writeCurrUserInfo(jsonUserInfo):
     # path = /.creds/.currUser
@@ -53,26 +47,31 @@ def writeCurrUserInfo(jsonUserInfo):
 # remove user info file
 def deleteCurrUserInfo():
     os.remove(os.environ['CURR_USER'])
-    
+
+# send a post request to server containing the iPhone's idToken and the current Pi's idToken to compare uids 
 def compareUUIDs(userIdToken):
     jsonUser = open(os.environ['CURR_USER'], "r")
     jsonUser = json.loads(json.read())
         
-    header = {
-        "Authorization": jsonUser["localID"]
-    }
-    payload = {
-        "idToken": userIdToken
-    }
+    header = {"Authorization": jsonUser["idtoken"]}
+    payload = {"idToken": userIdToken}
     url = "https://objectfinder.tech/compareuuid"
-    r = requests.post(url, params=payload, headers=header)
+    r = requests.post(url, json=payload, headers=header)
     rDict = json.loads(r.text)
         
     if rDict["equivalentUUIDS"] == "true":
         return True
     else:
-        return False 
-           
+        return False
+
+# write user defined roomID to the roomID info file
+def changeRoomID(newRoomID):
+    systemRoomInfo = {"roomID": newRoomID}
+    with open(os.environ['ROOM_ID'], 'w') as file:
+        file.write(systemRoomInfo)
+        file.close()
+
+# user sends credentials to pi -> pi logs in once -> pi saves the token to the file at the location defined by the CURR_USER environment variable     
 class UserLoginAPI(Resource):
     
     def post(self):
@@ -111,14 +110,11 @@ class SystemRoomAPI(Resource):
         if compareUUIDs(token) == False:
             abort(401)
         
-        errors = systemRoomScheme.validate(request.form)
+        errors = systemRoomScheme.validate(request.json["roomID"])
         if errors:
             abort(400)
-        systemRoomInfo = {
-            "roomID": request.form['roomID']
-        }
-        with open(os.environ['ROOM_ID'], "w") as file:
-            file.write(systemRoomInfo)
+        
+        changeRoomID(request.json['roomID'])
         
         return 'ok'
 
@@ -158,14 +154,14 @@ class SystemStatusAPI(Resource):
             # kill CNN thread
             
         elif(request.form['status'] == 'RESET'):
-            os.environ['ROOM_ID'] = 'Room 1'
+            # kill CNN thread
+            changeRoomID('room 1')
             deleteCurrUserInfo()
             os.environ['CURRENT_STATUS'] = 'OFF'
             # disconnect from wifi and forget network
             
         return 'ok'
 
-api.add_resource(WirelessConnectionAPI, "/wifi", endpoint = 'wifi')
 api.add_resource(UserLoginAPI, "/login", endpoint = 'login')
 api.add_resource(SystemRoomAPI, "/roomID", endpoint = 'roomID')
 api.add_resource(SystemStatusAPI, "/status", endpoint = 'status')

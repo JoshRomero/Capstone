@@ -25,18 +25,15 @@ user = auth.sign_in_with_email_and_password(email, password)
 header = {"Authorization": user["idToken"]}
 
 payload = {
-    "object": "keys"
+    "object": "cellphone"
 }
 url = "https://objectfinder.tech/pidata"
 r = requests.get(url, params=payload, headers=header)
 print(r.text)
 response = json.loads(r.text)
 
-payload = {
-    "dateTime": response["dateTime"]
-}
-url = "https://objectfinder.tech/pidata/image"
-r = requests.get(url, params=payload, headers=header)
+url = "https://objectfinder.tech/pidata/image?dateTime=2021-04-19_21:36:02.088174"
+r = requests.get(url, headers=header)
 with open("image.jpg", "wb+") as file:
     file.write(r.content)
     file.close()
