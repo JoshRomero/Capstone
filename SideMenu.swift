@@ -13,7 +13,6 @@ protocol MenuControllerDelegate {
 }
 
 enum SideMenuItem: String, CaseIterable {
-    case home = "Home"
     case settings = "Settings"
     case about = "About"
     case sign_out = "Sign Out"

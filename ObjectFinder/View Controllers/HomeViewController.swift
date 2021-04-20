@@ -11,11 +11,73 @@ import SideMenu
 import WatchConnectivity
 
 class HomeViewController:
-    UIViewController, MenuControllerDelegate {
+    UIViewController, MenuControllerDelegate, WCSessionDelegate {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+ }
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+         if let value = message["watch"] as? String {
+            self.message = value
+         }
+        print("Iphone got message from watch:",self.message)
+        self.got_message = true
+        if self.got_message
+        {
+            if self.message == "logged in?"
+            {
+                let return_message = self.BoolToString(b: self.logged_in)
+                print("sent message to watch:", return_message)
+                if let validSession = self.session, validSession.isReachable {
+                validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
+                  }
+            }else
+            {
+                
+                
+                let currentUser = Auth.auth().currentUser
+                currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+                  if let error = error {
+                    // Handle error
+                    print("error:", error)
+                    return;
+                  }
+
+                  // Send token to your backend via HTTPS
+                  // ...
+                    let object = self.message.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
+                    let url1 = URL(string: "https://objectfinder.tech/pidata?object=\(object)")!
+                    var request = URLRequest(url: url1)
+                    request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                    request.httpMethod = "GET"
+                    let (cleaned, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                    if let error = error {
+                        print("Synchronous task ended with error: \(error)")
+                        self.showError("No internet connection.")
+                    }
+                    else {
+                        print("Synchronous task ended without errors.")
+                        var room = cleaned[7]
+                        room = "Room \(room)"
+                        if let validSession = self.session, validSession.isReachable {
+                        validSession.sendMessage(["iPhone": room], replyHandler: nil, errorHandler: nil)
+                          }
+                    }
+                }
+            }
+        }
+        self.got_message = false
+        
+       }
+    func sessionDidBecomeInactive(_ session: WCSession) {
+ }
+    func sessionDidDeactivate(_ session: WCSession) {
+ }
+    
+    
     var got_message = false
     var message = ""
     var session: WCSession?
     var logged_in = true
+    let valid_item = ["CellPhone" , "Remote", "Laptop", "Handbag", "Book"]
     
     @IBOutlet weak var objectToLocate: UITextField!
     
@@ -39,111 +101,15 @@ class HomeViewController:
             session?.activate()
         }
     }
-    // This needs to be change to get data from the database
-//    func get_from_DB(data: String) -> String
-//    {
-//        print("got the message:", data)
-//        var results = ""
-//        if data.contains("key"){
-//            results = "Room 1"
-//        }
-//        else if data.contains("wallet")
-//        {
-//            results = "Room 2"
-//        }
-//
-//        // search in DB for the proper results
-//        return results
-//    }
     
     // used to change bools to strings
     func BoolToString(b: Bool?)->String { return b?.description ?? "<None>"}
     
-    // always listening for a message from the watch
-    func listening()
-    {
-        DispatchQueue.global(qos: .userInitiated).async {
-            while true
-            {
-                if self.got_message
-                {
-                    if self.message == "logged in?"
-                    {
-                        let return_message = self.BoolToString(b: self.logged_in)
-                        print("sent message to watch:", return_message)
-                        if let validSession = self.session, validSession.isReachable {
-                        validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
-                          }
-                    }else{
-                        
-                        
-                        let currentUser = Auth.auth().currentUser
-                        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
-                          if let error = error {
-                            // Handle error
-                            print("error:", error)
-                            return;
-                          }
-
-                          // Send token to your backend via HTTPS
-                          // ...
-                            let object = self.message.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
-                            let url1 = URL(string: "https://objectfinder.tech/pidata?object=\(object)")!
-                            var request = URLRequest(url: url1)
-                            request.setValue(idToken, forHTTPHeaderField: "Authorization")
-                            request.httpMethod = "GET"
-                            let (cleaned, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-                            if let error = error {
-                                print("Synchronous task ended with error: \(error)")
-                                self.showError("No internet connection.")
-                            }
-                            else {
-                                print("Synchronous task ended without errors.")
-                                var room = cleaned[7]
-                                room = "Room \(room)"
-                                if let validSession = self.session, validSession.isReachable {
-                                validSession.sendMessage(["iPhone": room], replyHandler: nil, errorHandler: nil)
-                                  }
-                            }
-                        }
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-//                        let return_message = self.get_from_DB(data: self.message)
-//                        print("sent message to watch:", return_message)
-//                        if let validSession = self.session, validSession.isReachable {
-//                        validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
-//                          }
-                    }
-                    self.got_message = false
-                    
-                }
-            }
-        }
-        
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpElements()
-        let menu = MenuController(with: SideMenuItem.allCases)
-        menu.delegate = self
-        sideMenu = SideMenuNavigationController(rootViewController: menu)
-        sideMenu?.leftSide = true
-        SideMenuManager.default.leftMenuNavigationController = sideMenu
-        SideMenuManager.default.addPanGestureToPresent(toView: view)
         
         createWCSession()
-        listening()
         addChildControllers()
     }
     
@@ -170,6 +136,11 @@ class HomeViewController:
     }
     
     @IBAction func didTapMenuButton(_ sender: Any) {
+        let menu = MenuController(with: SideMenuItem.allCases)
+        menu.delegate = self
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        sideMenu?.leftSide = true
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
         present(sideMenu!, animated: true)
     }
     
@@ -179,11 +150,8 @@ class HomeViewController:
         title = named.rawValue
         
         switch named {
-        case .home:
-            aboutController.view.isHidden = true
-            settingsController.view.isHidden = true
         case .settings:
-//            transitionToSettings()
+            transitionToSettings()
             print("Settings")
         case .sign_out:
             logged_in = false
@@ -195,7 +163,7 @@ class HomeViewController:
                 showError("Error signing out: \(signOutError)")
             }
         case .about:
-//            transitionToAbout()
+            transitionToAbout()
             print("About")
         }
     }
@@ -211,31 +179,33 @@ class HomeViewController:
         Utilities.styleFilledButton(locateButton)
     }
     
-    func validateFields() -> String? {
-        
-        // Check that all fields are filled in
-        if (objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "keys" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "glasses" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "remote")
-        {
-            return nil
-        }
-        
-        return "Invalid object"
-    }
+//    func validateFields() -> String? {
+//
+//        // Check that all fields are filled in
+//        if (objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "keys" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "glasses" || objectToLocate.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "remote")
+//        {
+//            return nil
+//        }
+//
+//        return "Invalid object"
+//    }
     
     @IBAction func locateTapped(_ sender: Any) {
         
-        // Validate the fields
-        let error = validateFields()
-        
-        if error != nil {
-            // There's something wrong with the field, show error message
-            showError(error!)
-        }
-        
-        else {
-            // Create cleaned versions of the object
-            errorLabel.alpha = 0
-            let object = objectToLocate.text!.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
+//        // Validate the fields
+//        let error = validateFields()
+//
+//        if error != nil {
+//            // There's something wrong with the field, show error message
+//            showError(error!)
+//        }
+//
+//        else {
+        // Create cleaned versions of the object
+        errorLabel.alpha = 0
+        let object = objectToLocate.text!.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
+        if valid_item.contains(object)
+        {
             let currentUser = Auth.auth().currentUser
             currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
               if let error = error {
@@ -260,7 +230,7 @@ class HomeViewController:
                     let item = cleaned[11]
                     let room = cleaned[7]
                     let dateTime = cleaned[3]
-                    if (item == "keys" || item == "glasses") {
+                    if (item.last! == "s") {
     //                  Show object message
                         self.showObject("Your \(item) were found in room \(room) at \(dateTime).")
                     }
@@ -271,6 +241,9 @@ class HomeViewController:
                 }
             }
         }
+            else{
+                self.showObject("Sorry, \(object) is not an items I can find. List of searchable items can be find on the ABOUT page.")
+            }
     }
     
     // display the error message
@@ -287,20 +260,21 @@ class HomeViewController:
         self.errorLabel.alpha = 0
     }
     
-//    func transitionToSettings() {
-//        let settingsViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.settingsViewController) as? SettingsViewController
-//
-//        view.window?.rootViewController = settingsViewController
-//        view.window?.makeKeyAndVisible()
-//    }
-//
-//    func transitionToAbout() {
-//        let aboutViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.aboutViewController) as? AboutViewController
-//
-//        view.window?.rootViewController = aboutViewController
-//        view.window?.makeKeyAndVisible()
-//    }
-//
+    func transitionToAbout() {
+        let story = UIStoryboard(name: "Main", bundle: nil)
+        let controller = story.instantiateViewController(identifier: "AboutViewController") as! AboutViewController
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    func transitionToSettings() {
+        let story = UIStoryboard(name: "Main", bundle: nil)
+        let controller = story.instantiateViewController(identifier: "SettingsViewController") as! SettingsViewController
+        self.present(controller, animated: true, completion: nil)
+    }
+   
     func transitionToRoot() {
 
         let rootViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.rootViewController) as? ViewController
@@ -346,22 +320,4 @@ extension URLSession {
     }
 }
 
-
-// needed to receive messages
-extension HomeViewController: WCSessionDelegate {
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
- }
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-         if let value = message["watch"] as? String {
-            self.message = value
-         }
-        self.got_message = true
-        
-        print("Iphone got message from watch:",self.message)
-       }
-    func sessionDidBecomeInactive(_ session: WCSession) {
- }
-    func sessionDidDeactivate(_ session: WCSession) {
- }
-}
 

@@ -38,7 +38,7 @@
                         <button width="92" height="37" alignment="center" verticalAlignment="bottom" title="Try Again" id="RDP-pO-Dlk">
                             <color key="backgroundColor" red="0.6705882353" green="0.31372549020000001" blue="0.3411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <action selector="TryAgainButtonPressed" destination="GnP-QT-9wN" id="MHb-SR-Tuu"/>
+                                <action selector="tryAgainPressed" destination="GnP-QT-9wN" id="r2I-fY-GNH"/>
                             </connections>
                         </button>
                         <imageView width="32" height="34" alignment="center" verticalAlignment="center" image="Magnifying_Glass_BB3" id="ZSH-Nk-Ece"/>

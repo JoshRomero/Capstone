@@ -14,11 +14,11 @@
             <objects>
                 <viewController storyboardIdentifier="RootVC" id="BYZ-38-t0r" customClass="ViewController" customModule="ObjectFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MiJ-J5-bF1">
-                                <rect key="frame" x="40" y="487" width="295" height="120"/>
+                                <rect key="frame" x="40" y="507" width="295" height="120"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edq-L5-UEp">
                                         <rect key="frame" x="0.0" y="0.0" width="295" height="50"/>
@@ -28,7 +28,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Login"/>
                                         <connections>
-                                            <segue destination="qav-bh-tuA" kind="show" id="6la-JL-L5a"/>
+                                            <segue destination="qav-bh-tuA" kind="presentation" modalPresentationStyle="fullScreen" id="6la-JL-L5a"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbQ-Ma-BX5">
@@ -40,12 +40,12 @@
                                         <state key="normal" title="Sign Up"/>
                                         <connections>
                                             <action selector="signUpTapped:" destination="B5g-on-IxT" eventType="touchUpInside" id="eQl-PB-GgD"/>
-                                            <segue destination="rQ2-np-mrL" kind="show" id="nCQ-Ho-Kez"/>
+                                            <segue destination="rQ2-np-mrL" kind="presentation" modalPresentationStyle="fullScreen" id="nCQ-Ho-Kez"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Magnifying Glass3" translatesAutoresizingMaskIntoConstraints="NO" id="Zxg-dr-TWX">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Magnifying Glass3-1" translatesAutoresizingMaskIntoConstraints="NO" id="Zxg-dr-TWX">
                                 <rect key="frame" x="-412.5" y="15" width="1200" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="MgE-La-hm7"/>
@@ -90,12 +90,62 @@
             </objects>
             <point key="canvasLocation" x="928.79999999999995" y="74.212893553223395"/>
         </scene>
+        <!--SettingViewController-->
+        <scene sceneID="8x3-4g-Grd">
+            <objects>
+                <viewController storyboardIdentifier="SettingsViewController" title="SettingViewController" id="VyC-Ry-5uD" customClass="SettingsViewController" customModule="ObjectFinder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="E2A-oq-t44">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gzV-Ci-pYS">
+                                <rect key="frame" x="289" y="95" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SrU-Mn-3O9">
+                                <rect key="frame" x="289" y="137" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AFF-LZ-Wdm">
+                                <rect key="frame" x="289" y="50" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="First Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rc4-MG-p8k">
+                                <rect key="frame" x="24" y="55" width="92" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Second Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sdy-Ua-gBJ">
+                                <rect key="frame" x="24" y="100" width="117" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Third Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o6b-Bw-dzv">
+                                <rect key="frame" x="24" y="142" width="99" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9vc-7b-gQ5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1f1-UF-1y0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="632.79999999999995" y="756.97151424287858"/>
+        </scene>
         <!--Login View Controller-->
         <scene sceneID="1fp-d9-mVo">
             <objects>
                 <viewController id="qav-bh-tuA" customClass="LoginViewController" customModule="ObjectFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4cR-id-8I9">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ukS-gP-6xm">
@@ -141,7 +191,7 @@
                                     <imageReference key="image" image="chevron.left" catalog="system" symbolScale="large"/>
                                 </state>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="YH4-0q-UmG"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" animates="NO" modalPresentationStyle="fullScreen" id="YH4-0q-UmG"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -167,12 +217,36 @@
             </objects>
             <point key="canvasLocation" x="1903" y="417"/>
         </scene>
+        <!--About View Controller-->
+        <scene sceneID="KHf-8N-C3c">
+            <objects>
+                <viewController storyboardIdentifier="AboutViewController" id="7Gl-Pf-62a" customClass="AboutViewController" customModule="ObjectFinder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="AboutViewController" id="Gdy-EB-H0K">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This is the About page" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIS-Nn-gTh">
+                                <rect key="frame" x="102" y="312" width="171" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="lSG-Du-AQk"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="asc-Ds-8QW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2771" y="891"/>
+        </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="cAm-2B-wBg">
             <objects>
-                <viewController id="rQ2-np-mrL" customClass="SignUpViewController" customModule="ObjectFinder" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignUpViewController" id="rQ2-np-mrL" customClass="SignUpViewController" customModule="ObjectFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CZ3-dD-Meb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="myH-T7-qvQ">
@@ -231,7 +305,7 @@
                                     <imageReference key="image" image="chevron.left" catalog="system" symbolScale="large"/>
                                 </state>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="wuU-Mf-v2E"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" animates="NO" modalPresentationStyle="fullScreen" id="wuU-Mf-v2E"/>
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RU4-6a-cNI">
@@ -239,7 +313,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Segue"/>
                                 <connections>
-                                    <segue destination="AZ1-vt-i8k" kind="show" id="ZRf-Ro-AC8"/>
+                                    <segue destination="AZ1-vt-i8k" kind="presentation" modalPresentationStyle="fullScreen" id="ZRf-Ro-AC8"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -272,10 +346,10 @@
             <objects>
                 <viewController storyboardIdentifier="HomeVC" id="AZ1-vt-i8k" customClass="HomeViewController" customModule="ObjectFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wXj-9Q-LLA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Magnifying Glass3" translatesAutoresizingMaskIntoConstraints="NO" id="EOd-Hm-gzg">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Magnifying Glass3-1" translatesAutoresizingMaskIntoConstraints="NO" id="EOd-Hm-gzg">
                                 <rect key="frame" x="-412.5" y="15" width="1200" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="hHF-cO-FOK"/>
@@ -307,13 +381,13 @@
                                             <action selector="locateTapped:" destination="AZ1-vt-i8k" eventType="touchUpInside" id="N25-fZ-0Dz"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="apy-aw-66o">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="apy-aw-66o">
                                         <rect key="frame" x="0.0" y="264" width="295" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.30731468810000001" blue="0.07435955994" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Object" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZq-bj-AGT">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Object" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZq-bj-AGT">
                                         <rect key="frame" x="0.0" y="324.5" width="295" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -375,11 +449,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="nCQ-Ho-Kez"/>
         <segue reference="wuU-Mf-v2E"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="Magnifying Glass3" width="1200" height="1200"/>
+        <image name="Magnifying Glass3-1" width="1200" height="1200"/>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
         <systemColor name="systemBackgroundColor">

@@ -15,7 +15,51 @@ var returned = false
 var searching_for = ""
 var timed_out = false
 
-class InterfaceController: WKInterfaceController {
+
+class InterfaceController: WKInterfaceController , WCSessionDelegate {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+    }
+    
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any])
+    {
+        if let value = message["iPhone"] as? String
+        {
+            print("Got message from Phone:" , value)
+            if !timed_out{
+                if value == "true"
+                {
+                    loggedin = true
+                    returned = true
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        sleep(60)
+                        loggedin = false
+                    }
+                    
+                }
+                else if value == "false"
+                {
+                    returned = true
+                    loggedin = false
+                }
+                else{
+                    returned = true
+                    self.TextLabel.setText(value)
+                    self.TextLabel2.setText("Found in:")
+                }
+                
+            }else{
+                timed_out = false
+            }
+            
+        }
+    }
+    
+    
+    @IBAction func tryAgainPressed() {
+        self.pushController(withName: "Start Screen", context: nil)
+    }
+    
     
     let session = WCSession.default
     
@@ -27,7 +71,6 @@ class InterfaceController: WKInterfaceController {
     
     @IBOutlet var TextLabel2: WKInterfaceLabel!
     
-    @IBOutlet private var loadingLabel: WKInterfaceLabel!
     
     
     override func awake(withContext context: Any?) {
@@ -47,11 +90,6 @@ class InterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
     
-    @IBAction func TryAgainButtonPressed() {
-        self.pushController(withName: "Start Screen", context: nil)
-    }
-    
-    
     func send_message(data1: String) -> Void
     {
         DispatchQueue.global(qos: .userInitiated).async {
@@ -60,6 +98,14 @@ class InterfaceController: WKInterfaceController {
         }
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
     func check_if_logged_in() -> Void{
         if !loggedin
         {
@@ -67,37 +113,29 @@ class InterfaceController: WKInterfaceController {
             var winner = 0
             // if the app does not respond within 5 seconds then if will for try again page (in the background)
             DispatchQueue.global(qos: .userInitiated).async {
-                sleep(10)
+                sleep(5)
                 if winner == 0{
                     winner = 2
                 }
             }
             print("watch sent message to phone")
             // communicate to the app to see if it is logged in (in the background)
-            DispatchQueue.global(qos: .userInitiated).async {
-                let data: [String: Any] = ["watch": "logged in?" as Any] //Create your dictionary as per uses
-                self.session.sendMessage(data, replyHandler: nil, errorHandler: nil) //**6.1
-                while returned == false
-                {
-                    if winner == 2{
-                        break
-                    }
+            let data: [String: Any] = ["watch": "logged in?" as Any] //Create your dictionary as per uses
+            self.session.sendMessage(data, replyHandler: nil, errorHandler: nil) //**6.1
+            sleep(1)
+            while returned == false
+            {
+                if winner == 2{
+                    timed_out = true
+                    return
                 }
-                
-                //
-                if winner == 0{
-                    winner = 1
+                else{
+                    return
                 }
             }
+        
         // keep looping until you get the feedback from the app or it times out
-        while true{
-            if winner == 2{
-                timed_out = true
-                return
-            }else if winner == 1{
-                return
-            }
-        }
+        
         }
     }
     
@@ -195,7 +233,7 @@ class InterfaceController: WKInterfaceController {
                     }
                     
                     count += 1
-                    sleep(1)
+                    sleep(2)
                     if count == 4 && !loggedin{
                         count = 0
                     }
@@ -211,7 +249,7 @@ class InterfaceController: WKInterfaceController {
             self.check_if_logged_in()
             // after getting the logged in results update the UI
             if loggedin{
-                let options = ["Keys", "Wallet"]
+                let options = ["CellPhone", "Laptop", "Remote", "Handbag", "Book"]
                 self.presentTextInputController(withSuggestions: options, allowedInputMode: .plain, completion: { results in
                     guard let results = results else { return }
                     OperationQueue.main.addOperation {
@@ -219,18 +257,34 @@ class InterfaceController: WKInterfaceController {
                         let UserInput = (results[0] as? String)
                         let LowercaseInput = UserInput?.lowercased()
                         
-                        if LowercaseInput!.contains("keys") {
-                            self.send_message(data1: "Keys")
-                            self.TextLabel.setText("Keys")
+                        if LowercaseInput!.contains("laptop") {
+                            self.send_message(data1: "Laptop")
+                            self.TextLabel.setText("Laptop")
                             self.TextLabel2.setText("Searching for:")
                             
                         }
                         
-                        else if LowercaseInput!.contains("wallets") {
-                            self.send_message(data1: "Wallet")
-                            self.TextLabel.setText("Wallet")
+                        else if LowercaseInput!.contains("cellphone") {
+                            self.send_message(data1: "CellPhone")
+                            self.TextLabel.setText("Cell Phone")
                             self.TextLabel2.setText("Searching for:")
                         }
+                        else if LowercaseInput!.contains("remote") {
+                            self.send_message(data1: "Remote")
+                            self.TextLabel.setText("Remote")
+                            self.TextLabel2.setText("Searching for:")
+                        }
+                        else if LowercaseInput!.contains("handbag") {
+                            self.send_message(data1: "Handbag")
+                            self.TextLabel.setText("Handbag")
+                            self.TextLabel2.setText("Searching for:")
+                        }
+                        else if LowercaseInput!.contains("book") {
+                            self.send_message(data1: "Book")
+                            self.TextLabel.setText("Book")
+                            self.TextLabel2.setText("Searching for:")
+                        }
+                        
                         
                         else {
                             self.TextLabel.setText("Error, Please Try Again")
@@ -245,46 +299,10 @@ class InterfaceController: WKInterfaceController {
             }
         }
     }
+    
+    
+    
+    
 }
 
-extension InterfaceController: WCSessionDelegate
-{
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-    }
-    
-    
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any])
-    {
-        if let value = message["iPhone"] as? String
-        {
-            print("Got message from Phone:" , value)
-            if !timed_out{
-                if value == "true"
-                {
-                    loggedin = true
-                    returned = true
-                    DispatchQueue.global(qos: .userInitiated).async {
-                        sleep(60)
-                        loggedin = false
-                    }
-                    
-                }
-                else if value == "false"
-                {
-                    returned = true
-                    loggedin = false
-                }
-                else{
-                    returned = true
-                    self.TextLabel.setText(value)
-                    self.TextLabel2.setText("Found in:")
-                }
-                
-            }else{
-                timed_out = false
-            }
-            
-        }
-    }
-}
 
