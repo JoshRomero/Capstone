@@ -5,20 +5,21 @@ from marshmallow import fields, Schema
 import pyrebase
 import json
 import os
+import requests
 
 class WirelessLoginSchema(Schema):
-    ssid = fields.str()
-    psk = fields.str()
+    ssid = fields.Str()
+    psk = fields.Str()
 
 class UserLoginSchema(Schema):
     email = fields.Str()
     password = fields.Str()
 
 class SystemRoomSchema(Schema):
-    room = fields.str()
+    room = fields.Str()
 
 class SystemStatusSchema(Schema):
-    status = fields.str()
+    status = fields.Str()
     
 app = Flask(__name__)
 api = Api(app)
@@ -36,11 +37,12 @@ systemStatusScheme = SystemRoomSchema()
 def refreshToken():
     with open(os.environ['CURR_USER'], "r") as file:
         jsonUser = json.loads(file.read())
-        file.close()
         
         # A user's idToken expires after 1 hour, so be sure to use the user's refreshToken to avoid stale tokens.
         jsonUser = auth.refresh(jsonUser['refreshToken'])
         writeCurrUserInfo(jsonUser)
+        
+        file.close()
 
 def writeCurrUserInfo(jsonUserInfo):
     # path = /.creds/.currUser
@@ -52,6 +54,25 @@ def writeCurrUserInfo(jsonUserInfo):
 def deleteCurrUserInfo():
     os.remove(os.environ['CURR_USER'])
     
+def compareUUIDs(userIdToken):
+    jsonUser = open(os.environ['CURR_USER'], "r")
+    jsonUser = json.loads(json.read())
+        
+    header = {
+        "Authorization": jsonUser["localID"]
+    }
+    payload = {
+        "idToken": userIdToken
+    }
+    url = "https://objectfinder.tech/compareuuid"
+    r = requests.post(url, params=payload, headers=header)
+    rDict = json.loads(r.text)
+        
+    if rDict["equivalentUUIDS"] == "true":
+        return True
+    else:
+        return False 
+           
 class UserLoginAPI(Resource):
     
     def post(self):
@@ -74,20 +95,30 @@ class SystemRoomAPI(Resource):
     
     def get(self):
         # check uuid match
+        token = request.headers["Authorization"]
+        if compareUUIDs(token) == False:
+            abort(401)
         
         # room_id set in os image to default "room 1"
-        systemRoomInfo = {
-            "roomID": os.environ['ROOM_ID']
-        }
-        return systemRoomInfo
+        roomInfoFile = open(os.environ['ROOM_ID'], "r")
+        jsonRoomFile = json.load(roomInfoFile)
+        
+        return roomInfoFile
     
     def post(self):
         # check uuid match
+        token = request.headers["Authorization"]
+        if compareUUIDs(token) == False:
+            abort(401)
         
         errors = systemRoomScheme.validate(request.form)
         if errors:
             abort(400)
-        os.environ['ROOM_ID'] = request.form['roomID']
+        systemRoomInfo = {
+            "roomID": request.form['roomID']
+        }
+        with open(os.environ['ROOM_ID'], "w") as file:
+            file.write(systemRoomInfo)
         
         return 'ok'
 
@@ -98,6 +129,9 @@ class SystemStatusAPI(Resource):
     
     def get(self):
         # check uuid match
+        token = request.headers["Authorization"]
+        if compareUUIDs(token) == False:
+            abort(401)
         
         systemStatusInfo = {
             "status": os.environ['CURRENT_STATUS']
@@ -107,6 +141,9 @@ class SystemStatusAPI(Resource):
     
     def post(self):
         # check uuid match
+        token = request.headers["Authorization"]
+        if compareUUIDs(token) == False:
+            abort(401)
         
         errors = systemInfoScheme.validate(request.form)
         if errors:
