@@ -255,7 +255,9 @@ class InterfaceController: WKInterfaceController , WCSessionDelegate {
                     OperationQueue.main.addOperation {
                         self.dismissTextInputController()
                         let UserInput = (results[0] as? String)
-                        let LowercaseInput = UserInput?.lowercased()
+                        var LowercaseInput = UserInput?.lowercased()
+                        LowercaseInput = LowercaseInput!.filter { !$0.isWhitespace }
+                        
                         
                         if LowercaseInput!.contains("laptop") {
                             self.send_message(data1: "Laptop")

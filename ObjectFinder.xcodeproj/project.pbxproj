@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03806FBB263097F700CCA8E4 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03806FBA263097F700CCA8E4 /* ImageViewController.swift */; };
 		03D25E5D26279FCA003877AA /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E5B26279FCA003877AA /* Interface.storyboard */; };
 		03D25E5F26279FCD003877AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E5E26279FCD003877AA /* Assets.xcassets */; };
 		03D25E6626279FCD003877AA /* My_WatchOF Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 03D25E6526279FCD003877AA /* My_WatchOF Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -76,6 +77,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		03806FBA263097F700CCA8E4 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		03D25E5926279FCA003877AA /* My_WatchOF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = My_WatchOF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D25E5C26279FCA003877AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		03D25E5E26279FCD003877AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				EA542B7B25E2993100EB51C7 /* SignUpViewController.swift */,
 				EA542B7E25E2993D00EB51C7 /* LoginViewController.swift */,
 				EA542B8125E2994800EB51C7 /* HomeViewController.swift */,
+				03806FBA263097F700CCA8E4 /* ImageViewController.swift */,
 				EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */,
 			);
 			path = "View Controllers";
@@ -431,6 +434,7 @@
 				EA542B7F25E2993D00EB51C7 /* LoginViewController.swift in Sources */,
 				EA542B6925E2991400EB51C7 /* SceneDelegate.swift in Sources */,
 				EA542B8225E2994800EB51C7 /* HomeViewController.swift in Sources */,
+				03806FBB263097F700CCA8E4 /* ImageViewController.swift in Sources */,
 				EA798B6B25E3DB9D002AF4B6 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
