@@ -210,14 +210,19 @@ class HomeViewController:
     
     
     @IBAction func locateTapped(_ sender: Any) {
-        
+        // keyboard dismiss
         self.view.endEditing(true)
         
+        // make errorLabel go away
         errorLabel.alpha = 0
+        // get the object that we are looking for and formate it correctly
         var object = objectToLocate.text!.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
+        // remove all whitespace
         object = object.filter { !$0.isWhitespace }
+        // check if the object is a valid searchable object
         if self.valid_item.contains(object)
         {
+            // authenticate the user
             let currentUser = Auth.auth().currentUser
             
             currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
@@ -231,7 +236,6 @@ class HomeViewController:
               // ...
                         
                 let url1 = URL(string: "https://objectfinder.tech/pidata?object=\(object)")!
-//                let url1 = URL(string: "https://objectfinder.tech/pidata/image?dateTime=2021-04-19_21:36:02.088174")!
                 var request = URLRequest(url: url1)
                 request.setValue(idToken, forHTTPHeaderField: "Authorization")
                 request.httpMethod = "GET"
@@ -271,10 +275,6 @@ class HomeViewController:
             }
     }
     
-    func showimage()
-    {
-        
-    }
     
     // display the error message
     func showError(_ message: String) {

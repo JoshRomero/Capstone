@@ -66,6 +66,24 @@ class LoginViewController: UIViewController {
                 }
     }
     
+    
+    @IBAction func forgotPassworPressed(_ sender: Any) {
+        transitionToForgot()
+    }
+    
+    
+    func transitionToForgot() {
+        let story = UIStoryboard(name: "Main", bundle: nil)
+        let controller = story.instantiateViewController(identifier: "ForgotPasswordViewController") as! ForgotPasswordViewController
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+    
     func transitionToHome() {
         let homeViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
 
@@ -73,3 +91,6 @@ class LoginViewController: UIViewController {
         self.view.window?.makeKeyAndVisible()
     }
 }
+
+
+//ForgotPasswordViewController
