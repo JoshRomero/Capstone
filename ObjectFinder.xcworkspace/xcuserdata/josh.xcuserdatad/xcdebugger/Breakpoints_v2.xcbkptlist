@@ -278,8 +278,8 @@
             filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
             landmarkName = "locateTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -294,8 +294,8 @@
             filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
             landmarkName = "locateTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -310,8 +310,8 @@
             filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
             landmarkName = "locateTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -383,22 +383,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B9E434DD-5069-4D0F-9ABB-BE057EDA3F23"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "234"
-            endingLineNumber = "234"
-            landmarkName = "locateTapped(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "38D5D5BC-E0D5-4D6F-A101-6BEC369C5CAC"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -406,8 +390,8 @@
             filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "locateTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -438,8 +422,8 @@
             filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "locateTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -549,8 +533,8 @@
             filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
             landmarkName = "locateTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -677,8 +661,8 @@
             filePath = "ObjectFinder/View Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
             landmarkName = "locateTapped(_:)"
             landmarkType = "7">
          </BreakpointContent>
