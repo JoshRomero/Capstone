@@ -36,6 +36,7 @@ class HomeViewController:
                 
                 
                 let currentUser = Auth.auth().currentUser
+                print(currentUser!.email!)
                 currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
                   if let error = error {
                     // Handle error
@@ -218,6 +219,7 @@ class HomeViewController:
         if self.valid_item.contains(object)
         {
             let currentUser = Auth.auth().currentUser
+            
             currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
               if let error = error {
                 // Handle error
@@ -235,31 +237,37 @@ class HomeViewController:
                 request.httpMethod = "GET"
                 let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
                 let unformatted = String(data: data!, encoding: .utf8)!
-                let cleaned = unformatted.split{$0 == "\""}.map(String.init)
-                if let error = error {
-                    print("Synchronous task ended with error: \(error)")
-                    self.showError("No internet connection.")
-                }
-                else {
-                    print("Synchronous task ended without errors.")
-                    let item = cleaned[11]
-                    let room = cleaned[7]
-                    let dateTime1 = cleaned[3]
-                    self.dateTime = dateTime1
-                    
-                    if (item.last! == "s") {
-    //                  Show object message
-                        self.showObject("Your \(item) were found in room \(room) at \(dateTime1).")
+                if unformatted != "{\"message\": \"The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.\"}\n"
+                {
+                    let cleaned = unformatted.split{$0 == "\""}.map(String.init)
+                    if let error = error {
+                        print("Synchronous task ended with error: \(error)")
+                        self.showError("No internet connection.")
                     }
                     else {
-    //                  Show object message
-                        self.showObject("Your \(item) was found in room \(room) at \(dateTime1).")
+                        print("Synchronous task ended without errors.")
+                        let item = cleaned[11]
+                        let room = cleaned[7]
+                        let dateTime1 = cleaned[3]
+                        self.dateTime = dateTime1
+                        
+                        if (item.last! == "s") {
+        //                  Show object message
+                            self.showObject("Your \(item) were found in room \(room) at \(dateTime1).")
+                        }
+                        else {
+        //                  Show object message
+                            self.showObject("Your \(item) was found in room \(room) at \(dateTime1).")
+                        }
                     }
+                }
+                else{
+                    self.showError("Sorry, could not find \(object).")
                 }
             }
         }
             else{
-                self.showObject("Sorry, \(object) is not an item I can find. List of searchable items can be find on the ABOUT page.")
+                self.showError("Sorry, \(object) is not an item I can find. List of searchable items can be find on the ABOUT page.")
             }
     }
     

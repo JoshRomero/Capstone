@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		03806FBB263097F700CCA8E4 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03806FBA263097F700CCA8E4 /* ImageViewController.swift */; };
+		03BCDD8326322CBD00ED24E6 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BCDD8226322CBD00ED24E6 /* PasswordViewController.swift */; };
 		03D25E5D26279FCA003877AA /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E5B26279FCA003877AA /* Interface.storyboard */; };
 		03D25E5F26279FCD003877AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E5E26279FCD003877AA /* Assets.xcassets */; };
 		03D25E6626279FCD003877AA /* My_WatchOF Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 03D25E6526279FCD003877AA /* My_WatchOF Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -78,6 +79,7 @@
 
 /* Begin PBXFileReference section */
 		03806FBA263097F700CCA8E4 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		03BCDD8226322CBD00ED24E6 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		03D25E5926279FCA003877AA /* My_WatchOF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = My_WatchOF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D25E5C26279FCA003877AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		03D25E5E26279FCD003877AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				EA542B7B25E2993100EB51C7 /* SignUpViewController.swift */,
 				EA542B7E25E2993D00EB51C7 /* LoginViewController.swift */,
 				EA542B8125E2994800EB51C7 /* HomeViewController.swift */,
+				03BCDD8226322CBD00ED24E6 /* PasswordViewController.swift */,
 				03806FBA263097F700CCA8E4 /* ImageViewController.swift */,
 				EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */,
 			);
@@ -430,6 +433,7 @@
 				EAA12B1225E2A58400182937 /* Utilities.swift in Sources */,
 				EA1613BF261AAE9700C628A8 /* SettingsViewController.swift in Sources */,
 				EA1613BC261AAE6F00C628A8 /* SideMenu.swift in Sources */,
+				03BCDD8326322CBD00ED24E6 /* PasswordViewController.swift in Sources */,
 				EA542B7C25E2993100EB51C7 /* SignUpViewController.swift in Sources */,
 				EA542B7F25E2993D00EB51C7 /* LoginViewController.swift in Sources */,
 				EA542B6925E2991400EB51C7 /* SceneDelegate.swift in Sources */,
