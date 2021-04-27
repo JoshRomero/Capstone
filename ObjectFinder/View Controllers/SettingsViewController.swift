@@ -10,6 +10,7 @@ import MessageUI
 
 class SettingsViewController: UIViewController, MFMailComposeViewControllerDelegate {
     
+    // helps with the support button (displays the users interaction)
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         if let _ = error {
             controller.dismiss(animated: true)
@@ -34,6 +35,7 @@ class SettingsViewController: UIViewController, MFMailComposeViewControllerDeleg
         
     }
     
+    // handles the support button
     func showMailComposer()
     {
         guard MFMailComposeViewController.canSendMail() else {
@@ -52,12 +54,12 @@ class SettingsViewController: UIViewController, MFMailComposeViewControllerDeleg
         present(composer, animated: true)
     }
     
-    
+    // if the support button is pressed call the above func
     @IBAction func supportPressed(_ sender: Any) {
         showMailComposer()
     }
     
-    
+    // handles the github button (send the user to the creaters github page)
     @IBAction func githubPressed(_ sender: Any) {
         
         UIApplication.shared.open(URL(string: "https://github.com/JoshRomero/Capstone")!as URL, options: [:], completionHandler: nil)

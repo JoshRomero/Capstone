@@ -27,38 +27,10 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var errorLabel: UILabel!
 
-//    func createWCSession()
-//    {
-//        if WCSession.isSupported()
-//        {
-//            session = WCSession.default
-//            session?.delegate = self
-//            session?.activate()
-//        }
-//    }
-//
-//    func listening()
-//    {
-//        DispatchQueue.global(qos: .userInitiated).async {
-//            while true
-//            {
-//                if self.got_message
-//                {
-//                    if let validSession = self.session, validSession.isReachable {
-//                    validSession.sendMessage(["iPhone": "false"], replyHandler: nil, errorHandler: nil)
-//                      }
-//                    self.got_message = false
-//
-//                }
-//            }
-//        }
-//
-//    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpElements()
-//        createWCSession()
-//        listening()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -187,19 +159,3 @@ class SignUpViewController: UIViewController {
         view.window?.makeKeyAndVisible()
     }
 }
-//extension SignUpViewController: WCSessionDelegate {
-//    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-// }
-//    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-//         if let value = message["watch"] as? String {
-//            self.message = value
-//         }
-//        self.got_message = true
-//        
-//        print("Iphone got message from watch:",self.message)
-//       }
-//    func sessionDidBecomeInactive(_ session: WCSession) {
-// }
-//    func sessionDidDeactivate(_ session: WCSession) {
-// }
-//}

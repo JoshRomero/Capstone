@@ -14,8 +14,11 @@ import WatchConnectivity
 
 class HomeViewController:
     UIViewController, MenuControllerDelegate, WCSessionDelegate, UITextFieldDelegate {
+    
+    // needed for the communication between the watch and IOS app
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
  }
+    // if we get a message from the watch, check the request and return the appropriate response
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
          if let value = message["watch"] as? String {
             self.message = value
@@ -24,6 +27,7 @@ class HomeViewController:
         self.got_message = true
         if self.got_message
         {
+            // if the watch is asking if the IOS app is logged in, if so return true else false
             if self.message == "logged in?"
             {
                 let return_message = self.BoolToString(b: self.logged_in)
@@ -33,6 +37,7 @@ class HomeViewController:
                   }
             }else
             {
+                // any other message is assumed to be a request for the DB so it search the DB if logged in and returns the results
                 
                 
                 let currentUser = Auth.auth().currentUser
@@ -153,6 +158,7 @@ class HomeViewController:
         settingsController.view.isHidden = true
     }
     
+    // handles showing the user the side menu if the button is pressed
     @IBAction func didTapMenuButton(_ sender: Any) {
         let menu = MenuController(with: SideMenuItem.allCases)
         menu.delegate = self
@@ -162,6 +168,7 @@ class HomeViewController:
         present(sideMenu!, animated: true)
     }
     
+    // handles if the user selects something from the side menu
     func didSelectMenuItem(named: SideMenuItem) {
         sideMenu?.dismiss(animated: true, completion: nil)
             
@@ -201,14 +208,14 @@ class HomeViewController:
     }
     
     
-    
+    // handles showing the images to the user of the requested item
     @IBAction func showImagePressed(_ sender: Any) {
         self.transitionToImage(object: self.dateTime)
     }
     
 
     
-    
+    // when the user is searching for an item, handles the request to the DB for the IOS app only not watch
     @IBAction func locateTapped(_ sender: Any) {
         // keyboard dismiss
         self.view.endEditing(true)
@@ -291,6 +298,7 @@ class HomeViewController:
         self.errorLabel.alpha = 0
     }
     
+    // displays the image of the requested object
     func transitionToImage(object:String) {
         let story = UIStoryboard(name: "Main", bundle: nil)
         let controller = story.instantiateViewController(identifier: "ImageViewController") as! ImageViewController
@@ -298,7 +306,7 @@ class HomeViewController:
         self.present(controller, animated: true, completion: nil)
     }
     
-    
+    // displays the about page if selected in the side menu
     func transitionToAbout() {
         let story = UIStoryboard(name: "Main", bundle: nil)
         let controller = story.instantiateViewController(identifier: "AboutViewController") as! AboutViewController
@@ -307,13 +315,14 @@ class HomeViewController:
     
     
     
-    
+    // displays the setting page if selected in the side menu
     func transitionToSettings() {
         let story = UIStoryboard(name: "Main", bundle: nil)
         let controller = story.instantiateViewController(identifier: "SettingsViewController") as! SettingsViewController
         self.present(controller, animated: true, completion: nil)
     }
    
+    // displays the login/signup page if selected in the side menu
     func transitionToRoot() {
 
         let rootViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.rootViewController) as? ViewController

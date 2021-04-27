@@ -24,7 +24,6 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        // self.textField.delegate = self
         setUpElements()
     }
     
@@ -93,4 +92,3 @@ class LoginViewController: UIViewController {
 }
 
 
-//ForgotPasswordViewController

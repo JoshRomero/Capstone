@@ -38,6 +38,7 @@ class PasswordViewController: UIViewController {
         
     }
     
+    // sets up extra stuff after the page has been loaded
     func setUpElements() {
         Utilities.styleFilledButton(submitButton)
         Utilities.styleTextField(oldPassTextField)
@@ -45,12 +46,12 @@ class PasswordViewController: UIViewController {
         errorLabel.alpha = 0
     }
     
-    
+    // handles the return to the previous page if back button is pressed
     @IBAction func backPressed(_ sender: Any) {
         self.dismiss(animated: false, completion: nil)
     }
     
-    
+    // handles the sending an email to the user which will allow them to reset the password
     @IBAction func submitPressed(_ sender: Any) {
         let email = emailAddresslabel.text
         
@@ -71,18 +72,21 @@ class PasswordViewController: UIViewController {
         
     }
     
+    // shows any errors messages they users run into
     func showError(_ message: String) {
             errorLabel.text = message
             successLabel.alpha = 0
             errorLabel.alpha = 1
     }
     
+    // shows any success messages if the email was sent to the user with no issues
     func showsuccess(_ message: String) {
         self.successLabel.text = message
         self.successLabel.alpha = 1
         self.errorLabel.alpha = 0
     }
     
+    // resets the password for the user
     func resetPassword(email: String)
     {
         Auth.auth().sendPasswordReset(withEmail: email){ (error) in

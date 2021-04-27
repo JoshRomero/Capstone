@@ -28,8 +28,14 @@ class ForgotPasswordViewController : UIViewController {
         errorLabel.alpha = 0
     }
     
+    // handles the function of reseting the password on the login page
+    // the user provides the email address and if it is a good email address the user will get a reset password
+    // email. else they will get nothing
     @IBAction func resetPasswordPressed(_ sender: Any) {
+        // keyboard dismiss
+        self.view.endEditing(true)
         let email = emailAddresslabel.text
+        // the user must enter something
         if email == ""{
             showError("Please enter a valid email address.")
         }
@@ -38,6 +44,7 @@ class ForgotPasswordViewController : UIViewController {
         }
     }
     
+    // handles the reseting password function
     func resetPassword(email: String)
     {
         Auth.auth().sendPasswordReset(withEmail: email){ (error) in
@@ -54,12 +61,14 @@ class ForgotPasswordViewController : UIViewController {
         }
     }
     
+    // shows the user all the error messages
     func showError(_ message: String) {
             errorLabel.text = message
             successLabel.alpha = 0
             errorLabel.alpha = 1
     }
     
+    // shows the user the success message if the email was sent correctly
     func showsuccess(_ message: String) {
         self.successLabel.text = message
         self.successLabel.alpha = 1
