@@ -22,8 +22,9 @@ header = {"Authorization": user["idToken"]}
 payload = {
     "email": email,
     "password": password
+    "roomID": 
 }
-url = "http://192.168.1.39:5000/login"
+url = "http://192.168.0.111:5000/register"
 r = requests.post(url, json=payload, headers=header)
 
 payload = {
