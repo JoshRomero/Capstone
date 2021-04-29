@@ -103,7 +103,7 @@
 		DFAF7BB96BBC3E49A867EE56 /* Pods-ObjectFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectFinder.debug.xcconfig"; path = "Target Support Files/Pods-ObjectFinder/Pods-ObjectFinder.debug.xcconfig"; sourceTree = "<group>"; };
 		EA1613BB261AAE6F00C628A8 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		EA1613C1261AAECF00C628A8 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		EA1613C1261AAECF00C628A8 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AboutViewController.swift; path = ../AboutViewController.swift; sourceTree = "<group>"; };
 		EA542B6325E2991400EB51C7 /* ObjectFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObjectFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA542B6625E2991400EB51C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA542B6825E2991400EB51C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -220,7 +220,6 @@
 				EA542B7125E2991500EB51C7 /* LaunchScreen.storyboard */,
 				EAA12B1425E2AA0900182937 /* GoogleService-Info.plist */,
 				EA542B7425E2991500EB51C7 /* Info.plist */,
-				EA1613C1261AAECF00C628A8 /* AboutViewController.swift */,
 			);
 			path = ObjectFinder;
 			sourceTree = "<group>";
@@ -239,6 +238,7 @@
 				034B5161263617AD00CBFD1C /* ForgotPasswordViewController.swift */,
 				034B517E26374C2D00CBFD1C /* DevicesStatusViewController.swift */,
 				034B51832638E30E00CBFD1C /* NewDeviceViewController.swift */,
+				EA1613C1261AAECF00C628A8 /* AboutViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
