@@ -20,9 +20,6 @@ from pyrebase import *
 email = "johndoe@gmail.com"
 password = "Pa55w0rd!"
 
-# NEED TO: RESOLVE UNICODE ISSUE WITH IMAGE BYTES -- CURRENTLY CANNOT SEND IMAGES IN IN ENTRY FOR SOME REASON
-# CHECK PI FOR NEWEST CODE
-
 config = {
   "apiKey": "AIzaSyDkYMP_ilWmPr5n0Kt_N7odVehYEw6qh64",
   "authDomain": "objectfinder-3d3f3.firebaseapp.com",

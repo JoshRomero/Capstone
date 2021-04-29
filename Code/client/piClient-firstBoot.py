@@ -6,10 +6,12 @@ import pyrebase
 import json
 import os
 import requests
+from getmac import get_mac_address
 
 class UserLoginSchema(Schema):
     email = fields.Str()
     password = fields.Str()
+    roomID = fields.Str()
     
 app = Flask(__name__)
 api = Api(app)
@@ -20,13 +22,27 @@ firebase = pyrebase.initialize_app(json.load(configFile))
 auth = firebase.auth
 
 userLoginScheme = UserLoginSchema()
+systemRoomScheme = SystemRoomSchema()
 
+# path = /.creds/.currUser
 def writeCurrUserInfo(jsonUserInfo):
-    # path = /.creds/.currUser
     with open(os.environ['CURR_USER'], "w+") as file:
         file.write(jsonUserInfo)
         file.close()
 
+# write user defined roomID to the roomID info file
+def changeRoomID(newRoomID):
+    systemRoomInfo = {"roomID": newRoomID}
+    with open(os.environ['ROOM_ID'], 'w') as file:
+        file.write(systemRoomInfo)
+        file.close()
+
+def sendMacToServer(currentMac, idToken):
+    header = {"Authorization": idToken}
+    payload = {"deviceMac": currentMac}
+    url = "https://objectfinder.tech/register"
+    r = requests.post(url, json=payload, headers=header)
+    
 # user sends credentials to pi -> pi logs in once -> pi saves the token to the file at the location defined by the CURR_USER environment variable     
 class UserLoginAPI(Resource):
     
@@ -34,15 +50,19 @@ class UserLoginAPI(Resource):
         errors = userLoginScheme.validate(request.json)
         if errors:
             abort(400)
+            
         auth = firebase.auth()
         userInfo = auth.sign_in_with_email_and_password(request.json['email'], request.json['password'])
         if userInfo == None:
             abort(400)
         
         writeCurrUserInfo(json.dumps(userInfo))
+        sendMacToServer(get_mac_address, userInfo["idToken"])
+        changeRoomID(request.json['roomID'])
+        
         os.system('reboot')
 
-api.add_resource(UserLoginAPI, "/login", endpoint = 'login')
+api.add_resource(UserLoginAPI, "/register", endpoint = 'register')
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.39')
+    app.run(host='192.168.0.111')

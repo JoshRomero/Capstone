@@ -8,7 +8,7 @@ import requests
 from multiprocessing import Process
 
 class SystemRoomSchema(Schema):
-    room = fields.Str()
+    roomID = fields.Str()
 
 class SystemStatusSchema(Schema):
     status = fields.Str()
@@ -30,12 +30,12 @@ def deleteCurrUserInfo():
     os.remove(os.environ['CURR_USER'])
 
 # send a post request to server containing the iPhone's idToken and the current Pi's idToken to compare uids 
-def compareUUIDs(userIdToken):
+def compareUUIDs(iphoneIdToken):
     jsonUser = open(os.environ['CURR_USER'], "r")
     jsonUser = json.loads(json.read())
         
     header = {"Authorization": jsonUser["idtoken"]}
-    payload = {"idToken": userIdToken}
+    payload = {"idToken": iphoneIdToken}
     url = "https://objectfinder.tech/compareuuid"
     r = requests.post(url, json=payload, headers=header)
     rDict = json.loads(r.text)
@@ -52,9 +52,9 @@ def changeRoomID(newRoomID):
         file.write(systemRoomInfo)
         file.close()
 
-# write status to the current status file       
+# write status to the current status file
+# path = /.creds/status.json       
 def writeCurrStatusInfo(newStatus):
-    # path = /.creds/status.json
     newStatusJson = {"status": newStatus}
     with open(os.environ['CURR_STATUS'], "w") as file:
         file.write(newStatusJson)
@@ -115,7 +115,10 @@ class SystemStatusAPI(Resource):
         
         # begin neural network code process
         if(request.form['status'] == 'START'):
+            # global neuralNetProcess
             writeCurrStatusInfo('ACTIVE')
+            # neuralNetProcess = Process(target=runNeuralNetwork, args=())
+            
         
         # kill neural network code process
         elif(request.form['status'] == 'STOP'):
@@ -141,9 +144,9 @@ api.add_resource(SystemStatusAPI, "/status", endpoint = 'status')
 
 if __name__ == '__main__':
     # begin refresh code in asynch process
-    reTokenProcess = Process(target=runTokenRefresh, args=())
+    # reTokenProcess = Process(target=runTokenRefresh, args=())
     
     # begin neural network code in asynch process
-    neuralNetProcess = Process(target=runNeuralNetwork, args=())
+    # neuralNetProcess = Process(target=runNeuralNetwork, args=())
     
     app.run()
