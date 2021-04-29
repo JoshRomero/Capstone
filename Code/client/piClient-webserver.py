@@ -17,7 +17,7 @@ app = Flask(__name__)
 api = Api(app)
 
 systemRoomScheme = SystemRoomSchema()
-systemStatusScheme = SystemRoomSchema()
+systemStatusScheme = SystemStatusSchema()
 
 def runTokenRefresh():
     import refreshToken
