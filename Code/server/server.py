@@ -19,6 +19,7 @@ UPLOAD_FOLDER = './userImgs'
 ALLOWED_EXTENSIONS = set(['jpeg'])
 
 class PiDataPostSchema(Schema):
+    userID = fields.Str()
     dateTime = fields.Str()
     roomID = fields.Int()
     keysProb = fields.Decimal()
@@ -77,42 +78,41 @@ def queryDatabase(collection, args, userID):
         return abort(404)
 
     formattedEntry = formatEntries(newestEntry, args)
-
     # insert instance of queried object for dashboard purposes
-    mornQuery = 0
-    afterQuery = 0
-    evenQuery = 0
+    #mornQuery = 0
+    #afterQuery = 0
+    #evenQuery = 0
 
-    currentTime = datetime.datetime.now()
-    currentDay = datetime.datetime.today()
-    mornStart = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 5, 0, 0, 0)
-    mornEnd = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 11, 59, 59, 99)
-    afterStart = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 12, 0, 0, 0)
-    afterEnd = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 17, 59, 59, 99)
+    #currentTime = datetime.datetime.now()
+    #currentDay = datetime.datetime.today()
+    #mornStart = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 5, 0, 0, 0)
+    #mornEnd = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 11, 59, 59, 99)
+    #afterStart = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 12, 0, 0, 0)
+    #afterEnd = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 17, 59, 59, 99)
 
-    if(mornStart <= currentTime and currentTime <= mornEnd):
-        morningQuery = 1
-    elif(afterStart <= currentTime and currentTime <= afterEnd):
-        afterQuery = 1
-    else:
-        evenQuery = 1
+    #if(mornStart <= currentTime and currentTime <= mornEnd):
+    #    morningQuery = 1
+    #elif(afterStart <= currentTime and currentTime <= afterEnd):
+    #    afterQuery = 1
+    #else:
+    #    evenQuery = 1
 
-    collection.insert_one({
-        "userID" : args["userID"],
-        "objectQueried" : args["objectQueried"].lower(),
-        "queriedDateTime" : currentTime,
-        "morningQuery": mornQuery,
-        "afterQuery": afterQuery,
-        "evenQuery": evenQuery
-    })
+   # collection.insert_one({
+   #     "userID" : args["userID"],
+   #     "objectQueried" : args["objectQueried"].lower(),
+   #     "queriedDateTime" : currentTime,
+   #     "morningQuery": mornQuery,
+   #     "afterQuery": afterQuery,
+   #     "evenQuery": evenQuery
+   # })
 
     return formattedEntry, newestEntry["image"]
 
 # saves image to file system and adds image path to entry
 def saveImage(entry, imageData, userID):
-    userPath = os.path.join(UPLOAD_FOLDER, userID)
+    userPath = os.path.join(app.root_path, userID)
     if os.path.isdir(userPath) == False:
-        os.mkdir(userPath)
+        os.makedirs(userPath)
 
     imgPath = os.path.join(userPath, entry["dateTime"])
     imageData.save(imgPath)
@@ -131,8 +131,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def verifyToken(token):
-    print("TOKEN: ", token)
     decoded_token = auth.verify_id_token(token)
+    print("decoded token: ", decoded_token)
     if decoded_token:
         uid = decoded_token['uid']
     else:
@@ -149,12 +149,10 @@ class PiDataAPI(Resource):
     def get(self):
         token = request.headers["Authorization"]
         uid = verifyToken(token)
-
         errors = piDataGetScheme.validate(request.args)
         if errors:
             abort(400)
         db = authenticateToDatabase()
-
         formattedEntry, imgPath = queryDatabase(db, request.args, uid)
         # imageData = retrieveImage(imgPath)
         return formattedEntry
@@ -167,7 +165,7 @@ class PiDataAPI(Resource):
         if errors:
             abort(400)
         entry = request.form.to_dict()
-
+        print("Entry:", entry)
         if "image" not in request.files:
             abort(400)
         imageData = request.files['image']

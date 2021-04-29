@@ -1,0 +1,6 @@
+framework module Pods_ObjectFinder {
+  umbrella header "Pods-ObjectFinder-umbrella.h"
+
+  export *
+  module * { export * }
+}
