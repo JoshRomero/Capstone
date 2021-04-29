@@ -10,36 +10,36 @@ import FirebaseAuth
 import SideMenu
 import WatchConnectivity
 
-
-
 class HomeViewController:
     UIViewController, MenuControllerDelegate, WCSessionDelegate, UITextFieldDelegate {
     
-    // needed for the communication between the watch and IOS app
+    // Needed for the communication between the watch and IOS app
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
  }
-    // if we get a message from the watch, check the request and return the appropriate response
+    // If we get a message from the watch, check the request and return the appropriate response
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        
          if let value = message["watch"] as? String {
             self.message = value
          }
+        
         print("Iphone got message from watch:",self.message)
         self.got_message = true
-        if self.got_message
-        {
+        if self.got_message {
+            
             // if the watch is asking if the IOS app is logged in, if so return true else false
-            if self.message == "logged in?"
-            {
+            if self.message == "logged in?" {
                 let return_message = self.BoolToString(b: self.logged_in)
                 print("sent message to watch:", return_message)
                 if let validSession = self.session, validSession.isReachable {
                 validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
-                  }
-            }else
-            {
-                // any other message is assumed to be a request for the DB so it search the DB if logged in and returns the results
+                }
+            }
+            
+            else {
                 
-                
+                // Any other message is assumed to be a request for the DB so it search the DB if logged in and returns the results
+                                
                 let currentUser = Auth.auth().currentUser
                 print(currentUser!.email!)
                 currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
@@ -49,10 +49,12 @@ class HomeViewController:
                     return;
                   }
 
-                  // Send token to your backend via HTTPS
-                  // ...
+                    // Send token to backend via HTTPS
                     var object = self.message.lowercased().capitalizingFirstLetter().trimmingCharacters(in: .whitespacesAndNewlines)
+                    
+                    // Trim whitespace
                     object = object.filter { !$0.isWhitespace }
+                    
                     let url1 = URL(string: "https://objectfinder.tech/pidata?object=\(object)")!
                     var request = URLRequest(url: url1)
                     request.setValue(idToken, forHTTPHeaderField: "Authorization")
@@ -60,17 +62,19 @@ class HomeViewController:
                     let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
                     let unformatted = String(data: data!, encoding: .utf8)!
                     let cleaned = unformatted.split{$0 == "\""}.map(String.init)
+                    
                     if let error = error {
                         print("Synchronous task ended with error: \(error)")
                         self.showError("No internet connection.")
                     }
+                    
                     else {
                         print("Synchronous task ended without errors.")
                         var room = cleaned[7]
                         room = "Room \(room)"
                         if let validSession = self.session, validSession.isReachable {
                         validSession.sendMessage(["iPhone": room], replyHandler: nil, errorHandler: nil)
-                          }
+                        }
                     }
                 }
             }
@@ -78,6 +82,7 @@ class HomeViewController:
         self.got_message = false
         
        }
+    
     func sessionDidBecomeInactive(_ session: WCSession) {
  }
     func sessionDidDeactivate(_ session: WCSession) {
