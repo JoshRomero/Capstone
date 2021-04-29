@@ -53,6 +53,7 @@ class PasswordViewController: UIViewController {
     
     // handles the sending an email to the user which will allow them to reset the password
     @IBAction func submitPressed(_ sender: Any) {
+        errorLabel.alpha = 0
         let email = emailAddresslabel.text
         
         let password = oldPassTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)

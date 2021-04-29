@@ -32,6 +32,7 @@ class ForgotPasswordViewController : UIViewController {
     // the user provides the email address and if it is a good email address the user will get a reset password
     // email. else they will get nothing
     @IBAction func resetPasswordPressed(_ sender: Any) {
+        errorLabel.alpha = 0
         // keyboard dismiss
         self.view.endEditing(true)
         let email = emailAddresslabel.text

@@ -49,11 +49,13 @@ class DevicesStatusViewController: UIViewController, UITableViewDataSource, UITa
         let refreshAlert = UIAlertController(title: "Restart", message: "Are you sure you would like to restart this device?", preferredStyle: UIAlertController.Style.alert)
 
         refreshAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action: UIAlertAction!) in
-          print("Handle Ok logic here")
+            // need to send a message to the pi that we want to restart (IP = IP_detail)
+            print("Handle Ok logic here")
           }))
 
         refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-          print("Handle Cancel Logic here")
+            // this should be good we should not have to do anything here
+            print("Handle Cancel Logic here")
           }))
 
         present(refreshAlert, animated: true, completion: nil)
@@ -65,11 +67,13 @@ class DevicesStatusViewController: UIViewController, UITableViewDataSource, UITa
         let refreshAlert = UIAlertController(title: "Reset", message: "All data will be lost after reset.", preferredStyle: UIAlertController.Style.alert)
 
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
-          print("Handle Ok logic here")
+            // need to send a message to the pi that we want to restart (IP = IP_detail)
+            print("Handle Ok logic here")
           }))
 
         refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-          print("Handle Cancel Logic here")
+            // this should be good we should not have to do anything here
+            print("Handle Cancel Logic here")
           }))
 
         present(refreshAlert, animated: true, completion: nil)

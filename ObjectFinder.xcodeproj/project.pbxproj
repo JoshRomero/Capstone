@@ -10,6 +10,7 @@
 		034B515A2635FC6A00CBFD1C /* connectedDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B51592635FC6A00CBFD1C /* connectedDevicesViewController.swift */; };
 		034B5162263617AD00CBFD1C /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B5161263617AD00CBFD1C /* ForgotPasswordViewController.swift */; };
 		034B517F26374C2D00CBFD1C /* DevicesStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B517E26374C2D00CBFD1C /* DevicesStatusViewController.swift */; };
+		034B51842638E30E00CBFD1C /* NewDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034B51832638E30E00CBFD1C /* NewDeviceViewController.swift */; };
 		03806FBB263097F700CCA8E4 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03806FBA263097F700CCA8E4 /* ImageViewController.swift */; };
 		03BCDD8326322CBD00ED24E6 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BCDD8226322CBD00ED24E6 /* PasswordViewController.swift */; };
 		03D25E5D26279FCA003877AA /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03D25E5B26279FCA003877AA /* Interface.storyboard */; };
@@ -84,6 +85,7 @@
 		034B51592635FC6A00CBFD1C /* connectedDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = connectedDevicesViewController.swift; sourceTree = "<group>"; };
 		034B5161263617AD00CBFD1C /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		034B517E26374C2D00CBFD1C /* DevicesStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesStatusViewController.swift; sourceTree = "<group>"; };
+		034B51832638E30E00CBFD1C /* NewDeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDeviceViewController.swift; sourceTree = "<group>"; };
 		03806FBA263097F700CCA8E4 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		03BCDD8226322CBD00ED24E6 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		03D25E5926279FCA003877AA /* My_WatchOF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = My_WatchOF.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,6 +238,7 @@
 				EA1613BE261AAE9700C628A8 /* SettingsViewController.swift */,
 				034B5161263617AD00CBFD1C /* ForgotPasswordViewController.swift */,
 				034B517E26374C2D00CBFD1C /* DevicesStatusViewController.swift */,
+				034B51832638E30E00CBFD1C /* NewDeviceViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				EA1613BC261AAE6F00C628A8 /* SideMenu.swift in Sources */,
 				03BCDD8326322CBD00ED24E6 /* PasswordViewController.swift in Sources */,
 				EA542B7C25E2993100EB51C7 /* SignUpViewController.swift in Sources */,
+				034B51842638E30E00CBFD1C /* NewDeviceViewController.swift in Sources */,
 				EA542B7F25E2993D00EB51C7 /* LoginViewController.swift in Sources */,
 				EA542B6925E2991400EB51C7 /* SceneDelegate.swift in Sources */,
 				034B5162263617AD00CBFD1C /* ForgotPasswordViewController.swift in Sources */,

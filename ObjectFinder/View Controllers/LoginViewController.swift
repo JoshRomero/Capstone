@@ -45,6 +45,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginTapped(_ sender: Any) {
         
+        errorLabel.alpha = 0
         // TODO: Validate Text Fields
             
                 // Create cleaned versions of the text field

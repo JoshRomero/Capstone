@@ -38,10 +38,18 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         self.present(controller, animated: true, completion: nil)
     }
     
+    func transitionToAddNewDevice() {
+        let story = UIStoryboard(name: "Main", bundle: nil)
+        let controller = story.instantiateViewController(identifier: "NewDeviceViewController") as! NewDeviceViewController
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     
     @IBOutlet weak var errorLabel: UILabel!
     
     @IBOutlet weak var tableview: UITableView!
+    
+    @IBOutlet weak var addNewDeviceLabel: UIButton!
     
     // Get this data from devices
     var devices = ["Room 0", "Room 1"]
@@ -57,6 +65,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     @objc func handleRefresh(_ sender: UIRefreshControl) {
             Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (timer) in
                 self.get_device_status()
+                self.tableview.reloadData()
                 self.myRefreshControl.endRefreshing()
             }
         }
@@ -68,6 +77,8 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         tableview.dataSource = self
         tableview.alpha = 1
         errorLabel.alpha = 0
+        
+        Utilities.styleFilledButton(addNewDeviceLabel)
         
         myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
         tableview.refreshControl = myRefreshControl
@@ -98,8 +109,8 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
 
           // Send token to your backend via HTTPS
           // ...
-                    
-            let url1 = URL(string: "https://objectfinder.tech/pidata?object=Cellphone")!
+            // get IP's and MAC'S for connected devices; add to arrays
+            let url1 = URL(string: "https://objectfinder.tech/pidata?object=IP&MAC")!
             var request = URLRequest(url: url1)
             request.setValue(idToken, forHTTPHeaderField: "Authorization")
             request.httpMethod = "GET"
@@ -151,6 +162,12 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         self.dismiss(animated: false, completion: nil)
         
     }
+    
+    
+    @IBAction func addNewDevicePressed(_ sender: Any) {
+        transitionToAddNewDevice()
+    }
+    
 }
 //
 //extension URLSession {

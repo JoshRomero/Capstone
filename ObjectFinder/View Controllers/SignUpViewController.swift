@@ -73,6 +73,7 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpTapped(_ sender: Any) {
         
+        errorLabel.alpha = 0
         // Validate the fields
         let error = validateFields()
         
