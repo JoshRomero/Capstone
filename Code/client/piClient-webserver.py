@@ -6,6 +6,7 @@ import json
 import os
 import requests
 from multiprocessing import Process
+from getmac import get_mac_address
 
 class SystemRoomSchema(Schema):
     roomID = fields.Str()
@@ -27,20 +28,24 @@ def runNeuralNetwork():
 
 # remove user info file
 def deleteCurrUserInfo():
-    os.remove(os.environ['CURR_USER'])
+    with open(os.environ['CURR_USER'], 'w') as file:
+        pass
+
+def getIdToken():
+    user = open(os.environ['CURR_USER'], "r")
+    jsonUser = json.loads(user.read())
+    
+    return jsonUser["idToken"]
 
 # send a post request to server containing the iPhone's idToken and the current Pi's idToken to compare uids 
 def compareUUIDs(iphoneIdToken):
-    jsonUser = open(os.environ['CURR_USER'], "r")
-    jsonUser = json.loads(json.read())
-        
-    header = {"Authorization": jsonUser["idtoken"]}
+    header = {"Authorization": getIdToken()}
     payload = {"idToken": iphoneIdToken}
-    url = "https://objectfinder.tech/compareuuid"
+    url = "https://objectfinder.tech/compare/userids"
     r = requests.post(url, json=payload, headers=header)
     rDict = json.loads(r.text)
         
-    if rDict["equivalentUUIDS"] == "true":
+    if rDict["equivalentUIDS"] == "true":
         return True
     else:
         return False
@@ -49,7 +54,7 @@ def compareUUIDs(iphoneIdToken):
 def changeRoomID(newRoomID):
     systemRoomInfo = {"roomID": newRoomID}
     with open(os.environ['ROOM_ID'], 'w') as file:
-        file.write(systemRoomInfo)
+        file.write(json.dumps(systemRoomInfo))
         file.close()
 
 # write status to the current status file
@@ -57,8 +62,14 @@ def changeRoomID(newRoomID):
 def writeCurrStatusInfo(newStatus):
     newStatusJson = {"status": newStatus}
     with open(os.environ['CURR_STATUS'], "w") as file:
-        file.write(newStatusJson)
+        file.write(json.dumps(newStatusJson))
         file.close()
+        
+def sendIpToServer():
+    header = {"Authorization": getIdToken()}
+    payload = {"macAddress": get_mac_address(), "ipAddress": socket.gethostbyname(socket.gethostname() + ".local")}
+    url = "https://objectfinder.tech/pi/update"
+    requests.post(url, json=payload, headers=header)
         
 # take iPhone user's token and send it as well as the idToken of the current system to the server, server sends back if the uuid is a match
 # if a match, allow user to change room
@@ -74,14 +85,14 @@ class SystemRoomAPI(Resource):
         roomInfoFile = open(os.environ['ROOM_ID'], "r")
         jsonRoomFile = json.load(roomInfoFile)
         
-        return roomInfoFile
+        return jsonRoomFile
     
     def post(self):
         token = request.headers["Authorization"]
         if compareUUIDs(token) == False:
             abort(401)
         
-        errors = systemRoomScheme.validate(request.json["roomID"])
+        errors = systemRoomScheme.validate(request.json)
         if errors:
             abort(400)
         
@@ -128,8 +139,8 @@ class SystemStatusAPI(Resource):
         # kill CNN and token refresh processes, reset userInfo and roomID defaults
         elif(request.form['status'] == 'RESET'):
             writeCurrStatusInfo('INACTIVE')
-            neuralNetProcess.join()
-            reTokenProcess.join()
+            # neuralNetProcess.join()
+            # reTokenProcess.join()
             changeRoomID('DEFAULT')
             deleteCurrUserInfo()
             
@@ -143,6 +154,8 @@ api.add_resource(SystemRoomAPI, "/roomID", endpoint = 'roomID')
 api.add_resource(SystemStatusAPI, "/status", endpoint = 'status')
 
 if __name__ == '__main__':
+    sendIpToServer()
+    
     # begin refresh code in asynch process
     # reTokenProcess = Process(target=runTokenRefresh, args=())
     

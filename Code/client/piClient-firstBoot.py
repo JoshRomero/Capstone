@@ -22,7 +22,6 @@ firebase = pyrebase.initialize_app(json.load(configFile))
 auth = firebase.auth
 
 userLoginScheme = UserLoginSchema()
-systemRoomScheme = SystemRoomSchema()
 
 # path = /.creds/.currUser
 def writeCurrUserInfo(jsonUserInfo):
@@ -32,7 +31,7 @@ def writeCurrUserInfo(jsonUserInfo):
 
 # write user defined roomID to the roomID info file
 def changeRoomID(newRoomID):
-    systemRoomInfo = {"roomID": newRoomID}
+    systemRoomInfo = json.dumps({"roomID": newRoomID})
     with open(os.environ['ROOM_ID'], 'w') as file:
         file.write(systemRoomInfo)
         file.close()
@@ -41,7 +40,7 @@ def sendMacToServer(currentMac, idToken):
     header = {"Authorization": idToken}
     payload = {"deviceMac": currentMac}
     url = "https://objectfinder.tech/register"
-    r = requests.post(url, json=payload, headers=header)
+    requests.post(url, json=payload, headers=header)
     
 # user sends credentials to pi -> pi logs in once -> pi saves the token to the file at the location defined by the CURR_USER environment variable     
 class UserLoginAPI(Resource):
@@ -57,7 +56,7 @@ class UserLoginAPI(Resource):
             abort(400)
         
         writeCurrUserInfo(json.dumps(userInfo))
-        sendMacToServer(get_mac_address, userInfo["idToken"])
+        sendMacToServer(get_mac_address(), userInfo["idToken"])
         changeRoomID(request.json['roomID'])
         
         os.system('reboot')
@@ -65,4 +64,4 @@ class UserLoginAPI(Resource):
 api.add_resource(UserLoginAPI, "/register", endpoint = 'register')
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.111')
+    app.run(host='192.168.1.39')
