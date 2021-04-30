@@ -20,56 +20,56 @@ auth = firebase.auth()
 user = auth.sign_in_with_email_and_password(email, password)
 header = {"Authorization": user["idToken"]}
 
+payload = {
+    "email": email,
+    "password": password,
+    "roomID": room
+}
+url = "http://192.168.1.39:5000/register"
+r = requests.post(url, json=payload)
+
+# url = "https://objectfinder.tech/devices"
+# r = requests.get(url, headers=header)
+# print(r.text)
+
+# url = "http://192.168.1.39:5000/room"
+# r = requests.get(url, headers=header)
+# print(r.text)
+
 # payload = {
-#     "email": email,
-#     "password": password,
-#     "roomID": room
+#     "roomID": "Kitchen"
 # }
-# url = "http://192.168.1.39:5000/register"
-# r = requests.post(url, json=payload)
+# r = requests.post(url, json=payload, headers=header)
+# print(r)
 
-url = "https://objectfinder.tech/devices"
-r = requests.get(url, headers=header)
-print(r.text)
+# url = "http://192.168.1.39:5000/room"
+# r = requests.get(url, headers=header)
+# print(r.text)
 
-url = "http://192.168.1.39:5000/room"
-r = requests.get(url, headers=header)
-print(r.text)
+# url = "http://192.168.1.39:5000/status"
+# r = requests.get(url, headers=header)
+# print(r.text)
 
-payload = {
-    "roomID": "Kitchen"
-}
-r = requests.post(url, json=payload, headers=header)
-print(r)
+# payload = {
+#     "status": 'START'
+# }
+# r = requests.post(url, json=payload, headers=header)
+# print(r)
 
-url = "http://192.168.1.39:5000/room"
-r = requests.get(url, headers=header)
-print(r.text)
+# r = requests.get(url, headers=header)
+# print(r.text)
 
-url = "http://192.168.1.39:5000/status"
-r = requests.get(url, headers=header)
-print(r.text)
+# payload = {
+#     "status": 'STOP'
+# }
+# r = requests.post(url, json=payload, headers=header)
+# print(r)
 
-payload = {
-    "status": 'START'
-}
-r = requests.post(url, json=payload, headers=header)
-print(r)
+# r = requests.get(url, headers=header)
+# print(r.text)
 
-r = requests.get(url, headers=header)
-print(r.text)
-
-payload = {
-    "status": 'STOP'
-}
-r = requests.post(url, json=payload, headers=header)
-print(r)
-
-r = requests.get(url, headers=header)
-print(r.text)
-
-payload = {
-    "status": 'RESET'
-}
-r = requests.post(url, json=payload, headers=header)
-print(r)
+# payload = {
+#     "status": 'RESET'
+# }
+# r = requests.post(url, json=payload, headers=header)
+# print(r)
