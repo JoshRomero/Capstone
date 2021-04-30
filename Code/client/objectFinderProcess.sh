@@ -42,6 +42,8 @@ if [ $? -eq 0 ]; then
     done
 fi
 
+echo 'CONNECTED!'
+
 checkCredentials
 if [ $? -eq 0 ]; then
     python3 piClient-firstBoot.py
