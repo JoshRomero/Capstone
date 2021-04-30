@@ -44,7 +44,7 @@ echo 'CONNECTED!'
 
 checkCredentials
 if [ $? -eq 0 ]; then
-    python3 piClient-firstBoot.py
+    python3 /piClient-firstBoot.py
 fi
 
-python3 piClient-webserver.py
+python3 /piClient-webserver.py
