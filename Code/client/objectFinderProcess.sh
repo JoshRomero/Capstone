@@ -28,7 +28,6 @@ export CURRENT_STATUS='INACTIVE'
 
 # start access point
 echo 'CHECKING CONNECTION...'
-
 checkConnection
 if [ $? -eq 0 ]; then
     export FIRST_BOOT=1
@@ -41,7 +40,6 @@ if [ $? -eq 0 ]; then
         fi
     done
 fi
-
 echo 'CONNECTED!'
 
 checkCredentials
