@@ -6,45 +6,35 @@ import sys
 import glob
 import importlib.util
 from time import sleep
-from time import sleep
 from picamera import PiCamera
 from datetime import datetime
-from io import BytesIO
-from ssl import *
 import requests
-import tempfile
 from base64 import b64encode
-from json import *
-from pyrebase import *
+import json
 #-------------------------------------------NETWORK STUFF------------------------------------------
-email = "johndoe@gmail.com"
-password = "Pa55w0rd!"
+def getIdToken():
+    user = open(os.environ['CURR_USER'], "r")
+    jsonUser = json.loads(user.read())
+    
+    return jsonUser["idToken"]
 
-config = {
-  "apiKey": "AIzaSyDkYMP_ilWmPr5n0Kt_N7odVehYEw6qh64",
-  "authDomain": "objectfinder-3d3f3.firebaseapp.com",
-  "databaseURL": "https://objectfinder-3d3f3-default-rtdb.firebaseio.com",
-  "storageBucket": "objectfinder-3d3f3.appspot.com"
-}
-firebase = pyrebase.initialize_app(config)
+def getUID():
+    user = open(os.environ['CURR_USER'], "r")
+    jsonUser = json.loads(user.read())
+    
+    return jsonUser["userId"]
 
-# Get a reference to the auth service
-auth = firebase.auth()
+def getRoomID():
+    room = open(os.environ['ROOM_ID'], "r")
+    jsonRoom = json.loads(room.read())
+    
+    return jsonRoom["roomID"]
 
-# comment
-
-# Log the user in
-user = auth.sign_in_with_email_and_password(email, password)
-print(user)
-header = {"Authorization": user["idToken"]}
-
-ROOM_ID = 1
 items = {"laptopProb": 0.0, "cellphoneProb": 0.0, "remoteProb": 0.0, "handbagProb": 0.0, "bookProb": 0.0 }
-
-def createEntry(uid, captureTime):
-    dbEntry = {"userID": uid,
+def createEntry(captureTime):
+    dbEntry = {"userID": getUID(),
                "dateTime": captureTime,
-               "roomID": ROOM_ID, 
+               "roomID": getRoomID(), 
                "remoteProb": items["remoteProb"],
                "laptopProb": items["laptopProb"],
                "cellphoneProb": items["cellphoneProb"],
@@ -240,9 +230,9 @@ while True:
 	file = {"image": open('images/{}.jpg'.format(saveDate), 'rb')}
 
 	# send post request to server to insert image and related data
+	header = {"Authorization": getIdToken()}
 	url = "https://objectfinder.tech/pidata"
 	r = requests.post(url, files=file, data=entry, headers=header)
-	print(r)
 	print("[+] Entry made for picture @ {}".format(datetime))
 
 	########## CLARK CHANGE ###############

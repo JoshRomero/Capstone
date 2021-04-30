@@ -1,0 +1,4 @@
+FIREBASE_CONFIG='/.creds/fb_config.json'
+CURR_USER='/.creds/currUser.json'
+ROOM_ID='/.creds/roomInfo.json
+CURR_STATUS='/.creds/status.json'
