@@ -46,12 +46,12 @@ class NewDeviceViewController: UIViewController {
         
         if newDeviceName.text != ""
         {
-            let email = emailAddress.text
+            let email = emailAddress.text!
             
             let password1 = password.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
             // Signing in the user
-            Auth.auth().signIn(withEmail: email!, password: password1) { (result, error) in
+            Auth.auth().signIn(withEmail: email, password: password1) { (result, error) in
         
                 if error != nil {
                     // Couldn't sign in
@@ -60,6 +60,22 @@ class NewDeviceViewController: UIViewController {
                 }
                 else {
                     // a message needs to be sent to the Pi
+                    
+                    let url1 = URL(string: "http://138.47.138.44:5000/register")!
+                    let session = URLSession.shared
+                    var request = URLRequest(url: url1)
+                    request.httpMethod = "POST"
+                    
+                    
+                    let json: [String: Any] = ["email": email, "password": password1, "roomID": self.newDeviceName.text!]
+                    let jsonData = try? JSONSerialization.data(withJSONObject: json)
+                    request.httpBody = jsonData
+                    
+                    
+                    _ = session.synchronousDataTask(urlrequest: request)
+                    
+                    
+                    
                     // need to make a static ip address for the first time pi start up.
                     self.showsuccess("\(self.newDeviceName.text!) has succuessfully been added. Please return to the Devices page and refresh the page.")
                 }

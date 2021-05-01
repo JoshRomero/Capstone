@@ -22,8 +22,48 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     // adds the information to the table that displays the devices connected
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "connectedDevicesViewController", for: indexPath)
-        cell.textLabel?.text = devices[indexPath.row]
-        cell.detailTextLabel?.text = devices_status[indexPath.row]
+        // empties data so we can grab updated info
+        self.devices = []
+        self.devices_status = []
+        self.devices_IP = []
+        self.devices_MAC = []
+        
+        // making sure the user is a valid user
+        let currentUser = Auth.auth().currentUser
+        
+        // getting/checking the idToken
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+          if let error = error {
+            // Handle error
+            print("error:", error)
+            return;
+          }
+
+          // Send token to your backend via HTTPS
+          // ...
+            // get IP's and MAC'S for connected devices; add to arrays
+            let url1 = URL(string: "https://objectfinder.tech/devices")!
+            var request = URLRequest(url: url1)
+            request.setValue(idToken, forHTTPHeaderField: "Authorization")
+            request.httpMethod = "GET"
+            let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+            let unformatted = String(data: data!, encoding: .utf8)!
+            //
+            let devices_list = unformatted.components(separatedBy: ",")
+            //
+            
+            for device in devices_list
+            {
+                self.devices_MAC.append(self.get_mac(info: device))
+                self.devices_IP.append(self.get_ip(info: device))
+            }
+            if self.devices_MAC.count != 0{
+            
+                cell.textLabel?.text = self.devices_IP[indexPath.row]
+                cell.detailTextLabel?.text = self.devices_MAC[indexPath.row]
+            }
+        }
+        
         return cell
     }
     
@@ -53,23 +93,22 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     @IBOutlet weak var addNewDeviceLabel: UIButton!
     
     // Get this data from devices
-    var devices = ["Room 0", "Room 1"]
-    var devices_status = ["inactive0", "inactive1"]
-    var devices_IP = ["192.168.0.10", "192.168.0.11"]
-    var devices_MAC = ["MAC0", "MAC1"]
+    var devices = ["Room 0", "Room 1",""]
+    var devices_status = ["inactive0", "inactive1",""]
+    var devices_IP = ["192.168.0.10", "192.168.0.11",""]
+    var devices_MAC = ["MAC0", "MAC1",""]
     //
     
         
-    let myRefreshControl = UIRefreshControl()
+//    let myRefreshControl = UIRefreshControl()
     
-    // if the users swipes down on the table it will refresh the data from the above info after 3 seconds
-    @objc func handleRefresh(_ sender: UIRefreshControl) {
-            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (timer) in
-                self.get_device_status()
-                self.tableview.reloadData()
-                self.myRefreshControl.endRefreshing()
-            }
-        }
+//    // if the users swipes down on the table it will refresh the data from the above info after 3 seconds
+//    @objc func handleRefresh(_ sender: UIRefreshControl) {
+//            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (timer) in
+//                self.tableview.reloadData()
+//                self.myRefreshControl.endRefreshing()
+//            }
+//        }
     
     
     override func viewDidLoad() {
@@ -78,51 +117,80 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         tableview.dataSource = self
         tableview.alpha = 1
         errorLabel.alpha = 0
-        
+        self.devices = [""]
         Utilities.styleFilledButton(addNewDeviceLabel)
         
-        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
-        tableview.refreshControl = myRefreshControl
+        
+//        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
+//        tableview.refreshControl = myRefreshControl
 //        get_device_status()
         
     }
     
+    func get_ip(info: String) -> String
+    {
+        let start = info.index(info.startIndex, offsetBy: 23)
+        let end = info.index(info.endIndex, offsetBy: -3)
+        let range = start..<end
+        return String(info[range])
+    }
     
-    // grab all the information to display
-    func get_device_status(){
-        
-        // empties data so we can grab updated info
-        self.devices = []
-        self.devices_status = []
-        self.devices_IP = []
-        self.devices_MAC = []
-        
-        // making sure the user is a valid user
-        let currentUser = Auth.auth().currentUser
-        
-        // getting/checking the idToken
-        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
-          if let error = error {
-            // Handle error
-            print("error:", error)
-            return;
-          }
-
-          // Send token to your backend via HTTPS
-          // ...
-            // get IP's and MAC'S for connected devices; add to arrays
-            let url1 = URL(string: "https://objectfinder.tech/pidata?object=IP&MAC")!
-            var request = URLRequest(url: url1)
-            request.setValue(idToken, forHTTPHeaderField: "Authorization")
-            request.httpMethod = "GET"
-            let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-            let unformatted = String(data: data!, encoding: .utf8)!
+    func get_mac(info: String) -> String
+    {
+        let start = info.index(info.startIndex, offsetBy: 2)
+        let end = info.index(info.startIndex, offsetBy: 19)
+        let range = start..<end
+        return String(info[range])
+    }
+    
+    
+//    // grab all the information to display
+//    func get_device_status(){
+//
+//        // empties data so we can grab updated info
+//        self.devices = []
+//        self.devices_status = []
+//        self.devices_IP = []
+//        self.devices_MAC = []
+//
+//        // making sure the user is a valid user
+//        let currentUser = Auth.auth().currentUser
+//
+//        // getting/checking the idToken
+//        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+//          if let error = error {
+//            // Handle error
+//            print("error:", error)
+//            return;
+//          }
+//
+//          // Send token to your backend via HTTPS
+//          // ...
+//            // get IP's and MAC'S for connected devices; add to arrays
+//            let url1 = URL(string: "https://objectfinder.tech/devices")!
+//            var request = URLRequest(url: url1)
+//            request.setValue(idToken, forHTTPHeaderField: "Authorization")
+//            request.httpMethod = "GET"
+//            let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+//            let unformatted = String(data: data!, encoding: .utf8)!
+//            //
+//            let devices_list = unformatted.components(separatedBy: ",")
+//            //
+//
+//            for device in devices_list
+//            {
+//                self.devices_MAC.append(self.get_mac(info: device))
+//                self.devices_IP.append(self.get_ip(info: device))
+//            }
+            
+            
+            
 //            if unformatted != "{\"message\": \"The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.\"}\n"
 //            {
 //                let cleaned = unformatted.split{$0 == "\""}.map(String.init)
 //                if let error = error {
 //                    print("Synchronous task ended with error: \(error)")
-//                    self.showError("No internet connection.")
+//                    self.showError()
 //                }
 //                else {
 //                    print("Synchronous task ended without errors.")
@@ -144,8 +212,8 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
 //            else{
 //                self.showError("Sorry, could not find \(object).")
 //            }
-        }
-    }
+//        }
+//    }
     
     // display the error message
     func showError() {
