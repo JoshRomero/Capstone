@@ -25,8 +25,8 @@ payload = {
     "password": password,
     "roomID": room
 }
-url = "http://192.168.1.39:5000/register"
-r = requests.post(url, json=payload)
+url = "http://138.47.138.44:5000/register"
+r = requests.post(url, form=payload)
 
 # url = "https://objectfinder.tech/devices"
 # r = requests.get(url, headers=header)
