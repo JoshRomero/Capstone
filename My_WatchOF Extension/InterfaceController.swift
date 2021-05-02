@@ -249,7 +249,7 @@ class InterfaceController: WKInterfaceController , WCSessionDelegate {
             self.check_if_logged_in()
             // after getting the logged in results update the UI
             if loggedin{
-                let options = ["CellPhone", "Laptop", "Remote", "Handbag", "Book"]
+                let options = ["CellPhone", "Laptop", "Remote", "Handbag"]
                 self.presentTextInputController(withSuggestions: options, allowedInputMode: .plain, completion: { results in
                     guard let results = results else { return }
                     OperationQueue.main.addOperation {

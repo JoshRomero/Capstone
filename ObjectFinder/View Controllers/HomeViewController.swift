@@ -93,7 +93,7 @@ class HomeViewController:
     var message = ""
     var session: WCSession?
     var logged_in = true
-    let valid_item = ["Cellphone" , "Remote", "Laptop", "Handbag", "Book"]
+    let valid_item = ["Cellphone" , "Remote", "Laptop", "Handbag"]
     
     @IBOutlet weak var objectToLocate: UITextField!
     

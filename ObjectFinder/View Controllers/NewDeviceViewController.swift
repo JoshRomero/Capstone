@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseAuth
 
-class NewDeviceViewController: UIViewController {
+class NewDeviceViewController: UIViewController, UITextFieldDelegate {
 
     
     @IBOutlet weak var emailAddress: UILabel!
@@ -30,6 +30,9 @@ class NewDeviceViewController: UIViewController {
         self.emailAddress.text = currentUser!.email!
         self.errorlabel.alpha = 0
         self.successLabel.alpha = 0
+        
+        self.password.delegate = self
+        self.newDeviceName.delegate = self
     }
 
     // sets up extra stuff after the page has been loaded
@@ -97,4 +100,8 @@ class NewDeviceViewController: UIViewController {
         self.successLabel.alpha = 1
         self.errorlabel.alpha = 0
     }
+    func textFieldShouldReturn(_ scoreText: UITextField) -> Bool {
+        self.view.endEditing(true)
+            return true
+        }
 }

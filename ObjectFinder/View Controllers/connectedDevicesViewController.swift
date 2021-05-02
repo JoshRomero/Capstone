@@ -56,15 +56,18 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             unformatted = String(unformatted.filter { !" \n\t\r\"\\".contains($0) })
             unformatted = self.get_all(info: unformatted)
             let devices_list = unformatted.components(separatedBy: ",")
-            for device in devices_list
+            if devices_list[0] != ""
             {
-                self.devices_MAC.append(self.get_mac(info: device))
-                self.devices_IP.append(self.get_ip(info: device))
-            }
-            if self.devices_MAC.count != 0 && self.run < 1{
-            
-                cell.textLabel?.text = self.devices_IP[indexPath.row]
-                cell.detailTextLabel?.text = self.devices_IP[indexPath.row]
+                for device in devices_list
+                {
+                    self.devices_MAC.append(self.get_mac(info: device))
+                    self.devices_IP.append(self.get_ip(info: device))
+                }
+                if self.devices_MAC.count != 0 && self.run < 1{
+                
+                    cell.textLabel?.text = self.devices_IP[indexPath.row]
+                    cell.detailTextLabel?.text = self.devices_IP[indexPath.row]
+                }
             }
         }
         
@@ -218,13 +221,16 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             let devices_list = unformatted.components(separatedBy: ",")
             //
             
-            for device in devices_list
+            if devices_list[0] != ""
             {
-                self.devices_MAC.append(self.get_mac(info: device))
-                self.devices_IP.append(self.get_ip(info: device))
+                for device in devices_list
+                {
+                    self.devices_MAC.append(self.get_mac(info: device))
+                    self.devices_IP.append(self.get_ip(info: device))
+                }
+                self.set_count(num: devices_list.count)
+                self.tableview.reloadData()
             }
-            self.set_count(num: devices_list.count)
-            self.tableview.reloadData()
             
         }
         
@@ -243,6 +249,14 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     {
         let start = info.index(info.startIndex, offsetBy: 1)
         let end = info.index(info.endIndex, offsetBy: -1)
+        let range = start..<end
+        return String(info[range])
+    }
+    
+    func get_name(info: String) -> String
+    {
+        let start = info.index(info.startIndex, offsetBy: 18)
+        let end = info.index(info.endIndex, offsetBy: 0)
         let range = start..<end
         return String(info[range])
     }

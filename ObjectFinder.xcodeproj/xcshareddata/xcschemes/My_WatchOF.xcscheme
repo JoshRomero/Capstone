@@ -54,8 +54,10 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/ObjectFinder">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "03D25E5826279FCA003877AA"
@@ -63,7 +65,7 @@
             BlueprintName = "My_WatchOF"
             ReferencedContainer = "container:ObjectFinder.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -71,8 +73,10 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/ObjectFinder">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "03D25E5826279FCA003877AA"
@@ -80,7 +84,16 @@
             BlueprintName = "My_WatchOF"
             ReferencedContainer = "container:ObjectFinder.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "03D25E5826279FCA003877AA"
+            BuildableName = "My_WatchOF.app"
+            BlueprintName = "My_WatchOF"
+            ReferencedContainer = "container:ObjectFinder.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
