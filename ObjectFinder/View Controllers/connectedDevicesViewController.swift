@@ -61,11 +61,10 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
                 self.devices_MAC.append(self.get_mac(info: device))
                 self.devices_IP.append(self.get_ip(info: device))
             }
-            print(indexPath.row)
             if self.devices_MAC.count != 0 && self.run < 1{
             
                 cell.textLabel?.text = self.devices_IP[indexPath.row]
-                cell.detailTextLabel?.text = self.devices_MAC[indexPath.row]
+                cell.detailTextLabel?.text = self.devices_IP[indexPath.row]
             }
         }
         
@@ -111,6 +110,8 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
                 }
                 
             }
+            
+            
             for dev in self.devices_IP
             {
                 let url1 = URL(string: "http://\(dev):5000/status")!
@@ -131,6 +132,8 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
                 }
                 
             }
+            
+            
             let story = UIStoryboard(name: "Main", bundle: nil)
             let controller = story.instantiateViewController(identifier: "DevicesStatusViewController") as! DevicesStatusViewController
             
@@ -221,6 +224,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
                 self.devices_IP.append(self.get_ip(info: device))
             }
             self.set_count(num: devices_list.count)
+            self.tableview.reloadData()
             
         }
         
@@ -258,79 +262,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         let range = start..<end
         return String(info[range])
     }
-    
-    
-//    // grab all the information to display
-//    func get_device_status(){
-//
-//        // empties data so we can grab updated info
-//        self.devices = []
-//        self.devices_status = []
-//        self.devices_IP = []
-//        self.devices_MAC = []
-//
-//        // making sure the user is a valid user
-//        let currentUser = Auth.auth().currentUser
-//
-//        // getting/checking the idToken
-//        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
-//          if let error = error {
-//            // Handle error
-//            print("error:", error)
-//            return;
-//          }
-//
-//          // Send token to your backend via HTTPS
-//          // ...
-//            // get IP's and MAC'S for connected devices; add to arrays
-//            let url1 = URL(string: "https://objectfinder.tech/devices")!
-//            var request = URLRequest(url: url1)
-//            request.setValue(idToken, forHTTPHeaderField: "Authorization")
-//            request.httpMethod = "GET"
-//            let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-//            let unformatted = String(data: data!, encoding: .utf8)!
-//            //
-//            let devices_list = unformatted.components(separatedBy: ",")
-//            //
-//
-//            for device in devices_list
-//            {
-//                self.devices_MAC.append(self.get_mac(info: device))
-//                self.devices_IP.append(self.get_ip(info: device))
-//            }
-            
-            
-            
-//            if unformatted != "{\"message\": \"The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.\"}\n"
-//            {
-//                let cleaned = unformatted.split{$0 == "\""}.map(String.init)
-//                if let error = error {
-//                    print("Synchronous task ended with error: \(error)")
-//                    self.showError()
-//                }
-//                else {
-//                    print("Synchronous task ended without errors.")
-//                    let item = cleaned[11]
-//                    let room = cleaned[7]
-//                    let dateTime1 = cleaned[3]
-//                    self.dateTime = dateTime1
-//
-//                    if (item.last! == "s") {
-//    //                  Show object message
-//                        self.showObject("Your \(item) were found in room \(room) at \(dateTime1).")
-//                    }
-//                    else {
-//    //                  Show object message
-//                        self.showObject("Your \(item) was found in room \(room) at \(dateTime1).")
-//                    }
-//                }
-//            }
-//            else{
-//                self.showError("Sorry, could not find \(object).")
-//            }
-//        }
-//    }
-    
+ 
     // display the error message
     func showError() {
             errorLabel.text = "Something went wrong please go back and try again."
@@ -354,27 +286,3 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     }
     
 }
-//
-//extension URLSession {
-//    func synchronousDataTask(urlrequest: URLRequest) -> (Data?, response: URLResponse?, error: Error?) {
-//        var data: Data?
-//        var response: URLResponse?
-//        var error: Error?
-//
-//        let semaphore = DispatchSemaphore(value: 0)
-//
-//        let dataTask = self.dataTask(with: urlrequest) {
-//            data = $0
-//            response = $1
-//            error = $2
-//
-//            semaphore.signal()
-//        }
-//        dataTask.resume()
-//
-//        _ = semaphore.wait(timeout: .distantFuture)
-//
-//        return (data, response, error)
-//    }
-//}
-

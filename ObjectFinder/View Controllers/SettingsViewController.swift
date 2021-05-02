@@ -47,7 +47,7 @@ class SettingsViewController: UIViewController, MFMailComposeViewControllerDeleg
         let composer = MFMailComposeViewController()
         composer.mailComposeDelegate = self
         // #########################################    need to add a good support email
-        composer.setToRecipients(["joshwromero@gmail.com"])
+        composer.setToRecipients(["supp0rt.objectfinder@gmail.com"])
         // #########################################    need to add a good support email
         composer.setSubject("HELP!")
         composer.setMessageBody("I need help, can you please assist me with: ", isHTML: false)
