@@ -16,7 +16,12 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     }
     // returns the number of rows needed to display (set to the amount of devices connected)
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return devices.count
+        return self.table_size
+    }
+    
+    
+    func set_count (num: Int){
+        self.table_size = num
     }
     
     // adds the information to the table that displays the devices connected
@@ -47,17 +52,17 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             request.setValue(idToken, forHTTPHeaderField: "Authorization")
             request.httpMethod = "GET"
             let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-            let unformatted = String(data: data!, encoding: .utf8)!
-            //
+            var unformatted = String(data: data!, encoding: .utf8)!
+            unformatted = String(unformatted.filter { !" \n\t\r\"\\".contains($0) })
+            unformatted = self.get_all(info: unformatted)
             let devices_list = unformatted.components(separatedBy: ",")
-            //
-            
             for device in devices_list
             {
                 self.devices_MAC.append(self.get_mac(info: device))
                 self.devices_IP.append(self.get_ip(info: device))
             }
-            if self.devices_MAC.count != 0{
+            print(indexPath.row)
+            if self.devices_MAC.count != 0 && self.run < 1{
             
                 cell.textLabel?.text = self.devices_IP[indexPath.row]
                 cell.detailTextLabel?.text = self.devices_MAC[indexPath.row]
@@ -70,13 +75,72 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     // if user wants to get more information on a device this will go to a new controller that will provide
     // details like (MAC, IP, Device ID, Devices Status)
     func transitionToStatus(num: Int) {
-        let story = UIStoryboard(name: "Main", bundle: nil)
-        let controller = story.instantiateViewController(identifier: "DevicesStatusViewController") as! DevicesStatusViewController
-        controller.id_detail = devices[num]
-        controller.status_detail = devices_status[num]
-        controller.IP_detail = devices_IP[num]
-        controller.MAC_detail = devices_MAC[num]
-        self.present(controller, animated: true, completion: nil)
+        // making sure the user is a valid user
+        let currentUser = Auth.auth().currentUser
+        
+        // getting/checking the idToken
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+          if let error = error {
+            // Handle error
+            print("error:", error)
+            return;
+          }
+
+          // Send token to your backend via HTTPS
+          // ...
+            // get IP's and MAC'S for connected devices; add to arrays
+            for dev in self.devices_IP
+            {
+                
+                let url1 = URL(string: "http://\(dev):5000/room")!
+                var request = URLRequest(url: url1)
+                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                request.httpMethod = "GET"
+                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                if error == nil{
+                    var unformatted = String(data: data!, encoding: .utf8)!
+                    
+                    // {roomID: "name"}
+                    
+                    unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
+                    unformatted = self.get_all(info: unformatted)
+                    let devices_list = unformatted.components(separatedBy: ": ")
+                    self.devices.append(devices_list[1])
+                }else{
+                    return
+                }
+                
+            }
+            for dev in self.devices_IP
+            {
+                let url1 = URL(string: "http://\(dev):5000/status")!
+                var request = URLRequest(url: url1)
+                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                request.httpMethod = "GET"
+                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                if error == nil
+                {
+                var unformatted = String(data: data!, encoding: .utf8)!
+                
+                // {roomID: "name"}
+                
+                unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
+                unformatted = self.get_all(info: unformatted)
+                let devices_list = unformatted.components(separatedBy: ": ")
+                self.devices_status.append(devices_list[1])
+                }
+                
+            }
+            let story = UIStoryboard(name: "Main", bundle: nil)
+            let controller = story.instantiateViewController(identifier: "DevicesStatusViewController") as! DevicesStatusViewController
+            
+            controller.id_detail = self.devices[num]
+            controller.status_detail = self.devices_status[num]
+            controller.IP_detail = self.devices_IP[num]
+            controller.MAC_detail = self.devices_MAC[num]
+            self.present(controller, animated: true, completion: nil)
+        }
+    
     }
     
     func transitionToAddNewDevice() {
@@ -97,18 +161,20 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     var devices_status = ["inactive0", "inactive1",""]
     var devices_IP = ["192.168.0.10", "192.168.0.11",""]
     var devices_MAC = ["MAC0", "MAC1",""]
+    var table_size = 0
+    var run  = 0
     //
     
         
-//    let myRefreshControl = UIRefreshControl()
+    let myRefreshControl = UIRefreshControl()
     
-//    // if the users swipes down on the table it will refresh the data from the above info after 3 seconds
-//    @objc func handleRefresh(_ sender: UIRefreshControl) {
-//            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (timer) in
-//                self.tableview.reloadData()
-//                self.myRefreshControl.endRefreshing()
-//            }
-//        }
+    // if the users swipes down on the table it will refresh the data from the above info after 3 seconds
+    @objc func handleRefresh(_ sender: UIRefreshControl) {
+            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (timer) in
+                self.tableview.reloadData()
+                self.myRefreshControl.endRefreshing()
+            }
+        }
     
     
     override func viewDidLoad() {
@@ -117,28 +183,78 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         tableview.dataSource = self
         tableview.alpha = 1
         errorLabel.alpha = 0
-        self.devices = [""]
+        self.devices = []
+        self.devices_status = []
+        self.devices_IP = []
+        self.devices_MAC = []
+        
+        // making sure the user is a valid user
+        let currentUser = Auth.auth().currentUser
+        
+        // getting/checking the idToken
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+          if let error = error {
+            // Handle error
+            print("error:", error)
+            return;
+          }
+
+          // Send token to your backend via HTTPS
+          // ...
+            // get IP's and MAC'S for connected devices; add to arrays
+            let url1 = URL(string: "https://objectfinder.tech/devices")!
+            var request = URLRequest(url: url1)
+            request.setValue(idToken, forHTTPHeaderField: "Authorization")
+            request.httpMethod = "GET"
+            let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+            var unformatted = String(data: data!, encoding: .utf8)!
+            
+            unformatted = String(unformatted.filter { !" \n\t\r\"\\".contains($0) })
+            unformatted = self.get_all(info: unformatted)
+            //
+            let devices_list = unformatted.components(separatedBy: ",")
+            //
+            
+            for device in devices_list
+            {
+                self.devices_MAC.append(self.get_mac(info: device))
+                self.devices_IP.append(self.get_ip(info: device))
+            }
+            self.set_count(num: devices_list.count)
+            
+        }
+        
+        
+        
         Utilities.styleFilledButton(addNewDeviceLabel)
         
         
-//        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
-//        tableview.refreshControl = myRefreshControl
+        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
+        tableview.refreshControl = myRefreshControl
 //        get_device_status()
         
     }
     
+    func get_all(info: String) -> String
+    {
+        let start = info.index(info.startIndex, offsetBy: 1)
+        let end = info.index(info.endIndex, offsetBy: -1)
+        let range = start..<end
+        return String(info[range])
+    }
+    
     func get_ip(info: String) -> String
     {
-        let start = info.index(info.startIndex, offsetBy: 23)
-        let end = info.index(info.endIndex, offsetBy: -3)
+        let start = info.index(info.startIndex, offsetBy: 18)
+        let end = info.index(info.endIndex, offsetBy: 0)
         let range = start..<end
         return String(info[range])
     }
     
     func get_mac(info: String) -> String
     {
-        let start = info.index(info.startIndex, offsetBy: 2)
-        let end = info.index(info.startIndex, offsetBy: 19)
+        let start = info.index(info.startIndex, offsetBy: 0)
+        let end = info.index(info.startIndex, offsetBy: 17)
         let range = start..<end
         return String(info[range])
     }

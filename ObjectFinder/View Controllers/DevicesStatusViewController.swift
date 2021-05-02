@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class DevicesStatusViewController: UIViewController, UITableViewDataSource, UITabBarDelegate, UITableViewDelegate {
     
@@ -50,7 +51,35 @@ class DevicesStatusViewController: UIViewController, UITableViewDataSource, UITa
 
         refreshAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action: UIAlertAction!) in
             // need to send a message to the pi that we want to restart (IP = IP_detail)
-            print("Handle Ok logic here")
+            let currentUser = Auth.auth().currentUser
+            
+            // getting/checking the idToken
+            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+              if let error = error {
+                // Handle error
+                print("error:", error)
+                return;
+              }
+
+              // Send token to your backend via HTTPS
+              // ...
+                // get IP's and MAC'S for connected devices; add to arrays
+                
+                let url1 = URL(string: "http://\(self.IP_detail):5000/status")!
+                let session = URLSession.shared
+                var request = URLRequest(url: url1)
+                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                request.httpMethod = "POST"
+                
+                
+                let json: [String: Any] = ["status": "RESTART"]
+                let jsonData = try? JSONSerialization.data(withJSONObject: json)
+                request.httpBody = jsonData
+                
+                
+                _ = session.synchronousDataTask(urlrequest: request)
+                
+            }
           }))
 
         refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
@@ -68,7 +97,37 @@ class DevicesStatusViewController: UIViewController, UITableViewDataSource, UITa
 
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
             // need to send a message to the pi that we want to restart (IP = IP_detail)
-            print("Handle Ok logic here")
+            // making sure the user is a valid user
+            let currentUser = Auth.auth().currentUser
+            
+            // getting/checking the idToken
+            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+              if let error = error {
+                // Handle error
+                print("error:", error)
+                return;
+              }
+
+              // Send token to your backend via HTTPS
+              // ...
+                // get IP's and MAC'S for connected devices; add to arrays
+                
+                let url1 = URL(string: "http://\(self.IP_detail):5000/status")!
+                let session = URLSession.shared
+                var request = URLRequest(url: url1)
+                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                request.httpMethod = "POST"
+                
+                
+                let json: [String: Any] = ["status": "RESET"]
+                let jsonData = try? JSONSerialization.data(withJSONObject: json)
+                request.httpBody = jsonData
+                
+                
+                _ = session.synchronousDataTask(urlrequest: request)
+                
+            }
+            
           }))
 
         refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
