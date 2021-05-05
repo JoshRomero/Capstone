@@ -93,12 +93,10 @@ class PasswordViewController: UIViewController {
         Auth.auth().sendPasswordReset(withEmail: email){ (error) in
             if error == nil
             {
-                print("success")
                 self.showsuccess("We have just sent you a password reset email. Please check your inbox and follow the instructions to reset your password.")
             }
             else
             {
-                print("something went wrong")
                 self.showError("Something went wrong, Please try again later.")
             }
         }

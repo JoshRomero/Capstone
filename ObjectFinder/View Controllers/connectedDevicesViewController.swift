@@ -56,13 +56,16 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             
             unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
             
-            
+            if unformatted != "[]"
+            {
+            unformatted = self.get_all(info: unformatted)
+            unformatted = self.get_all(info: unformatted)
+            }
             //
             let devices_list = unformatted.components(separatedBy: "}, {")
             if devices_list[0] != "[]"
             {
-                unformatted = self.get_all(info: unformatted)
-                unformatted = self.get_all(info: unformatted)
+                
                 for device in devices_list
                 {
                     let current_device_info = device.components(separatedBy: ", ")
@@ -88,10 +91,10 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
                     count += 1
                 }
                 
-                self.set_count(num: devices_list.count)
-                self.tableview.reloadData()
+               
             }
-            
+            self.set_count(num: devices_list.count)
+//            self.tableview.reloadData()
                 
             cell.textLabel?.text = self.devices[indexPath.row]
             cell.detailTextLabel?.text = self.devices_status[indexPath.row]
@@ -174,13 +177,17 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
               var unformatted = String(data: data!, encoding: .utf8)!
               
               unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
-              
+                if unformatted != "[]"
+                {
+                unformatted = self.get_all(info: unformatted)
+                unformatted = self.get_all(info: unformatted)
+                }
+            
               //
               let devices_list = unformatted.components(separatedBy: "}, {")
-              if devices_list[0] != "[]"
+              if devices_list[0] != ""
               {
-                  unformatted = self.get_all(info: unformatted)
-                  unformatted = self.get_all(info: unformatted)
+                  
                   for device in devices_list
                   {
                       let current_device_info = device.components(separatedBy: ", ")
@@ -244,15 +251,15 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     //
     
         
-    let myRefreshControl = UIRefreshControl()
-    
-    // if the users swipes down on the table it will refresh the data from the above info after 3 seconds
-    @objc func handleRefresh(_ sender: UIRefreshControl) {
-            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (timer) in
-                self.tableview.reloadData()
-                self.myRefreshControl.endRefreshing()
-            }
-        }
+//    let myRefreshControl = UIRefreshControl()
+//
+//    // if the users swipes down on the table it will refresh the data from the above info after 3 seconds
+//    @objc func handleRefresh(_ sender: UIRefreshControl) {
+//            Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { (timer) in
+//                self.tableview.reloadData()
+//                self.myRefreshControl.endRefreshing()
+//            }
+//        }
     
     
     override func viewDidLoad() {
@@ -289,12 +296,16 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             
             unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
             
+            if unformatted != "[]"
+            {
+            unformatted = self.get_all(info: unformatted)
+            unformatted = self.get_all(info: unformatted)
+            }
+            
             //
             let devices_list = unformatted.components(separatedBy: "}, {")
             if devices_list[0] != "[]"
             {
-                unformatted = self.get_all(info: unformatted)
-                unformatted = self.get_all(info: unformatted)
                 for device in devices_list
                 {
                     let current_device_info = device.components(separatedBy: ", ")
@@ -329,9 +340,9 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         
         Utilities.styleFilledButton(addNewDeviceLabel)
         
-        
-        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
-        tableview.refreshControl = myRefreshControl
+//
+//        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
+//        tableview.refreshControl = myRefreshControl
 //        get_device_status()
         
     }

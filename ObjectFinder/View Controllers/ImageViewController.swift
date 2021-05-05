@@ -37,11 +37,9 @@ class ImageViewController: UIViewController {
                         var request = URLRequest(url: url1)
                         request.setValue(idToken, forHTTPHeaderField: "Authorization")
                         request.httpMethod = "GET"
-                        print("Download Started")
                         self.getData(from: request) { data, response, error in
                             guard let data = data, error == nil else { return }
-                            print(response?.suggestedFilename ?? url1.lastPathComponent)
-                            print("Download Finished")
+//                            print(response?.suggestedFilename ?? url1.lastPathComponent)
                             // always update the UI from the main thread
                             DispatchQueue.main.async() { [weak self] in
                                 self?.imageView.image = UIImage(data: data)
@@ -57,9 +55,7 @@ class ImageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Begin of code")
         downloadImage()
-        print("End of code. The image will continue downloading in the background and it will be loaded when it ends.")
     }
 }
 

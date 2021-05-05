@@ -24,14 +24,12 @@ class HomeViewController:
             self.message = value
          }
         
-        print("Iphone got message from watch:",self.message)
         self.got_message = true
         if self.got_message {
             
             // if the watch is asking if the IOS app is logged in, if so return true else false
             if self.message == "logged in?" {
                 let return_message = self.BoolToString(b: self.logged_in)
-                print("sent message to watch:", return_message)
                 if let validSession = self.session, validSession.isReachable {
                 validSession.sendMessage(["iPhone": return_message], replyHandler: nil, errorHandler: nil)
                 }
@@ -42,7 +40,6 @@ class HomeViewController:
                 // Any other message is assumed to be a request for the DB so it search the DB if logged in and returns the results
                                 
                 let currentUser = Auth.auth().currentUser
-                print(currentUser!.email!)
                 currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
                   if let error = error {
                     // Handle error
@@ -70,7 +67,6 @@ class HomeViewController:
                     }
                     
                     else {
-                        print("Synchronous task ended without errors.")
                         var room = cleaned[7]
                         room = "\(room)"
                         if let validSession = self.session, validSession.isReachable {
@@ -183,7 +179,6 @@ class HomeViewController:
         switch named {
         case .settings:
             transitionToSettings()
-            print("Settings")
         case .sign_out:
             logged_in = false
             let firebaseAuth = Auth.auth()
@@ -195,7 +190,6 @@ class HomeViewController:
             }
         case .about:
             transitionToAbout()
-            print("About")
         }
     }
     
@@ -262,7 +256,6 @@ class HomeViewController:
                         self.showError("No internet connection.")
                     }
                     else {
-                        print("Synchronous task ended without errors.")
                         let item = cleaned[11]
                         let room = cleaned[7]
                         let dateTime2 = cleaned[3]
