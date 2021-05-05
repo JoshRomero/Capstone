@@ -9,6 +9,7 @@ import UIKit
 import FirebaseAuth
 import SideMenu
 import WatchConnectivity
+import Foundation
 
 class HomeViewController:
     UIViewController, MenuControllerDelegate, WCSessionDelegate, UITextFieldDelegate {
@@ -71,7 +72,7 @@ class HomeViewController:
                     else {
                         print("Synchronous task ended without errors.")
                         var room = cleaned[7]
-                        room = "Room \(room)"
+                        room = "\(room)"
                         if let validSession = self.session, validSession.isReachable {
                         validSession.sendMessage(["iPhone": room], replyHandler: nil, errorHandler: nil)
                         }
@@ -264,16 +265,32 @@ class HomeViewController:
                         print("Synchronous task ended without errors.")
                         let item = cleaned[11]
                         let room = cleaned[7]
-                        let dateTime1 = cleaned[3]
+                        let dateTime1 = self.convertDateFormatter(date: cleaned[3])
+                        
+                        var final_date_time = dateTime1.components(separatedBy: "+")
+                        
+                        var info = final_date_time[1].components(separatedBy: ":")
+                    
+                        var amPM = ""
+                        if Int(info[0])! % 12 != 0
+                        {
+                            info[0] = String(Int(info[0])! % 12)
+                            amPM = "PM"
+                        }else{
+                            amPM = "AM"
+                        }
+                        
+                        final_date_time[1] = info[0] + ":" + info[1]
+                        
                         self.dateTime = dateTime1
                         
                         if (item.last! == "s") {
         //                  Show object message
-                            self.showObject("Your \(item) were found in room \(room) at \(dateTime1).")
+                            self.showObject("Your \(item) were found in \(room) at \(dateTime1).")
                         }
                         else {
         //                  Show object message
-                            self.showObject("Your \(item) was found in room \(room) at \(dateTime1).")
+                            self.showObject("Your \(item) was found in \(room) on \(final_date_time[0]) at \(final_date_time[1]) \(amPM).")
                         }
                     }
                 }
@@ -286,6 +303,25 @@ class HomeViewController:
                 self.showError("Sorry, \(object) is not an item I can find. List of searchable items can be find on the ABOUT page.")
             }
     }
+    
+    func convertDateFormatter(date: String) -> String {
+        var timeStamp = date
+        
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd_HH:mm:ss.SSSSSS"
+
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "MMM dd,yyyy+HH:mm"
+
+        if let date = dateFormatterGet.date(from: timeStamp) {
+            timeStamp = dateFormatterPrint.string(from: date)
+        } else {
+           print("There was an error decoding the string")
+        }
+
+        return timeStamp
+    }
+ 
     
     
     // display the error message

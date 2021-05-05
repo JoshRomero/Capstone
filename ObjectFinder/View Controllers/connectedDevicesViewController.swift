@@ -107,6 +107,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
                     unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
                     unformatted = self.get_all(info: unformatted)
                     let devices_list = unformatted.components(separatedBy: ": ")
+                    
                     self.devices.append(devices_list[1])
                 }else{
                     return

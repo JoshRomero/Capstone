@@ -281,11 +281,6 @@ class InterfaceController: WKInterfaceController , WCSessionDelegate {
                             self.TextLabel.setText("Handbag")
                             self.TextLabel2.setText("Searching for:")
                         }
-                        else if LowercaseInput!.contains("book") {
-                            self.send_message(data1: "Book")
-                            self.TextLabel.setText("Book")
-                            self.TextLabel2.setText("Searching for:")
-                        }
                         
                         
                         else {
