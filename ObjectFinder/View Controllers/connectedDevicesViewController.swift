@@ -53,22 +53,49 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             request.httpMethod = "GET"
             let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
             var unformatted = String(data: data!, encoding: .utf8)!
-            unformatted = String(unformatted.filter { !" \n\t\r\"\\".contains($0) })
-            unformatted = self.get_all(info: unformatted)
-            let devices_list = unformatted.components(separatedBy: ",")
-            if devices_list[0] != ""
+            
+            unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
+            
+            
+            //
+            let devices_list = unformatted.components(separatedBy: "}, {")
+            if devices_list[0] != "[]"
             {
+                unformatted = self.get_all(info: unformatted)
+                unformatted = self.get_all(info: unformatted)
                 for device in devices_list
                 {
-                    self.devices_MAC.append(self.get_mac(info: device))
-                    self.devices_IP.append(self.get_ip(info: device))
+                    let current_device_info = device.components(separatedBy: ", ")
+                    self.devices_MAC.append(self.get_mac(info: current_device_info[0]))
+                    self.devices_IP.append(self.get_ip(info: current_device_info[1]))
+                    self.devices.append(self.get_name(info: current_device_info[2]))
+                    self.devices_status.append("INACTIVE")
+                    
                 }
-                if self.devices_MAC.count != 0 && self.run < 1{
                 
-                    cell.textLabel?.text = self.devices_IP[indexPath.row]
-                    cell.detailTextLabel?.text = self.devices_IP[indexPath.row]
+                var count = 0
+                for dev in self.devices_IP
+                {
+                    
+                    let url1 = URL(string: "http://\(dev):5000/status")!
+                    var request = URLRequest(url: url1)
+                    request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                    request.httpMethod = "GET"
+                    let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                    if error == nil{
+                        self.devices_status[count] = "ACTIVE"
+                    }
+                    count += 1
                 }
+                
+                self.set_count(num: devices_list.count)
+                self.tableview.reloadData()
             }
+            
+                
+            cell.textLabel?.text = self.devices[indexPath.row]
+            cell.detailTextLabel?.text = self.devices_status[indexPath.row]
+            
         }
         
         return cell
@@ -88,55 +115,98 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             return;
           }
 
-          // Send token to your backend via HTTPS
-          // ...
-            // get IP's and MAC'S for connected devices; add to arrays
-            for dev in self.devices_IP
-            {
-                
-                let url1 = URL(string: "http://\(dev):5000/room")!
-                var request = URLRequest(url: url1)
-                request.setValue(idToken, forHTTPHeaderField: "Authorization")
-                request.httpMethod = "GET"
-                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-                if error == nil{
-                    var unformatted = String(data: data!, encoding: .utf8)!
-                    
-                    // {roomID: "name"}
-                    
-                    unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
-                    unformatted = self.get_all(info: unformatted)
-                    let devices_list = unformatted.components(separatedBy: ": ")
-                    
-                    self.devices.append(devices_list[1])
-                }else{
-                    return
-                }
-                
-            }
+//          // Send token to your backend via HTTPS
+//          // ...
+//            // get IP's and MAC'S for connected devices; add to arrays
+//            for dev in self.devices_IP
+//            {
+//
+//                let url1 = URL(string: "http://\(dev):5000/room")!
+//                var request = URLRequest(url: url1)
+//                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+//                request.httpMethod = "GET"
+//                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+//                if error == nil{
+//                    var unformatted = String(data: data!, encoding: .utf8)!
+//
+//                    // {roomID: "name"}
+//
+//                    unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
+//                    unformatted = self.get_all(info: unformatted)
+//                    let devices_list = unformatted.components(separatedBy: ": ")
+//
+//                    self.devices.append(devices_list[1])
+//                }else{
+//                    return
+//                }
+//
+//            }
+//
+//
+//            for dev in self.devices_IP
+//            {
+//                let url1 = URL(string: "http://\(dev):5000/status")!
+//                var request = URLRequest(url: url1)
+//                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+//                request.httpMethod = "GET"
+//                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+//                if error == nil
+//                {
+//                var unformatted = String(data: data!, encoding: .utf8)!
+//
+//                // {roomID: "name"}
+//
+//                unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
+//                unformatted = self.get_all(info: unformatted)
+//                let devices_list = unformatted.components(separatedBy: ": ")
+//                self.devices_status.append(devices_list[1])
+//                }
+//
+//            }
+            // Send token to your backend via HTTPS
+            // ...
+              // get IP's and MAC'S for connected devices; add to arrays
+              let url1 = URL(string: "https://objectfinder.tech/devices")!
+              var request = URLRequest(url: url1)
+              request.setValue(idToken, forHTTPHeaderField: "Authorization")
+              request.httpMethod = "GET"
+              let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+              var unformatted = String(data: data!, encoding: .utf8)!
+              
+              unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
+              
+              //
+              let devices_list = unformatted.components(separatedBy: "}, {")
+              if devices_list[0] != "[]"
+              {
+                  unformatted = self.get_all(info: unformatted)
+                  unformatted = self.get_all(info: unformatted)
+                  for device in devices_list
+                  {
+                      let current_device_info = device.components(separatedBy: ", ")
+                      self.devices_MAC.append(self.get_mac(info: current_device_info[0]))
+                      self.devices_IP.append(self.get_ip(info: current_device_info[1]))
+                      self.devices.append(self.get_name(info: current_device_info[2]))
+                      self.devices_status.append("INACTIVE")
+                      
+                  }
+                  
+                  var count = 0
+                  for dev in self.devices_IP
+                  {
+                      
+                      let url1 = URL(string: "http://\(dev):5000/status")!
+                      var request = URLRequest(url: url1)
+                      request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                      request.httpMethod = "GET"
+                      let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                      if error == nil{
+                          self.devices_status[count] = "ACTIVE"
+                      }
+                      count += 1
+                  }
             
-            
-            for dev in self.devices_IP
-            {
-                let url1 = URL(string: "http://\(dev):5000/status")!
-                var request = URLRequest(url: url1)
-                request.setValue(idToken, forHTTPHeaderField: "Authorization")
-                request.httpMethod = "GET"
-                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-                if error == nil
-                {
-                var unformatted = String(data: data!, encoding: .utf8)!
-                
-                // {roomID: "name"}
-                
-                unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
-                unformatted = self.get_all(info: unformatted)
-                let devices_list = unformatted.components(separatedBy: ": ")
-                self.devices_status.append(devices_list[1])
-                }
-                
-            }
-            
+//
             
             let story = UIStoryboard(name: "Main", bundle: nil)
             let controller = story.instantiateViewController(identifier: "DevicesStatusViewController") as! DevicesStatusViewController
@@ -146,6 +216,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             controller.IP_detail = self.devices_IP[num]
             controller.MAC_detail = self.devices_MAC[num]
             self.present(controller, animated: true, completion: nil)
+        }
         }
     
     }
@@ -194,7 +265,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         self.devices_status = []
         self.devices_IP = []
         self.devices_MAC = []
-        
+//
         // making sure the user is a valid user
         let currentUser = Auth.auth().currentUser
         
@@ -216,19 +287,38 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
             let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
             var unformatted = String(data: data!, encoding: .utf8)!
             
-            unformatted = String(unformatted.filter { !" \n\t\r\"\\".contains($0) })
-            unformatted = self.get_all(info: unformatted)
-            //
-            let devices_list = unformatted.components(separatedBy: ",")
-            //
+            unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
             
-            if devices_list[0] != ""
+            //
+            let devices_list = unformatted.components(separatedBy: "}, {")
+            if devices_list[0] != "[]"
             {
+                unformatted = self.get_all(info: unformatted)
+                unformatted = self.get_all(info: unformatted)
                 for device in devices_list
                 {
-                    self.devices_MAC.append(self.get_mac(info: device))
-                    self.devices_IP.append(self.get_ip(info: device))
+                    let current_device_info = device.components(separatedBy: ", ")
+                    self.devices_MAC.append(self.get_mac(info: current_device_info[0]))
+                    self.devices_IP.append(self.get_ip(info: current_device_info[1]))
+                    self.devices.append(self.get_name(info: current_device_info[2]))
+                    self.devices_status.append("INACTIVE")
                 }
+                
+                var count = 0
+                for dev in self.devices_IP
+                {
+                    
+                    let url1 = URL(string: "http://\(dev):5000/status")!
+                    var request = URLRequest(url: url1)
+                    request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                    request.httpMethod = "GET"
+                    let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                    if error == nil{
+                        self.devices_status[count] = "ACTIVE"
+                    }
+                    count += 1
+                }
+                
                 self.set_count(num: devices_list.count)
                 self.tableview.reloadData()
             }
@@ -246,6 +336,41 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         
     }
     
+    func get_status()
+    {
+        // making sure the user is a valid user
+        let currentUser = Auth.auth().currentUser
+        
+        // getting/checking the idToken
+        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+          if let error = error {
+            // Handle error
+            print("error:", error)
+            return;
+          }
+
+          // Send token to your backend via HTTPS
+          // ...
+            // get IP's and MAC'S for connected devices; add to arrays
+            var count = 0
+            for dev in self.devices_IP
+            {
+                
+                let url1 = URL(string: "http://\(dev):5000/status")!
+                var request = URLRequest(url: url1)
+                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                request.httpMethod = "GET"
+                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                if error == nil{
+                    self.devices_status[count] = "ACTIVE"
+                }
+                count += 1
+            }
+        
+        }
+    }
+    
+    
     func get_all(info: String) -> String
     {
         let start = info.index(info.startIndex, offsetBy: 1)
@@ -256,7 +381,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     
     func get_name(info: String) -> String
     {
-        let start = info.index(info.startIndex, offsetBy: 18)
+        let start = info.index(info.startIndex, offsetBy: 6)
         let end = info.index(info.endIndex, offsetBy: 0)
         let range = start..<end
         return String(info[range])
@@ -264,7 +389,7 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     
     func get_ip(info: String) -> String
     {
-        let start = info.index(info.startIndex, offsetBy: 18)
+        let start = info.index(info.startIndex, offsetBy: 4)
         let end = info.index(info.endIndex, offsetBy: 0)
         let range = start..<end
         return String(info[range])
@@ -272,8 +397,8 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
     
     func get_mac(info: String) -> String
     {
-        let start = info.index(info.startIndex, offsetBy: 0)
-        let end = info.index(info.startIndex, offsetBy: 17)
+        let start = info.index(info.startIndex, offsetBy: 5)
+        let end = info.index(info.endIndex, offsetBy: 0)
         let range = start..<end
         return String(info[range])
     }

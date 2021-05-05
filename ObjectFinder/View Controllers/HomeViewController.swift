@@ -265,24 +265,32 @@ class HomeViewController:
                         print("Synchronous task ended without errors.")
                         let item = cleaned[11]
                         let room = cleaned[7]
+                        let dateTime2 = cleaned[3]
                         let dateTime1 = self.convertDateFormatter(date: cleaned[3])
                         
+                        // sets up time and date properly
                         var final_date_time = dateTime1.components(separatedBy: "+")
                         
                         var info = final_date_time[1].components(separatedBy: ":")
                     
                         var amPM = ""
-                        if Int(info[0])! % 12 != 0
+                        
+                        
+                        if Int(info[0])! / 12 != 0
                         {
                             info[0] = String(Int(info[0])! % 12)
                             amPM = "PM"
                         }else{
                             amPM = "AM"
                         }
+                        if info[0] == "0"
+                        {
+                            info[0] = "12"
+                        }
                         
                         final_date_time[1] = info[0] + ":" + info[1]
                         
-                        self.dateTime = dateTime1
+                        self.dateTime = dateTime2
                         
                         if (item.last! == "s") {
         //                  Show object message

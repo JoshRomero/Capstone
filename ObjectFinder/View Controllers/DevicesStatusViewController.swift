@@ -19,6 +19,11 @@ class DevicesStatusViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DevicesStatusViewController", for: indexPath)
         cell.textLabel?.text = table_title[indexPath.row]
+        //
+        
+        
+        
+        //
         let table_detail = [id_detail, status_detail, IP_detail, MAC_detail]
         cell.detailTextLabel?.text = table_detail[indexPath.row]
         return cell

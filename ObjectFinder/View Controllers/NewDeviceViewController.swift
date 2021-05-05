@@ -64,7 +64,7 @@ class NewDeviceViewController: UIViewController, UITextFieldDelegate {
                 else {
                     // a message needs to be sent to the Pi
                     
-                    let url1 = URL(string: "http://138.47.138.44:5000/register")!
+                    let url1 = URL(string: "http://138.47.139.31:5000/register")!
                     let session = URLSession.shared
                     var request = URLRequest(url: url1)
                     request.httpMethod = "POST"
@@ -80,7 +80,7 @@ class NewDeviceViewController: UIViewController, UITextFieldDelegate {
                     
                     
                     // need to make a static ip address for the first time pi start up.
-                    self.showsuccess("\(self.newDeviceName.text!) has succuessfully been added. Please return to the Devices page and refresh the page.")
+                    self.showsuccess("\(self.newDeviceName.text!) has been added if the new device is running on the same WiFi network. Please return to the Devices page and refresh the page.")
                 }
             }
         }else{
