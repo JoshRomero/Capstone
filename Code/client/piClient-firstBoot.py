@@ -36,9 +36,9 @@ def changeRoomID(newRoomID):
         file.write(systemRoomInfo)
         file.close()
 
-def sendMacToServer(currentMac, idToken):
+def sendMacToServer(currentMac, currentName, idToken):
     header = {"Authorization": idToken}
-    payload = {"deviceMac": currentMac}
+    payload = {"deviceMac": currentMac, "deviceName": currentName}
     url = "https://objectfinder.tech/register"
     requests.post(url, json=payload, headers=header)
     
@@ -46,22 +46,29 @@ def sendMacToServer(currentMac, idToken):
 class UserLoginAPI(Resource):
     
     def post(self):
-        errors = userLoginScheme.validate(request.json)
+        data = request.form.to_dict()
+        for key in data.items():
+            data = json.loads(key[0])
+        errors = userLoginScheme.validate(data)
         if errors:
             abort(400)
             
         auth = firebase.auth()
-        userInfo = auth.sign_in_with_email_and_password(request.json['email'], request.json['password'])
+        userInfo = auth.sign_in_with_email_and_password(data['email'], data['password'])
         if userInfo == None:
             abort(400)
-        
+        print("WRITING USER INFO")
         writeCurrUserInfo(json.dumps(userInfo))
-        sendMacToServer(get_mac_address(), userInfo["idToken"])
-        changeRoomID(request.json['roomID'])
+        
+        print("SENDING MAC")
+        sendMacToServer(get_mac_address(), data['roomID'], userInfo["idToken"])
+        
+        print("CHANGING ROOMID")
+        changeRoomID(data['roomID'])
         
         os.system('reboot')
 
 api.add_resource(UserLoginAPI, "/register", endpoint = 'register')
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.39')
+    app.run(host='0.0.0.0')

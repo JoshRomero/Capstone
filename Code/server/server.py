@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_restful import abort, Api, Resource
 from werkzeug.utils import secure_filename
 from marshmallow import fields, Schema
@@ -15,24 +15,34 @@ import requests
 
 DATABASE_IP = socket.gethostbyname(socket.gethostname())
 DATABASE_PORT = 27017
-UPLOAD_FOLDER = './userImgs'
-ALLOWED_EXTENSIONS = set(['jpeg'])
+UPLOAD_FOLDER = '/userImgs'
+ALLOWED_EXTENSIONS = set(['jpg'])
 
 class PiDataPostSchema(Schema):
     userID = fields.Str()
     dateTime = fields.Str()
-    roomID = fields.Int()
-    keysProb = fields.Decimal()
-    glassesProb = fields.Decimal()
+    roomID = fields.Str()
     remoteProb = fields.Decimal()
+    laptopProb = fields.Decimal()
+    cellphoneProb = fields.Decimal()
+    handbagProb = fields.Decimal()
+    bookProb = fields.Decimal()
 
 class PiDataGetSchema(Schema):
-    objectQueried = fields.Str(required = True)
+    object = fields.Str(required = True)
 
-class ReturnedQuerySchema(Schema):
+class PiDataImageGetSchema(Schema):
     dateTime = fields.Str()
-    roomID = fields.Str()
-    itemFound = fields.Str()
+
+class CompareUserIdPostSchema(Schema):
+    idToken = fields.Str()
+
+class PiRegistrationPostSchema(Schema):
+    deviceMac = fields.Str()
+
+class PiIpUpdatePostSchema(Schema):
+    macAddress = fields.Str()
+    ipAddress = fields.Str()
 
 app = Flask(__name__)
 api = Api(app)
@@ -42,7 +52,10 @@ firebase = firebase_admin.initialize_app(cred)
 
 piDataPostScheme = PiDataPostSchema()
 piDataGetScheme = PiDataGetSchema()
-returnedQueryScheme = ReturnedQuerySchema()
+piDataImageGetScheme = PiDataImageGetSchema()
+compareUserIdPostScheme = CompareUserIdPostSchema()
+piRegistrationPostScheme = PiRegistrationPostSchema()
+piIpUpdatePostScheme = PiIpUpdatePostSchema()
 
 def authenticateToDatabase():
         mongo_client = MongoClient("mongodb://{}:{}".format(DATABASE_IP, DATABASE_PORT))
@@ -50,24 +63,23 @@ def authenticateToDatabase():
         try:
             rPiDatabase = mongo_client.rPiData
             rPiDatabase.authenticate(name = os.environ['DATABASE_USER'], password = os.environ['DATABASE_PASS'])
-            rPiDatabaseCollection = rPiDatabase.camNodeResults
         except:
             raise Exception('Authentication Failed')
 
-        return rPiDatabaseCollection
+        return rPiDatabase
 
 def formatEntries(dbEntry, args):
     formattedEntry = {
             "dateTime": dbEntry["dateTime"],
             "roomID": dbEntry["roomID"],
-            "itemFound": args["objectQueried"].lower()
+            "itemFound": args["object"].lower()
             }
 
     return formattedEntry
 
 # retrieve the newest entry containing the item the user requested
-def queryDatabase(collection, args, userID):
-    objectProb = "{}Prob".format(args["objectQueried"].lower())
+def queryDatabaseItem(collection, args, userID):
+    objectProb = "{}Prob".format(args["object"].lower())
     newestEntry = None
     for entry in collection.find({'$and':[{"userID": userID},{objectProb:"1.0"}]}).sort("dateTime", -1):
         newestEntry = entry
@@ -78,53 +90,49 @@ def queryDatabase(collection, args, userID):
         return abort(404)
 
     formattedEntry = formatEntries(newestEntry, args)
-    # insert instance of queried object for dashboard purposes
-    #mornQuery = 0
-    #afterQuery = 0
-    #evenQuery = 0
 
-    #currentTime = datetime.datetime.now()
-    #currentDay = datetime.datetime.today()
-    #mornStart = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 5, 0, 0, 0)
-    #mornEnd = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 11, 59, 59, 99)
-    #afterStart = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 12, 0, 0, 0)
-    #afterEnd = datetime.datetime(currentDay.year, currentDay.month, currentDay.day, 17, 59, 59, 99)
+    return formattedEntry
 
-    #if(mornStart <= currentTime and currentTime <= mornEnd):
-    #    morningQuery = 1
-    #elif(afterStart <= currentTime and currentTime <= afterEnd):
-    #    afterQuery = 1
-    #else:
-    #    evenQuery = 1
+def queryDatabasePi(collection, userID):
+    for entry in collection.find({"userID": userID}):
+        return entry
 
-   # collection.insert_one({
-   #     "userID" : args["userID"],
-   #     "objectQueried" : args["objectQueried"].lower(),
-   #     "queriedDateTime" : currentTime,
-   #     "morningQuery": mornQuery,
-   #     "afterQuery": afterQuery,
-   #     "evenQuery": evenQuery
-   # })
+    return None
 
-    return formattedEntry, newestEntry["image"]
+def registerUserPi(collection, userID, macAddress):
+    userEntry = queryDatabasePi(collection, userID)
+    if userEntry == None:
+        entry = {"userID": userID,
+                "devices": {
+                    macAddress: ""
+                    }
+                }
+        collection.insert_one(entry)
+    elif(userEntry['devices'][macAddress] != None):
+       return 'Already Registered'
+    else:
+        deviceKey = "devices.{}".format(macAddress)
+        collection.update({"userID": userID}, {"$set": {deviceKey: ""}})
+
+def removeUserPi(collection, userID, macAddress):
+    userEntry = queryDatabasePi(collection, userID)
+    deviceKey = "devices.{}".format(macAddress)
+    collection.update({"userID": userID}, {"$unset": {deviceKey: None}}, multi = True)
+
+def updatePiIp(collection, userID, macAddress, currentIP):
+    deviceKey = "devices.{}".format(macAddress)
+    collection.update({"userID": userID}, {"$set": {deviceKey: currentIP}})
 
 # saves image to file system and adds image path to entry
 def saveImage(entry, imageData, userID):
-    userPath = os.path.join(app.root_path, userID)
+    userPath = os.path.join(UPLOAD_FOLDER,  userID)
     if os.path.isdir(userPath) == False:
         os.makedirs(userPath)
 
-    imgPath = os.path.join(userPath, entry["dateTime"])
+    imgPath = os.path.join(userPath, entry["dateTime"] + ".jpg")
     imageData.save(imgPath)
 
     return imgPath
-
-def retrieveImage(entryPath):
-        imageBytes = bytearray()
-        with open(entryPath, "rb") as capturedImage:
-            imageBytes = capturedImage.read()
-
-        return imageBytes
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -132,7 +140,6 @@ def allowed_file(filename):
 
 def verifyToken(token):
     decoded_token = auth.verify_id_token(token)
-    print("decoded token: ", decoded_token)
     if decoded_token:
         uid = decoded_token['uid']
     else:
@@ -145,16 +152,18 @@ def verifyToken(token):
 # post: allows pis to insert entries into database
 class PiDataAPI(Resource):
 
-    # NEED TO FINISH -- figure out how to send image data and json at the same time
     def get(self):
         token = request.headers["Authorization"]
         uid = verifyToken(token)
         errors = piDataGetScheme.validate(request.args)
+        print("ARGS: " , request.args)
         if errors:
             abort(400)
-        db = authenticateToDatabase()
-        formattedEntry, imgPath = queryDatabase(db, request.args, uid)
-        # imageData = retrieveImage(imgPath)
+        print("NO ERRORS")
+        db = authenticateToDatabase().camNodeResults
+        print("AUTHENTICATED")
+        formattedEntry = queryDatabaseItem(db, request.args, uid)
+
         return formattedEntry
 
     def post(self):
@@ -165,31 +174,115 @@ class PiDataAPI(Resource):
         if errors:
             abort(400)
         entry = request.form.to_dict()
-        print("Entry:", entry)
+
         if "image" not in request.files:
             abort(400)
         imageData = request.files['image']
         if imageData.filename == '':
             abort(400)
         if imageData and allowed_file(imageData.filename):
-            db = authenticateToDatabase()
+            db = authenticateToDatabase().camNodeResults
+            entry["dateTime"] = entry["dateTime"].replace(" ", "_")
             imgPath = saveImage(entry, imageData, uid)
             entry["image"] = imgPath
             db.insert_one(entry)
 
         return 'ok'
 
-# display dashboard of information for a specific user's requests
-class UserDashboardAPI(Resource):
+class PiDataImageAPI(Resource):
+
     def get(self):
-        #uid = verifyToken(request.headers["Authorization"])
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+        errors = piDataImageGetScheme.validate(request.args)
+        if errors:
+            abort(400)
 
-        db = authenticateToDatabase()
-        return("authenticated")
-       # dashboard(db)
+        return send_from_directory(os.path.join(UPLOAD_FOLDER,  uid), request.args["dateTime"] + '.jpg',  as_attachment=True)
 
-api.add_resource(PiDataAPI, "/pidata", endpoint = 'pidata')
-api.add_resource(UserDashboardAPI, "/dashboard", endpoint = 'dashboard')
+class CompareUserIdAPI(Resource):
+
+    def post(self):
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+        print(request.json)
+        errors = compareUserIdPostScheme.validate(request.json)
+        if errors:
+            abort(400)
+
+        otherUid = verifyToken(request.json["idToken"])
+        result = {}
+
+        if uid == otherUid:
+            result["equivalentUIDS"] = "true"
+        else:
+            result["equivalentUIDS"] = "false"
+
+        return result
+
+class RegisterPiMacAPI(Resource):
+
+    def post(self):
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+
+        errors = piRegistrationPostScheme.validate(request.json)
+        if errors:
+            abort(400)
+
+        db = authenticateToDatabase().registeredPis
+        registerUserPi(db, uid, request.json["deviceMac"])
+
+        return 'ok'
+
+class RemovePiMacAPI(Resource):
+
+    def post(self):
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+
+        errors = piRegistrationPostScheme.validate(request.json)
+        if errors:
+            abort(400)
+
+        db = authenticateToDatabase().registeredPis
+        removeUserPi(db, uid, request.json["deviceMac"])
+
+        return 'ok'
+
+class UpdatePiIpAPI(Resource):
+
+    def post(self):
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+
+        errors = piIpUpdatePostScheme.validate(request.json)
+        if errors:
+            abort(400)
+
+        db = authenticateToDatabase().registeredPis
+        updatePiIp(db, uid, request.json["macAddress"], request.json["ipAddress"])
+
+        return 'ok'
+
+class PiDevicesAPI(Resource):
+    def get(self):
+        token = request.headers["Authorization"]
+        uid = verifyToken(token)
+
+        db = authenticateToDatabase().registeredPis
+        userEntry = queryDatabasePi(db, uid)
+
+        return userEntry["devices"]
+
+api.add_resource(PiDataAPI, '/pidata', endpoint = 'pidata')
+api.add_resource(PiDataImageAPI, '/pidata/image', endpoint = 'image')
+api.add_resource(CompareUserIdAPI, '/compare/userids', endpoint = 'userid')
+api.add_resource(RegisterPiMacAPI, '/mac/register', endpoint = 'register')
+api.add_resource(RemovePiMacAPI, '/mac/remove', endpoint = 'remove')
+api.add_resource(UpdatePiIpAPI, '/ip/update', endpoint = 'update')
+api.add_resource(PiDevicesAPI, '/devices', endpoint = 'devices')
 
 if __name__ == '__main__':
     app.run()
+~

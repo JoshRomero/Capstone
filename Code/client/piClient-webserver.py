@@ -21,10 +21,10 @@ systemRoomScheme = SystemRoomSchema()
 systemStatusScheme = SystemStatusSchema()
 
 def runTokenRefresh():
-    import refreshToken
+    os.system("python3 /home/pi/tflite1/refreshToken.py")
 
 def runNeuralNetwork():
-    import imageFinal
+    os.system("python3 /home/pi/tflite1/imageFinal.py --modeldir=Sample_TFlite_model")
 
 # remove user info file
 def deleteCurrUserInfo():
@@ -34,8 +34,11 @@ def deleteCurrUserInfo():
 def getIdToken():
     user = open(os.environ['CURR_USER'], "r")
     jsonUser = json.loads(user.read())
-    
-    return jsonUser["idToken"]
+    try:
+        idToken = jsonUser["idToken"]
+        return idToken
+    except:
+        getIdToken()
 
 # send a post request to server containing the iPhone's idToken and the current Pi's idToken to compare uids 
 def compareUUIDs(iphoneIdToken):
@@ -70,6 +73,12 @@ def sendIpToServer():
     payload = {"macAddress": get_mac_address(), "ipAddress": socket.gethostbyname(socket.gethostname() + ".local")}
     url = "https://objectfinder.tech/pi/update"
     requests.post(url, json=payload, headers=header)
+
+def removeMacFromServer():
+    header = {"Authorization": getIdToken()}
+    payload = {"macAddress": get_mac_address()}
+    url = "https://objectfinder.tech/mac/remove"
+    request.post(url, json=payload, headers=header)
         
 # take iPhone user's token and send it as well as the idToken of the current system to the server, server sends back if the uuid is a match
 # if a match, allow user to change room
@@ -91,12 +100,14 @@ class SystemRoomAPI(Resource):
         token = request.headers["Authorization"]
         if compareUUIDs(token) == False:
             abort(401)
-        
+        data = request.form.to_dict()
+        for key in data.items():
+            data = json.loads(key[0])
         errors = systemRoomScheme.validate(request.json)
         if errors:
             abort(400)
         
-        changeRoomID(request.json['roomID'])
+        changeRoomID(data['roomID'])
         
         return 'ok'
 
@@ -120,46 +131,41 @@ class SystemStatusAPI(Resource):
         if compareUUIDs(token) == False:
             abort(401)
         
-        errors = systemStatusScheme.validate(request.form)
+        data = request.form.to_dict()
+        for key in data.items():
+            data = json.loads(key[0])
+        errors = systemStatusScheme.validate(data)
         if errors:
             abort(400)
         
-        # begin neural network code process
-        if(request.form['status'] == 'START'):
-            # global neuralNetProcess
-            writeCurrStatusInfo('ACTIVE')
-            # neuralNetProcess = Process(target=runNeuralNetwork, args=())
-            
-        
-        # kill neural network code process
-        elif(request.form['status'] == 'STOP'):
-            writeCurrStatusInfo('INACTIVE')
-            neuralNetProcess.join()
-        
         # kill CNN and token refresh processes, reset userInfo and roomID defaults
-        elif(request.form['status'] == 'RESET'):
-            writeCurrStatusInfo('INACTIVE')
-            # neuralNetProcess.join()
-            # reTokenProcess.join()
+        if(data['status'] == 'RESET'):
+            writeCurrStatusInfo('RESET')
+            neuralNetworkProcess.join()
+            reTokenProcess.join()
             changeRoomID('DEFAULT')
+            removeMacFromServer()
             deleteCurrUserInfo()
             
             # disconnect from wifi and forget network
             os.system('rm /etc/NetworkManager/system-connections/*')
             os.system('reboot')
-            
-        return 'ok'
+        elif(data['status'] == 'RESTART'):
+            writeCurrStatusInfo('RESTART')
+            reTokenProcess.join()
+            neuralNetworkProcess.join()
+            os.system('reboot')
 
 api.add_resource(SystemRoomAPI, "/roomID", endpoint = 'roomID')
 api.add_resource(SystemStatusAPI, "/status", endpoint = 'status')
 
 if __name__ == '__main__':
+    writeCurrStatusInfo('ACTIVE')
+    
+    reTokenProcess = Process(target=runTokenRefresh, args=())
+    reTokenProcess.start()
+    neuralNetworkProcess = Process(target=runNeuralNetwork, args=())
+    neuralNetProcess.start()
     sendIpToServer()
     
-    # begin refresh code in asynch process
-    # reTokenProcess = Process(target=runTokenRefresh, args=())
-    
-    # begin neural network code in asynch process
-    # neuralNetProcess = Process(target=runNeuralNetwork, args=())
-    
-    app.run()
+    app.run('0.0.0.0')

@@ -3,7 +3,7 @@ import requests
 
 email = "johndoe@gmail.com"
 password = "Pa55w0rd!"
-room = "Bedroom"
+room = "Kitchen"
 
 config = {
   "apiKey": "AIzaSyDkYMP_ilWmPr5n0Kt_N7odVehYEw6qh64",
@@ -25,12 +25,42 @@ payload = {
     "password": password,
     "roomID": room
 }
-url = "http://138.47.138.44:5000/register"
-r = requests.post(url, form=payload)
+
+# url = "http://192.168.1.39:5000/register"
+# r = requests.post(url, json=payload)
 
 # url = "https://objectfinder.tech/devices"
 # r = requests.get(url, headers=header)
 # print(r.text)
+
+# payload = {
+#     "macAddress": "b8:27:eb:49:41:a9"
+# }
+# url = "https://objectfinder.tech/mac/remove"
+# r = requests.post(url, json=payload, headers=header)
+# print(r.text)
+
+# url = "http://192.168.1.39:5000/status"
+# r = requests.get(url, headers=header)
+# print(r.text)
+
+payload = {
+    "status": "RESET"
+}
+url = "http://192.168.1.39:5000/status"
+r = requests.post(url, json=payload, headers=header)
+
+# payload = {
+#     "deviceMac": "b8:27:eb:49:41:a9"
+# }
+
+# url = "https://objectfinder.tech/mac/remove"
+# r = requests.post(url, json=payload, headers=header)
+# print(r)
+
+url = "https://objectfinder.tech/devices"
+r = requests.get(url, headers=header)
+print(r.text)
 
 # url = "http://192.168.1.39:5000/room"
 # r = requests.get(url, headers=header)

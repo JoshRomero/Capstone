@@ -24,11 +24,12 @@ def refreshToken():
     
 if __name__ == '__main__':
     while(True):
-        sleep(1800)
         refreshToken()
+        print('REFRESHED')
         
         statusFile = open(os.environ['CURR_STATUS'], "r")
         jsonStatusFile = json.loads(statusFile.read())
-        if(jsonStatusFile['status'] == 'INACTIVE'):
+        if(jsonStatusFile['status'] != 'ACTIVE'):
             break
-    
+        
+        sleep(3)

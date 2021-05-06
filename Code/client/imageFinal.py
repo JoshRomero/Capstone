@@ -22,7 +22,12 @@ def getUID():
     user = open(os.environ['CURR_USER'], "r")
     jsonUser = json.loads(user.read())
     
-    return jsonUser["userId"]
+    try:
+        userID = jsonUser["userId"]
+    except:
+        userId = jsonUser["localId"]
+    
+    return userId
 
 def getRoomID():
     room = open(os.environ['ROOM_ID'], "r")
@@ -41,6 +46,8 @@ def createEntry(captureTime):
                "handbagProb": items["handbagProb"],
                "bookProb": items["bookProb"],
     }
+    
+    print(dbEntry)
     
     return dbEntry
 #------------------------------------END NETWORK STUFF------------------------------------------------------
@@ -95,7 +102,7 @@ else:
         from tensorflow.lite.python.interpreter import load_delegate
 
 # Get path to current working directory
-CWD_PATH = os.getcwd()
+CWD_PATH = "/home/pi/tflite1/"
 
 # Path to .tflite file, which contains the model that is used for object detection
 PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,GRAPH_NAME)
@@ -140,7 +147,7 @@ input_std = 127.5
 camera = PiCamera()
 while True:
 
-	camera.capture('curImg.jpg')
+	camera.capture('/home/pi/tflite1/curImg.jpg')
 	saveDate = datetime.now()
 	print("[+] Picture captured at the dateTime: {}".format(saveDate))
 	image = "curImg.jpg"
@@ -219,7 +226,7 @@ while True:
 	items["bookProb"] = 1.0 if "book" in objectList else 0.0        
 
 	# save and convert image to b64
-	cv2.imwrite('images/{}.jpg'.format(saveDate), resized)
+	cv2.imwrite('/home/pi/tflite1/images/{}.jpg'.format(saveDate), resized)
 
 	#with open('images/{}.jpg'.format(saveDate), mode='rb') as ourImage: 
 	 	# imageContent = ourImage.read()
@@ -227,7 +234,7 @@ while True:
 
 	# add to db
 	entry = createEntry(user["localId"], saveDate)
-	file = {"image": open('images/{}.jpg'.format(saveDate), 'rb')}
+	file = {"image": open('/home/pi/tflite1/images/{}.jpg'.format(saveDate), 'rb')}
 
 	# send post request to server to insert image and related data
 	header = {"Authorization": getIdToken()}
@@ -244,9 +251,14 @@ while True:
 	# Clean up
 	cv2.waitKey(3000)
 	cv2.destroyAllWindows()
-
+ 
 	# now that we have used the image, delete it to save storage space
 	os.remove('images/{}.jpg'.format(saveDate))
+ 
+	statusFile = open(os.environ['CURR_STATUS'], "r")
+	jsonStatusFile = json.loads(statusFile.read())
+	if(jsonStatusFile['status'] != 'ACTIVE'):
+		break
 
 	# sleep 2 sec to give db time to receive last entry
 	sleep(2)
