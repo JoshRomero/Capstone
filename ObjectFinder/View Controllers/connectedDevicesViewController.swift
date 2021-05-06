@@ -268,82 +268,85 @@ class connectedDevicesViewController: UIViewController, UITableViewDataSource, U
         tableview.dataSource = self
         tableview.alpha = 1
         errorLabel.alpha = 0
-        self.devices = []
-        self.devices_status = []
-        self.devices_IP = []
-        self.devices_MAC = []
-//
-        // making sure the user is a valid user
-        let currentUser = Auth.auth().currentUser
-        
-        // getting/checking the idToken
-        currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
-          if let error = error {
-            // Handle error
-            print("error:", error)
-            return;
-          }
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.devices = []
+            self.devices_status = []
+            self.devices_IP = []
+            self.devices_MAC = []
+    //
+            // making sure the user is a valid user
+            let currentUser = Auth.auth().currentUser
+            
+            // getting/checking the idToken
+            currentUser?.getIDTokenForcingRefresh(true) { idToken, error in
+              if let error = error {
+                // Handle error
+                print("error:", error)
+                return;
+              }
 
-          // Send token to your backend via HTTPS
-          // ...
-            // get IP's and MAC'S for connected devices; add to arrays
-            let url1 = URL(string: "https://objectfinder.tech/devices")!
-            var request = URLRequest(url: url1)
-            request.setValue(idToken, forHTTPHeaderField: "Authorization")
-            request.httpMethod = "GET"
-            let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-            var unformatted = String(data: data!, encoding: .utf8)!
-            
-            unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
-            
-            if unformatted != "[]"
-            {
-            unformatted = self.get_all(info: unformatted)
-            unformatted = self.get_all(info: unformatted)
-            }
-            
-            //
-            let devices_list = unformatted.components(separatedBy: "}, {")
-            if devices_list[0] != "[]"
-            {
-                for device in devices_list
+              // Send token to your backend via HTTPS
+              // ...
+                // get IP's and MAC'S for connected devices; add to arrays
+                let url1 = URL(string: "https://objectfinder.tech/devices")!
+                var request = URLRequest(url: url1)
+                request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                request.httpMethod = "GET"
+                let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                var unformatted = String(data: data!, encoding: .utf8)!
+                
+                unformatted = String(unformatted.filter { !"\n\t\r\"\\".contains($0) })
+                
+                if unformatted != "[]"
                 {
-                    let current_device_info = device.components(separatedBy: ", ")
-                    self.devices_MAC.append(self.get_mac(info: current_device_info[0]))
-                    self.devices_IP.append(self.get_ip(info: current_device_info[1]))
-                    self.devices.append(self.get_name(info: current_device_info[2]))
-                    self.devices_status.append("INACTIVE")
+                unformatted = self.get_all(info: unformatted)
+                unformatted = self.get_all(info: unformatted)
                 }
                 
-                var count = 0
-                for dev in self.devices_IP
+                //
+                let devices_list = unformatted.components(separatedBy: "}, {")
+                if devices_list[0] != "[]"
                 {
-                    
-                    let url1 = URL(string: "http://\(dev):5000/status")!
-                    var request = URLRequest(url: url1)
-                    request.setValue(idToken, forHTTPHeaderField: "Authorization")
-                    request.httpMethod = "GET"
-                    let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
-                    if error == nil{
-                        self.devices_status[count] = "ACTIVE"
+                    for device in devices_list
+                    {
+                        let current_device_info = device.components(separatedBy: ", ")
+                        self.devices_MAC.append(self.get_mac(info: current_device_info[0]))
+                        self.devices_IP.append(self.get_ip(info: current_device_info[1]))
+                        self.devices.append(self.get_name(info: current_device_info[2]))
+                        self.devices_status.append("INACTIVE")
                     }
-                    count += 1
+                    
+                    var count = 0
+                    for dev in self.devices_IP
+                    {
+                        
+                        let url1 = URL(string: "http://\(dev):5000/status")!
+                        var request = URLRequest(url: url1)
+                        request.setValue(idToken, forHTTPHeaderField: "Authorization")
+                        request.httpMethod = "GET"
+                        let (data, _, error) = URLSession.shared.synchronousDataTask(urlrequest: request)
+                        if error == nil{
+                            self.devices_status[count] = "ACTIVE"
+                        }
+                        count += 1
+                    }
+                    
+                    self.set_count(num: devices_list.count)
+                    self.tableview.reloadData()
                 }
                 
-                self.set_count(num: devices_list.count)
-                self.tableview.reloadData()
             }
-            
         }
-        
-        
-        
+            
+            
+            
         Utilities.styleFilledButton(addNewDeviceLabel)
+            
+    //
+    //        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
+    //        tableview.refreshControl = myRefreshControl
+    //        get_device_status()
         
-//
-//        myRefreshControl.addTarget(self, action: #selector(connectedDevicesViewController.handleRefresh), for: .valueChanged)
-//        tableview.refreshControl = myRefreshControl
-//        get_device_status()
         
     }
     
